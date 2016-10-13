@@ -1,0 +1,39 @@
+version: '2'
+services:
+  nginx:
+    image: nfqakademija/nginx
+    links:
+      - fpm
+    ports:
+      - "8000:80"
+    volumes:
+      - "./:/var/www"
+  fpm:
+    image: nfqakademija/fpm
+    user: "1000:1000"
+    links:
+      - mariadb
+    volumes:
+      # Uncomment if you want cache composer stuff
+      #- ".docker/.composer:/.composer"
+      - ".docker:/home"
+      - "./:/var/www"
+  npm:
+    image: nfqakademija/node:6.4.0.1
+    user: "1000:1000"
+    volumes:
+      - ".docker/.npm:/home/.npm"
+      - "./:/home/app"
+      - "/usr/local/lib/node_modules"
+  mariadb-data:
+    image: tianon/true
+    volumes:
+      - /var/lib/mysql
+  mariadb:
+    image: mariadb:10.1.10
+    ports:
+      - "3000:3306"
+    volumes_from:
+      - "mariadb-data"
+    environment:
+        MYSQL_ROOT_PASSWORD: root
