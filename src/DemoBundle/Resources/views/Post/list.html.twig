@@ -1,0 +1,8 @@
+{% extends "::base.html.twig" %}
+{% block title %}Postas - {{ post.title }}{% endblock %}
+{% block body %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content|raw }}</p>
+    <hr/>
+    <small>{{ post.user.username }} - {{ post.createdAt|date('Y-m-d H:i') }}</small>
+{% endblock %}
