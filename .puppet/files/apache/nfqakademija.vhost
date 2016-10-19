@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+  ServerName nfqakademija.dev
+  ServerAlias *.nfqakademija.dev
+  DocumentRoot /var/www/web
+
+  <Directory /var/www/web>
+    DirectoryIndex index.php
+
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+
+    Options +FollowSymLinks
+  </Directory>
+
+</VirtualHost>
