@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Post
  *
- * @ORM\Table(name="posts1")
- * @ORM\Entity()
+ * @ORM\Table(name="posts")
+ * @ORM\Entity(repositoryClass="DemoBundle\Repository\PostRepository")
  */
 class Post
 {
@@ -24,23 +24,46 @@ class Post
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255, nullable=true)
+     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=255, nullable=true)
+     * @ORM\Column(name="content", type="text")
      */
     private $content;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="posts")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
 
 
     /**

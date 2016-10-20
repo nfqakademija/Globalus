@@ -19,3 +19,5 @@
 /node_modules
 /bin/*
 /html/
+/.idea/
+/web/config.php

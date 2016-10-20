@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+{% block title %}Postai{% endblock %}
+{% block body %}
+    {% for post in posts %}
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #000;">
+            <h1>{{ post.title }}</h1>
+            <p>{{ post.content|raw }}</p>
+            <hr/>
+            <small>{{ post.user.username }} - {{ post.createdAt|date('Y-m-d H:i') }}</small>
+        </div>
+    {% endfor %}
+{% endblock %}
