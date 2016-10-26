@@ -33,14 +33,20 @@ class AppKernel extends Kernel
     {
         return __DIR__;
     }
-   public function getCacheDir()
+   ublic function getCacheDir()
 {
-    return '/var/project/cache/'.$this->getEnvironment();
+    if($this->getEnvironment()=="dev")
+        return '/var/project/cache/'.$this->getEnvironment();
+
+    return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
 }
 
 public function getLogDir()
 {
-    return '/var/project/logs';
+    if($this->getEnvironment()=="dev")
+        return '/var/project/logs';
+
+    return dirname(__DIR__).'/var/logs';
 }
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
