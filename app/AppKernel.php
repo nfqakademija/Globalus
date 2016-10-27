@@ -33,7 +33,7 @@ class AppKernel extends Kernel
     {
         return __DIR__;
     }
-   ublic function getCacheDir()
+   public function getCacheDir()
 {
     if($this->getEnvironment()=="dev")
         return '/var/project/cache/'.$this->getEnvironment();
