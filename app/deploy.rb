@@ -1,7 +1,7 @@
 set :application, 'akademija'
 set :repo_url, '#'
 
-set :deploy_to, '/home/kickstart/'
+set :deploy_to, '/home/globalus/'
 
 set :archive_cache, true
 set :branch, 'master'
