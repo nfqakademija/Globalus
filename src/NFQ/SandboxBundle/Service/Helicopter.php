@@ -13,11 +13,9 @@ class Helicopter
 {
 
     private $engine;
-    private $seats;
-    private $control_stick;
+    private $color;
     private $fuel;
-    private $skid;
-    private $rotors;
+    private $rotor_speed;
     /**
      * Used Singleton pattern
      * It is used to access one and only one instance of a particular class(this time Helicopter)
@@ -56,7 +54,27 @@ class Helicopter
     {
     }
 
-    
+
+
+    /**
+     * @return mixed
+     */
+    public function getRotorSpeed()
+    {
+        return $this->rotor_speed;
+    }
+
+    /**
+     * @param mixed $rotor_speed
+     * @return Helicopter
+     */
+    public function setRotorSpeed($rotor_speed)
+    {
+        $this->rotor_speed = $rotor_speed;
+        return $this;
+    }
+
+
 
     /**
      * @return mixed
@@ -79,36 +97,18 @@ class Helicopter
     /**
      * @return mixed
      */
-    public function getSeats()
+    public function getColor()
     {
-        return $this->seats;
+        return $this->color;
     }
 
     /**
-     * @param mixed $seats
+     * @param mixed $color
      * @return Helicopter
      */
-    public function setSeats($seats)
+    public function setColor($color)
     {
-        $this->seats = $seats;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getControlStick()
-    {
-        return $this->control_stick;
-    }
-
-    /**
-     * @param mixed $control_stick
-     * @return Helicopter
-     */
-    public function setControlStick($control_stick)
-    {
-        $this->control_stick = $control_stick;
+        $this->color = $color;
         return $this;
     }
 
@@ -130,41 +130,10 @@ class Helicopter
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSkid()
-    {
-        return $this->skid;
+    public function toString(){
+        return $this->getEngine()." | ".$this->getColor()." | ".$this->getFuel()." | " .$this->getRotorSpeed();
     }
 
-    /**
-     * @param mixed $skid
-     * @return Helicopter
-     */
-    public function setSkid($skid)
-    {
-        $this->skid = $skid;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRotors()
-    {
-        return $this->rotors;
-    }
-
-    /**
-     * @param mixed $rotors
-     * @return Helicopter
-     */
-    public function setRotors($rotors)
-    {
-        $this->rotors = $rotors;
-        return $this;
-    }
 
 
 }

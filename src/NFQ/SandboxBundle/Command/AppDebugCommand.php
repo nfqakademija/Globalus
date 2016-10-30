@@ -25,13 +25,13 @@ class AppDebugCommand extends ContainerAwareCommand
     {
         $output->writeln('Set and get');
         $helicopter =$this->getContainer()->get('app.helicopter_set_get');
-        $output->writeln($helicopter->getEngine());
+        $output->writeln($helicopter->toString());
         $output->writeln('Event listener');
         $helicopter=$this->getContainer()->get('app.helicopter');
-        $output->writeln($helicopter->getEngine());
+        $output->writeln($helicopter->toString());
         $output->writeln('Event subscriber');
         $helicopter=$this->getContainer()->get('app.helicopter_sub');
-        $output->writeln($helicopter->getEngine());
+        $output->writeln($helicopter->toString());
     }
 
 }

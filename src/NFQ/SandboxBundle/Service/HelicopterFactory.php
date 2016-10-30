@@ -29,6 +29,9 @@ class HelicopterFactory
     public function create($bool){
         $helicopter = Helicopter::getHelicopter();
         $helicopter->setEngine('v8');
+        $helicopter->setRotorSpeed('450rpm');
+        $helicopter->setColor('blue');
+        $helicopter->setFuel('aviation fuel');
         switch ($bool){
             case 1: break;
             case 2: {

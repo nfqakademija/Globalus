@@ -28,7 +28,8 @@ class EventSubscriber implements EventSubscriberInterface
     public function changeEngine($event){
         /** @var Helicopter $helicopter */
         $helicopter = $event->getHelicopter();
-        $helicopter->setEngine('6Litrai');
+        $helicopter->setEngine('turbine engine');
+        $helicopter->setFuel('jet fuel');
     }
 
 }

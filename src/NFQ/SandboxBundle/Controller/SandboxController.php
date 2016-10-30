@@ -26,15 +26,15 @@ class SandboxController extends Controller
         $helis = [
                  [
                      'title' => 'Set and Get',
-                     'engine' => $this->container->get('app.helicopter_set_get')->getEngine()
+                     'data' => $this->container->get('app.helicopter_set_get')->toString()
                  ],
                  [
                      'title' => 'Event Listener',
-                     'engine' => $this->container->get('app.helicopter')->getEngine()
+                     'data' => $this->container->get('app.helicopter')->toString()
                  ],
                  [
                      'title' => 'Event Subscriber',
-                    'engine' => $this->container->get('app.helicopter_sub')->getEngine()
+                    'data' => $this->container->get('app.helicopter_sub')->toString()
                  ]
              ];
 

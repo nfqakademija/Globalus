@@ -19,6 +19,9 @@ class EventListener
     {
         /** @var Helicopter $helicopter */
         $helicopter = $event->getHelicopter();
-        $helicopter->setEngine('4.2 TFSI');
+        $helicopter->setEngine('piston engine');
+        $helicopter->setRotorSpeed('500rpm');
+        $helicopter->setColor('green');
+        $helicopter->setFuel('diesel');
     }
 }
