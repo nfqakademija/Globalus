@@ -27,7 +27,7 @@ class HelicopterFactory
         $this->eventDispatcher = $eventDispatcher;
     }
     public function create($bool){
-        $helicopter = new Helicopter();
+        $helicopter = Helicopter::getHelicopter();
         $helicopter->setEngine('v8');
         switch ($bool){
             case 1: break;

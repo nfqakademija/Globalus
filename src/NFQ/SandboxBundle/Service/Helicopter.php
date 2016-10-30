@@ -11,12 +11,52 @@ namespace NFQ\SandboxBundle\Service;
 
 class Helicopter
 {
+
     private $engine;
     private $seats;
     private $control_stick;
     private $fuel;
     private $skid;
     private $rotors;
+    /**
+     * Used Singleton pattern
+     * It is used to access one and only one instance of a particular class(this time Helicopter)
+     * @var $helicopter is the reference to *Singleton* instance of this class
+     */
+    private static $helicopter;
+
+    /**
+     * Returns the *Singleton* instance of this class.
+     *
+     * @return $helicopter The *Singleton* instance.
+     */
+    public static function getHelicopter()
+    {
+        if (null === static::$helicopter) {
+            static::$helicopter = new static();
+        }
+
+        return static::$helicopter;
+    }
+    /**
+     *  The constructor is private
+     *  to prevent initiation with outer code.
+     *
+     */
+    private function __construct()
+    {
+    }
+    /**
+     * Private clone method to prevent cloning of the instance of the
+     * *Singleton* instance.
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+    }
+
+    
 
     /**
      * @return mixed
