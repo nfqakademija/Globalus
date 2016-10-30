@@ -17,7 +17,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/list", name="posts_list")
+     * @Route("/listd", name="posts_list")
      */
     public function listAction()
     {

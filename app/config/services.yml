@@ -7,3 +7,7 @@ services:
     app.example:
         class: AppBundle\Service\ExampleService
         arguments: ["@doctrine.orm.entity_manager"]
+    app.form.registration:
+            class: AppBundle\Form\UserType
+            tags:
+                - { name: form.type, alias: app_user_registration }
