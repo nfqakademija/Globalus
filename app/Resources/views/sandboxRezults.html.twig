@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Homepage - {{ parent() }}{% endblock %}
+
+
+
+{% block body %}
+    <div class="title">Peteikimai</div><hr/>
+    {% for post in helis %}
+        {{ post.title }}<br>
+        <p>{{ post.engine|default('undefined') }}</p>
+        <hr/>
+    {% endfor %}
+{% endblock %}
