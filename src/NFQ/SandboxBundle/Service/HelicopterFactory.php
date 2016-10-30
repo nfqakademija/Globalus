@@ -26,22 +26,22 @@ class HelicopterFactory
     {
         $this->eventDispatcher = $eventDispatcher;
     }
-    public function createAndSetEngine(){
+    public function create($bool){
         $helicopter = new Helicopter();
         $helicopter->setEngine('v8');
+        switch ($bool){
+            case 1: break;
+            case 2: {
+                $this->eventDispatcher->dispatch(Events::CREATE_EVENT,new CreateEvent($helicopter));
+                break;
+            }
+            case 3:{
+                $this->eventDispatcher->dispatch(Events::CREATE_EVENT_SUB,new CreateEvent($helicopter));
+                break;
+            }
+        }
         return $helicopter;
     }
-    public function create(){
-        $helicopter = new Helicopter();
-        $helicopter->setEngine('v8');
-        $this->eventDispatcher->dispatch(Events::CREATE_EVENT,new CreateEvent($helicopter));
-        return $helicopter;
-    }
-    public function createSub(){
-        $helicopter = new Helicopter();
-        $helicopter->setEngine('v8');
-        $this->eventDispatcher->dispatch(Events::CREATE_EVENT_SUB,new CreateEvent($helicopter));
-        return $helicopter;
-    }
+
 
 }

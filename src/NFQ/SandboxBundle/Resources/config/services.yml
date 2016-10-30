@@ -4,10 +4,12 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
   app.helicopter_set_get:
     class: NFQ\SandboxBundle\Service\Helicopter
-    factory: ["@app.helicopter_factory",createAndSetEngine]
+    factory: ["@app.helicopter_factory",create]
+    arguments: [1]
   app.helicopter:
     class: NFQ\SandboxBundle\Service\Helicopter
     factory: ["@app.helicopter_factory",create]
+    arguments: [2]
   app.helicopter_factory:
     class: NFQ\SandboxBundle\Service\HelicopterFactory
     arguments: ["@event_dispatcher"]
@@ -17,7 +19,8 @@ services:
         - {name: kernel.event_listener, event: app.create_event, method: makeChanges }
   app.helicopter_sub:
       class: NFQ\SandboxBundle\Service\Helicopter
-      factory: ["@app.helicopter_factory",createSub]
+      factory: ["@app.helicopter_factory",create]
+      arguments: [3]
   app.event_subscriber:
     class: NFQ\SandboxBundle\Event\EventSubscriber
     tags:
