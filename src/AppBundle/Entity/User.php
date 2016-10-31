@@ -21,40 +21,6 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    /**
-     * @var Post[]
-     *
-     * @ORM\OneToMany(targetEntity="Post", mappedBy="user")
-     */
-    private $posts;
-
-    /**
-     * @return Post[]
-     */
-    public function getPosts()
-    {
-        return $this->posts;
-    }
-
-    /**
-     * @param Post[] $posts
-     */
-    public function setPosts($posts)
-    {
-        $this->posts = $posts;
-    }
-
-
-    /**
-     * User constructor.
-     * @param int $id
-     */
-  /*  public function __construct($id)
-    {
-        //$this->id = $id;
-        parent::__construct();
-    }*/
-
 
     /**
      * Get id
