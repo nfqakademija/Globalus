@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user.username is defined %}
-                    <li><a href="{{ path('fos_user_security_logout') }}">Hi, {{ app.user.username }}</a></li>
+                    <li><a href="{{ path('profile') }}">Hi, {{ app.user.username }}</a></li>
                 {% else %}
                     <li><a href="{{ path('fos_user_security_login') }}">Prisijunk</a></li>
                     <li><a href="{{ path('app.registration') }}" class="page-scroll">Registruokis</a></li>

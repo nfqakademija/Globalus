@@ -7,3 +7,6 @@ services:
     app.example:
         class: AppBundle\Service\ExampleService
         arguments: ["@doctrine.orm.entity_manager"]
+    app.profile:
+        class: AppBundle\Service\ProfileService
+        arguments: ["@doctrine.orm.entity_manager"]
