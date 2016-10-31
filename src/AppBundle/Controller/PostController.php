@@ -16,15 +16,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Post;
 use AppBundle\Entity\User;
 use AppBundle\Form\PostType;
-use AppBundle\Form\RegistrationType;
+use AppBundle\Form\LoginType;
 use AppBundle\Form\UserType;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 class PostController extends Controller
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
+
     /**
      * @Route("/list")
      */
@@ -43,6 +40,8 @@ class PostController extends Controller
         );
 
     }
+
+
     /**
      * @Route("/show/{id}", name="app.show_post")
      */
@@ -89,23 +88,23 @@ class PostController extends Controller
         );
     }
     /**
-     * @Route("/registration")
+     * @Route("/registration", name="app.registration")
      */
     public function createUser(Request $request)
     {
         $user = new User();
 
-        $form = $this->createForm(RegistrationType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-            $user->setUsername($user->getUserName());
+           /* $user->setUsername($user->getUserName());
             $user->setEmail($user->getEmail());
-            $user->setPlainPassword($user->getPassword());
+            $user->setPlainPassword($user->getPassword())*/
             //TODO send email
             $user->setEnabled(1);
-            $user->addRole('ROLE_ADMIN');
+            //$user->addRole('ROLE_ADMIN');
             $user->addRole('ROLE_USER');
 
             //$user->setCreatedAt(new \DateTime());
