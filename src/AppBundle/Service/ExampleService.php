@@ -17,25 +17,6 @@ class ExampleService
     }
 
     /**
-     * Get dummy posts
-     *
-     * @return array
-     */
-    public function getDummyPosts()
-    {
-        return [
-            [
-                'title' => 'Sample title 1',
-                'content' => 'ola ola'
-            ],
-            [
-                'title' => 'Sample title 2',
-                'content' => 'la la'
-            ]
-        ];
-    }
-
-    /**
      * Get posts from db
      *
      * @return \AppBundle\Entity\Post[]|array
