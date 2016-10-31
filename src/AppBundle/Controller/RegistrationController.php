@@ -113,7 +113,7 @@ class RegistrationController extends Controller
         }
     }
     /**
-     * @Route("/sendReset")
+     * @Route("/sendReset", name="app.sendReset")
      */
     public function sendReset(Request $request){
         $user = new User();
@@ -150,7 +150,7 @@ class RegistrationController extends Controller
             $em->persist($user);
             $em->flush();
 
-            ///TODO change returns
+            ///TODO change return and form valiation
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
         }
 
@@ -175,7 +175,7 @@ class RegistrationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user= $form->getData();
-            
+
             $password = $user->getPassword();
             $user = $exampleService->changePassword($password,$confirmationToken);
 
@@ -183,7 +183,7 @@ class RegistrationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            ///TODO change returns
+            ///TODO change return and form valiation
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
         }
 
