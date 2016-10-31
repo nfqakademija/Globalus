@@ -10,8 +10,11 @@ namespace AppBundle\Controller;
 
 
 
+use AppBundle\Form\ResetPasswordType;
+use AppBundle\Form\SendEmailPswResetType;
 use FOS\UserBundle\FOSUserBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Post;
@@ -108,5 +111,86 @@ class RegistrationController extends Controller
             $em->flush();
             return $this->render('@App/Post/createdUser.html.twig');
         }
+    }
+    /**
+     * @Route("/sendReset")
+     */
+    public function sendReset(Request $request){
+        $user = new User();
+        $exampleService = $this->get('app.example');
+        //$email = array();
+        $form = $this->createForm(SendEmailPswResetType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $form->getData();
+            $email=$user->getEmail();
+            //throw new Exception();
+            $random_hash = md5(uniqid(rand(), true));
+            $user=$exampleService->getUserByEmail($email);
+
+            $user->setConfirmationToken($random_hash);
+            //$this->sendAction($user,$random_hash);
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Pabaikite registraciją')
+                ->setFrom('nfqglobalus@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'AppBundle:Email:reset.html.twig',
+                        array('name' => $user->getUsername(),
+                            'token' => $random_hash)
+                    ),
+                    'text/html'
+                );
+            $this->get('swiftmailer.mailer.default')->send($message);
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            ///TODO change returns
+            return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
+        }
+
+        return $this->render('AppBundle:Post:create.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
+
+
+
+    }
+    /**
+     * @Route("/resetPassword/{confirmationToken}")
+     */
+    public function resetPassword(Request $request,$confirmationToken){
+        $exampleService = $this->get('app.example');
+        $password = "";
+        $user = new User();
+        $form = $this->createForm(ResetPasswordType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user= $form->getData();
+            
+            $password = $user->getPassword();
+            $user = $exampleService->changePassword($password,$confirmationToken);
+
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            ///TODO change returns
+            return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
+        }
+
+        return $this->render('AppBundle:Post:create.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
     }
 }

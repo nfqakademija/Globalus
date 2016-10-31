@@ -1,0 +1,11 @@
+<h3>Registraija sėkminga</h3>
+
+Sveiki {{ name }}! Jums pavyko užsiregistruoti.
+
+Prisijungti eikite į: <a href="{{ url('fos_user_security_login') }}">Loging</a>.
+{# TODO change href in server #}
+Aktyvuoti paskyrą - <a href="http://192.168.4.100/app_dev.php/resetPassword/{{ token }}">Activate</a>
+
+Thanks!
+
+{# Makes an absolute URL to the /images/logo.png file #}
