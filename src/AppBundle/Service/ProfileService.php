@@ -23,20 +23,20 @@ class ProfileService
         $this->em = $em;
     }
 
-    public function getUserById($id,$password)
+    public function getUserById($id)
     {
 
         $repository = $this->em->getRepository('AppBundle:User');
         $posts = $repository->find($id);
-        $posts->setPlainPassword($password);
+        /*$posts->setPlainPassword($password);
         $q = $this->em->createQuery("select u from AppBundle\Entity\User u where u.id=$id");
         $users = $q->getResult();
         foreach ($users as $user){
             $pass = $user->getPassword();
         }
-
-       // $q = $this->em->createQuery("update AppBundle\Entity\User u set u.password=$pass where u.id=$id");
-        //throw new Exception();
+*/
+        //$q = $this->em->createQuery("update AppBundle\Entity\User u set u.password= $pass where u.id=$id");
+       // throw new Exception();
         return $posts;
     }
 }

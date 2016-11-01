@@ -46,18 +46,12 @@ class ProfileController extends Controller
             $user = $this->getUser();
             //fos_user.security.login_manager
             $user=$profileService->getUserById($user->getId(), $password);
-            //$user->setPlainPassword($password);
-            $user->addRole("ROLE_ADMIN");
-            /*
-             *
-echo $user->getEmail();
-throw new Exception();*/
+            $user->setPlainPassword($password);
 
-            // nepakeičia psw
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->refresh($user);
-            $em->flush();
+            $userManager = $this->container->get('fos_user.user_manager');
+
+            $userManager->updateUser($user, true);
+
 
             ///TODO change return
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
