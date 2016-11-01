@@ -1,47 +1,13 @@
-{% extends "::base.html.twig" %}
 
-{% block title %}Profilis{{ parent() }}{% endblock %}
+{% extends "@App/Profile/heading.html.twig" %}
 
-{% block stylesheets %}
-    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-    {{ parent() }}
-    <style>
+{% block content %}
 
-        .title {
-            margin: 20px auto;
-            text-align: center;
-            font-size: 96px;
-            margin: 0;
-            padding: 0;
-            font-weight: 100;
-            font-family: 'Lato';
-        }
-        .search{
-            border-radius: 5px;
-            border-width: 5px;
-            border-style: solid;
-            background-color: #3c763d;
-            border-color: #3c763d;
-
-        }
-        h2{
-            color: forestgreen;
-
-        }
-    </style>
-
-{% endblock %}
-
-{% block body %}
-    <div class="container">
-        <div>
-            <a href="{{ path('fos_user_security_logout') }}">Atsijungti</a>
-        </div>
+    <div style="margin: 20px 20px;">
+        <span>El. paštas : </span><span>{{ app.user.Email}} </span>
+        <br>
+        <a href="{{ path('homepage') }}">Eiti į pradžia </a>
+        <hr/>
     </div>
-
-
-
-
-
 
 {% endblock %}

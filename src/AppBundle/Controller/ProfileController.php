@@ -28,7 +28,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/changePassword")
+     * @Route("/changePassword", name="changePassword")
      */
     public function changePassword(Request $request)
     {
@@ -57,7 +57,7 @@ class ProfileController extends Controller
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
         }
 
-        return $this->render('AppBundle:Post:create.html.twig',
+        return $this->render('AppBundle:Profile:create.html.twig',
             [
                 'form' => $form->createView()
             ]
