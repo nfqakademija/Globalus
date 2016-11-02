@@ -36,10 +36,6 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        var_dump("ENV", $this->getEnvironment());
-        var_dump("CURRENT DIR:", dirname(__DIR__));
-        var_dump("ROOT DIR:", $this->getRootDir());
-
         if($this->getEnvironment() == "dev") {
             return '/var/project/cache/' . $this->getEnvironment();
         }
