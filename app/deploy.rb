@@ -1,4 +1,4 @@
-set :application, 'akademija'
+set :application, 'globalus'
 set :repo_url, '#'
 
 # Symfony environment
