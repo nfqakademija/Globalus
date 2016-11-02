@@ -26,13 +26,13 @@ class HelicopterFactory
     {
         $this->eventDispatcher = $eventDispatcher;
     }
-    public function create($bool){
+    public function create($case){
         $helicopter = Helicopter::getHelicopter();
         $helicopter->setEngine('v8');
         $helicopter->setRotorSpeed('450rpm');
         $helicopter->setColor('blue');
         $helicopter->setFuel('aviation fuel');
-        switch ($bool){
+        switch ($case){
             case 1: break;
             case 2: {
                 $this->eventDispatcher->dispatch(Events::CREATE_EVENT,new CreateEvent($helicopter));
