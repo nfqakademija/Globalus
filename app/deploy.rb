@@ -1,6 +1,9 @@
 set :application, 'akademija'
 set :repo_url, '#'
 
+# Symfony environment
+set :symfony_env,  "prod"
+
 set :deploy_to, '/home/globalus/'
 
 set :archive_cache, true
