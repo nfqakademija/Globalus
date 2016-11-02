@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}NFQSandboxBundle:SubmarineController:index{% endblock %}
+
+{% block body %}
+<h1>Submarine specifications:</h1>
+    Submarine cost: {{ sub.cost }}<br/>
+    Submarine length: {{ sub.length }}<br/>
+    Submarine max speed: {{ sub.speed }}<br/>
+    Submarine type: {{ sub.type }}<br/>
+    Submarine built: {{ sub.built }}
+{% endblock %}

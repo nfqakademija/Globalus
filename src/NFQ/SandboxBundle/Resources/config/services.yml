@@ -1,0 +1,21 @@
+services:
+#    nfq_sandbox.example:
+#        class: NFQ\SandboxBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+  app.submarine:
+    class: NFQ\SandboxBundle\Service\Submarine
+    factory: ["@app.submarine_factory", create]
+
+  app.submarine_factory:
+    class: NFQ\SandboxBundle\Service\SubmarineFactory
+    arguments: ["@event_dispatcher"]
+
+  app.event_listener:
+    class: NFQ\SandboxBundle\Event\EventListener
+    tags:
+    - { name: kernel.event_listener, event: app.pre_create, method: makeChanges }
+
+  app.submarine_subscriber:
+    class: NFQ\SandboxBundle\Event\SubmarineSubscriber
+    tags:
+    - { name: kernel.event_subscriber}
