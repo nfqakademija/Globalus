@@ -14,6 +14,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * Class OAuthUserProvider
  * @package AppBundle\Oauth
@@ -27,7 +28,7 @@ class OAuthUserProvider extends BaseClass
     {
         $socialID = $response->getUsername();
         $name = $response->getFirstName();
-        $user = $this->userManager->findUserBy(array($this->getProperty($response)=>$socialID));
+        $user = $this->userManager->findUserBy(array($this->getProperty($response) => $socialID));
         $email = $response->getEmail();
 
         //check if the user already has the corresponding social account

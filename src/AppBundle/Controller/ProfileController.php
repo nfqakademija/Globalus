@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 class ProfileController extends Controller
 {
     /**
@@ -40,12 +41,12 @@ class ProfileController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-            $password=$user->getPlainPassword();
+            $password = $user->getPlainPassword();
 
             /** @var User $user */
             $user = $this->getUser();
             //fos_user.security.login_manager
-            $user=$profileService->getUserById($user->getId(), $password);
+            $user = $profileService->getUserById($user->getId(), $password);
             $user->setPlainPassword($password);
 
             $userManager = $this->container->get('fos_user.user_manager');
