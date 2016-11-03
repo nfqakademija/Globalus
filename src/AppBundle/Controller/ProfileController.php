@@ -33,7 +33,7 @@ class ProfileController extends Controller
     public function changePassword(Request $request)
     {
         $user = new User();
-        $profileService = $this->get('app.profile');
+        $profileService = $this->get('app.user');
         //$email = array();
         $form = $this->createForm(ChangePasswordFormType::class, $user);
         $form->handleRequest($request);

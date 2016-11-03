@@ -5,7 +5,7 @@ namespace AppBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class ExampleService
+class UserService
 {
     /**
      * @var EntityManager

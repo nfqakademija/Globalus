@@ -9,7 +9,6 @@
 namespace AppBundle\Controller;
 
 
-
 use AppBundle\Form\ResetPasswordType;
 use AppBundle\Form\SendEmailPswResetType;
 use FOS\UserBundle\FOSUserBundle;
@@ -24,6 +23,7 @@ use AppBundle\Form\LoginType;
 use AppBundle\Form\UserType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
+
 class RegistrationController extends Controller
 {
     /**
@@ -48,7 +48,7 @@ class RegistrationController extends Controller
             $random_hash = md5(uniqid(rand(), true));
             $user->setConfirmationToken($random_hash);
             $user->addRole('ROLE_USER');
-            $this->sendAction($user,$random_hash);
+            $this->sendAction($user, $random_hash);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -61,21 +61,19 @@ class RegistrationController extends Controller
             ]
         );
     }
+
     /**
      * @Route("/successReg/{id}", name="app.successReg")
      */
     public function showSuccessRegistration($id)
     {
-        $exampleService = $this->get('app.example');
+        $exampleService = $this->get('app.user');
         return $this->render('AppBundle:Post:successReg.html.twig',
             [
-
-                'postas' =>  $exampleService->getUserById($id),
-
+                'postas' => $exampleService->getUserById($id),
             ]
         );
     }
-
 
     public function sendAction(User $user, $confirmationToken)
     {
@@ -99,35 +97,38 @@ class RegistrationController extends Controller
     /**
      * @Route("/confirmUser/{confirmationToken}")
      */
-    public function confirmUser($confirmationToken){
-        $exampleService = $this->get('app.example');
+    public function confirmUser($confirmationToken)
+    {
+        $exampleService = $this->get('app.user');
         $user = $exampleService->enableUser($confirmationToken);
-        if($user==null){
+        if ($user == null) {
             //TODO implement error page
             echo "klaida";
-        }else {
+        } else {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
             return $this->render('@App/Post/createdUser.html.twig');
         }
     }
+
     /**
      * @Route("/sendReset", name="app.sendReset")
      */
-    public function sendReset(Request $request){
+    public function sendReset(Request $request)
+    {
         $user = new User();
-        $exampleService = $this->get('app.example');
-        //$email = array();
+        $exampleService = $this->get('app.user');
+
         $form = $this->createForm(SendEmailPswResetType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-            $email=$user->getEmail();
-            //throw new Exception();
+            $email = $user->getEmail();
+
             $random_hash = md5(uniqid(rand(), true));
-            $user=$exampleService->getUserByEmail($email);
+            $user = $exampleService->getUserByEmail($email);
 
             $user->setConfirmationToken($random_hash);
             //$this->sendAction($user,$random_hash);
@@ -145,7 +146,6 @@ class RegistrationController extends Controller
                 );
             $this->get('swiftmailer.mailer.default')->send($message);
 
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -161,25 +161,23 @@ class RegistrationController extends Controller
         );
 
 
-
     }
+
     /**
      * @Route("/resetPassword/{confirmationToken}")
      */
-    public function resetPassword(Request $request,$confirmationToken){
-        $exampleService = $this->get('app.example');
+    public function resetPassword(Request $request, $confirmationToken)
+    {
+        $exampleService = $this->get('app.user');
         $password = "";
         $user = new User();
         $form = $this->createForm(ResetPasswordType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
-            $user= $form->getData();
-
+            $user = $form->getData();
             $password = $user->getPassword();
-            $user = $exampleService->changePassword($password,$confirmationToken);
-
-
+            $user = $exampleService->changePassword($password, $confirmationToken);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
