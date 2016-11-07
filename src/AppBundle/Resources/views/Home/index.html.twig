@@ -6,21 +6,59 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
     <style>
-        body {
+
+        .title {
+            margin: 20px auto;
+            text-align: center;
+            font-size: 96px;
             margin: 0;
             padding: 0;
             font-weight: 100;
             font-family: 'Lato';
         }
 
-        .title {
-            margin: 20px auto;
-            text-align: center;
-            font-size: 96px;
+        .search {
+            border-radius: 5px;
+            border-width: 5px;
+            border-style: solid;
+            background-color: #3c763d;
+            border-color: #3c763d;
+
+        }
+
+        h2 {
+            color: forestgreen;
+
         }
     </style>
+
 {% endblock %}
 
 {% block body %}
-    <div class="title">NFQ Akademija</div>
+    <div class="title" style="padding :10px">Testuokis</div>
+    <div class="container">
+        <div class="row search">
+
+            <form action="" method="post">
+
+
+                <input class="col-lg-10 " placeholder="Paieška" name="search" type="text"/>
+                <button class="col-lg-2 " type="button"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+        <div class="row" style="padding: 20px 20px;">
+            <div class="col-lg-6">
+                <h2>Pop/Demo</h2>
+            </div>
+            <div class="col-lg-6">
+                <h2>Nauji</h2>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
 {% endblock %}

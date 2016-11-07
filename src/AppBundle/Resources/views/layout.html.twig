@@ -1,0 +1,11 @@
+{% extends "::base.html.twig" %}
+
+
+{% block body %}
+    <div>
+    {% block content %}
+        {% block fos_user_content %}{% endblock %}
+    {% endblock %}
+    </div>
+
+{% endblock %}

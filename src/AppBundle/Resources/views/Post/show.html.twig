@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+{% block title %}Postai{% endblock %}
+{% block body %}
+
+    <div style="margin-bottom: 20px; border-bottom: 1px solid #000;">
+        <h1>{{ postas.title }}</h1>
+        <p>{{ postas.content|raw }}</p>
+        <p>{{ postas.id|raw }}</p>
+        <hr/>
+        <small>{{ postas.user.username }} - {{ postas.createdAt|date('Y-m-d H:i') }}</small>
+    </div>
+
+{% endblock %}

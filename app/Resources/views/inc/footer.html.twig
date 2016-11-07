@@ -1,0 +1,115 @@
+
+<style>
+    /*--footer--*/
+    .footer{
+        background:#f8f8f8;
+        padding:4em 0;
+        margin-top: 110px;
+    }
+
+
+    h3 {
+        color: green;
+        font-size: 1.5em;
+        font-weight:400;
+        margin-bottom: 1.5em;
+        font-family: 'Raleway', sans-serif;
+    }
+    ul.list1 {
+        padding: 0;
+        list-style: none;
+    }
+    ul.list1 a {
+        color: #777;
+        font-size: 1em;
+        line-height: 1.8em;
+    }
+    ul.list1 a:hover{
+        color: #FFD001;
+        text-decoration:none;
+    }
+    .search_footer {
+        position: relative;
+        margin-bottom:2em;
+    }
+    .search_footer input[type="text"] {
+        padding: 6px 10px;
+        outline: none;
+        color: #373737;
+        border: none;
+        width: 75%;
+        line-height: 1.5em;
+        font-size: 0.8em;
+        background: #FFD001;
+        text-transform: capitalize;
+        min-height: 31px;
+        font-weight: 900;
+    }
+
+    p.footer_desc{
+        color: #777;
+        font-size: 1em;
+        line-height: 1.5em;
+        margin:0px 0 20px;
+    }
+
+    .footer_bottom{
+        background:green;
+        padding:1em 0;
+        text-align: center;
+    }
+    .copy p{
+        color:#fff;
+        font-size:0.85em;
+    }
+    .copy p a{
+        color:#FFD001;
+    }
+    .copy p a:hover{
+        color:#fff;
+    }
+</style>
+
+<nav class="">
+<div class="footer" style="margin-top: 300px">
+    <div class="container">
+        <div class="col-lg-4">
+            <h3>Informacija</h3>
+            <ul class="list1">
+                <li><a href="#">Pagrindinis</a></li>
+                <li><a href="#">Apie mus</a></li>
+                <li><a href="#">Susisiekite su mumis</a></li>
+                <li><a href="{{ path('app.sendReset') }}">Pamiršote slaptažodį</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-4">
+            <h3>Testai</h3>
+            <ul class="list1">
+                <li><a href="#">Nauji Testai</a></li>
+                <li><a href="#">Populiariausi Testai</a></li>
+                <li><a href="#">Demo Testai</a></li>
+                <li><a href="#">Kurti Testus</a></li>
+            </ul>
+        </div>
+
+        <div class="col-lg-4" style="float: right">
+            <h3>Naujienlaiškis</h3>
+            <p class="footer_desc">Pranešime kada pasirodys nauji Testai</p>
+            <div class="search_footer">
+               <!-- <input type="text" class="text" value="Your Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Email';}">
+                <input type="submit" value="Subscribe"> -->
+                <p style="color: #777">Greitu metu galėsi išbandyti</p>
+            </div>
+
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+<div class="footer_bottom">
+    <div class="container">
+        <div class="copy">
+            <p>Copyright &copy; <a href="https://github.com/nfqakademija/Globalus" target="_blank">Globalus</a> </p>
+        </div>
+    </div>
+</div>
+</nav>
