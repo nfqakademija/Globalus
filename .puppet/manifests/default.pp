@@ -214,17 +214,43 @@ package { "mysql-server":
   require => Exec["apt_update"]
 }
 
+
+
+augeas { 'my.cnf':
+    require => [
+        Package['mysql-server'],
+        Package['libaugeas-ruby'],
+    ],
+    notify => Service['mysql'],
+    context => '/files/etc/mysql/my.cnf',
+    changes => [
+        "set target[.='mysqld']/bind-address 0.0.0.0",
+    ],
+}->
+
 #start mysql service
 service { "mysql":
   ensure => running,
   require => Package["mysql-server"],
-}
+}->
+
+exec { "wait-for-mysql":
+    command => "sleep 10",
+    unless => "mysqladmin -h127.0.0.1 -uroot -proot status",
+}->
 
 # set mysql password
 exec { "set-mysql-password":
-  unless => "mysqladmin -uroot -proot status",
-  command => "mysqladmin -uroot password root",
+  unless => "mysqladmin -h127.0.0.1 -uroot -proot status",
+  command => "mysqladmin -h127.0.0.1 -uroot password root",
   require => Service["mysql"],
+}->
+
+# add mysql remote user
+exec { "create-${name}-db":
+  unless => "/usr/bin/mysql -uproject -pproject",
+  command => "/usr/bin/mysql -uroot -proot -e \"grant all on *.* to 'project'@'%' identified by 'project';\"",
+      require => Service["mysql"],
 }
 
 
