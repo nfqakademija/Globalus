@@ -2,10 +2,22 @@
 
 
 {% block body %}
-    <div>
-    {% block content %}
-        {% block fos_user_content %}{% endblock %}
-    {% endblock %}
-    </div>
+    <style>
+        input{
+            margin-right: 20px;
+            padding-right: 200px ;
+            display: block;
+        }
+        label{
+            color: green;
 
+        }
+    </style>
+    <div style="margin: 55px;margin-bottom: 290px;">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-8" style="display: table-row;border-left: thick solid rgba(0, 255, 0, .2);">
+    {{ block('fos_user_content') }}
+    </div>
+    </div>
 {% endblock %}

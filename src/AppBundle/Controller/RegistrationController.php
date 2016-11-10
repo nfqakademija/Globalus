@@ -16,11 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Post;
 use AppBundle\Entity\User;
-use AppBundle\Form\PostType;
-use AppBundle\Form\LoginType;
-use AppBundle\Form\UserType;
+use AppBundle\Form\RegistrationType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 
@@ -38,7 +35,7 @@ class RegistrationController extends Controller
     {
         $user = new User();
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
@@ -48,6 +45,7 @@ class RegistrationController extends Controller
             $random_hash = md5(uniqid(rand(), true));
             $user->setConfirmationToken($random_hash);
             $user->addRole('ROLE_USER');
+            $user->setUsername($user->getEmail());
             $this->sendAction($user, $random_hash);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -55,7 +53,7 @@ class RegistrationController extends Controller
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
         }
 
-        return $this->render('AppBundle:Post:create.html.twig',
+        return $this->render('AppBundle:LoginRegistration:create.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -68,9 +66,9 @@ class RegistrationController extends Controller
     public function showSuccessRegistration($id)
     {
         $exampleService = $this->get('app.user');
-        return $this->render('AppBundle:Post:successReg.html.twig',
+        return $this->render('AppBundle:LoginRegistration:successReg.html.twig',
             [
-                'postas' => $exampleService->getUserById($id),
+                'user' => $exampleService->getUserById($id),
             ]
         );
     }
@@ -99,16 +97,16 @@ class RegistrationController extends Controller
      */
     public function confirmUser($confirmationToken)
     {
-        $exampleService = $this->get('app.user');
-        $user = $exampleService->enableUser($confirmationToken);
+        $userService = $this->get('app.user');
+        $user = $userService->enableUser($confirmationToken);
         if ($user == null) {
-            //TODO implement error page
-            echo "klaida";
+            return $this->render('@App/LoginRegistration/createdUser.html.twig',
+                ['error' => 'Nėra tokio vartotojo arba neteisingas puslapis']);
         } else {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            return $this->render('@App/Post/createdUser.html.twig');
+            return $this->render('@App/LoginRegistration/createdUser.html.twig');
         }
     }
 
@@ -150,17 +148,29 @@ class RegistrationController extends Controller
             $em->persist($user);
             $em->flush();
 
-            ///TODO change return and form valiation
-            return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
+            ///TODO valiation
+            return $this->redirectToRoute('app.successSendReset', ['id' => $user->getId()]);
         }
 
-        return $this->render('AppBundle:Post:create.html.twig',
+        return $this->render('AppBundle:LoginRegistration:createSendReset.html.twig',
             [
                 'form' => $form->createView()
             ]
         );
 
 
+    }
+    /**
+     * @Route("/successSendReset/{id}", name="app.successSendReset")
+     */
+    public function showSuccessSendReset($id)
+    {
+        $exampleService = $this->get('app.user');
+        return $this->render('AppBundle:LoginRegistration:successSendReset.html.twig',
+            [
+                'user' => $exampleService->getUserById($id),
+            ]
+        );
     }
 
     /**
@@ -181,13 +191,25 @@ class RegistrationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            ///TODO change return and form valiation
-            return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
+            ///TODO valiation
+            return $this->redirectToRoute('app.successReset', ['id' => $user->getId()]);
         }
 
-        return $this->render('AppBundle:Post:create.html.twig',
+        return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
             [
                 'form' => $form->createView()
+            ]
+        );
+    }
+    /**
+     * @Route("/successReset/{id}", name="app.successReset")
+     */
+    public function showSuccessReset($id)
+    {
+        $exampleService = $this->get('app.user');
+        return $this->render('AppBundle:LoginRegistration:successReset.html.twig',
+            [
+                'user' => $exampleService->getUserById($id),
             ]
         );
     }
