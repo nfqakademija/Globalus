@@ -17,17 +17,13 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\User;
+use AppBundle\Event\Events;
 use AppBundle\Form\RegistrationType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 
 class RegistrationController extends Controller
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     /**
      * @Route("/registration", name="app.registration")
      */
@@ -46,10 +42,12 @@ class RegistrationController extends Controller
             $user->setConfirmationToken($random_hash);
             $user->addRole('ROLE_USER');
             $user->setUsername($user->getEmail());
-            $this->sendAction($user, $random_hash);
+            //$this->sendAction($user, $random_hash);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $new =$this->container->get('app.email_send');
+            $new->send($user,$random_hash);
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
         }
 

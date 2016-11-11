@@ -1,0 +1,47 @@
+input{
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+    margin-bottom: 15px;
+}
+label{
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#remember_me{
+    display: inline;
+    width: auto;
+}
+label[for=remember_me]
+{
+    display: inline;
+    float: left;
+    margin-right: 4px;
+    vertical-align: baseline;
+    margin-top: 10px;
+}
+label[for=username]
+{
+    font-size: 0;
+}
+label[for="username"]:after
+{
+    content:'El pašto adresas'; font-size: 14px;
+}
+label[for="username"].othertext:before{content:'Some other text!'}
+.socialLogin{
+    display: inline-block;
+    margin: 10px 20px;
+}

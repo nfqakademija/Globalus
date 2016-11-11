@@ -1,22 +1,43 @@
 {% extends "::base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
 
+    <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
+
+{% endblock %}
+{% block title %}
+Prisijungimas
+{% endblock %}
 {% block body %}
-    <style>
-        input{
-            margin-right: 20px;
-            padding-right: 200px ;
-            display: block;
-        }
-        label{
-            color: green;
 
-        }
-    </style>
-    <div style="margin: 55px;margin-bottom: 290px;">
+
+    <div style="margin: 20px;margin-bottom: 290px;">
     <div class="col-lg-4">
+        <div style="margin: 12px;">
+            <a  href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" alt="Sign in with Facebook">
+                <span class="socialLogin">Prisijunkite naudodamiesi Facebook</span>
+                <img src="{{ asset('bundles/app/style/FB-f-Logo__blue_512.png') }}"
+                     alt="Smiley face" height="42" width="42" style="margin:auto">
+            </a>
+            <br>
+            <a  href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" alt="Sign in with Google" style="margin-left: 70px;">
+                <span class="socialLogin">Arba Google</span><img src="{{ asset('bundles/app/style/Google.jpg') }}"
+                                             alt="Smiley face" height="42" width="42" style="margin:auto"></a>
+
+        </div>
+        <hr>
+        <div style="margin-top: 70px;">
+            <a href="{{ path('app.registration') }}">
+                <button style="padding: 20px 40px;margin-left: 70px;">
+
+                    <span style="color:green;">Registruotis</span>
+
+                </button></a>
+        </div>
     </div>
-    <div class="col-lg-8" style="display: table-row;border-left: thick solid rgba(0, 255, 0, .2);">
+        <div class="col-lg-8" style="padding-bottom: 20px;border-left: thick solid rgba(0, 255, 0, .2);">
+        <header><h3 style="text-align: center">Prisijungimas</h3></header>
     {{ block('fos_user_content') }}
     </div>
     </div>
