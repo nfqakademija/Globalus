@@ -33,12 +33,18 @@ class EmailSender
     /**
      * @param User $user
      * @param $confirmation_token
+     * @param $action
      */
-    public function send($user,$confirmation_token)
+    public function send($user,$confirmation_token, $action)
     {
-
         $userReg = new UserReg($user,$confirmation_token);
-        $this->eventDispatcher->dispatch(Events::CREATE_EVENT,new SendEvent($userReg) );
+        if($action=='create'){
+            $this->eventDispatcher->dispatch(Events::CREATE_EVENT,new SendEvent($userReg) );
+        }
+        else if($action =='reset'){
+            $this->eventDispatcher->dispatch(Events::RESET_EMAIL_EVENT,new SendEvent($userReg) );
+        }
+
 
     }
 

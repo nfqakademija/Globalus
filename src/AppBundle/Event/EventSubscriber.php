@@ -24,18 +24,18 @@ class EventSubscriber implements EventSubscriberInterface
     static public function getSubscribedEvents()
     {
         return array(
-            Events::CREATE_EVENT => 'changeEngine'
+            Events::CREATE_EVENT => 'sendRegistrationConfirm',
+            Events::RESET_EMAIL_EVENT => 'sendReset'
         );
         //return Events::CREATE_EVENT;
     }
     /**
      * @param SendEvent $event
      */
-    public function changeEngine($event){
+    public function sendRegistrationConfirm($event){
         $user = $event->getUserReg()->getUser();
+
         $confirmationToken = $event->getUserReg()->getComfirmationToken();
-        // extend controller vien dėl renderView
-///$this->container->get('templating')->render()
         $message = \Swift_Message::newInstance()
             ->setSubject('Pabaikite registraciją')
             ->setFrom('nfqglobalus@gmail.com')
@@ -43,6 +43,29 @@ class EventSubscriber implements EventSubscriberInterface
             ->setBody(
                 $this->container->get('templating')->render(
                     'AppBundle:Email:registration.html.twig',
+                    array('name' => $user->getUsername(),
+                        'token' => $confirmationToken)
+                ),
+                'text/html'
+            );
+        echo $message->getBody();
+
+        $this->container->get('swiftmailer.mailer.default')->send($message);
+    }
+
+    /**
+     * @param SendEvent $event
+     */
+    public function sendReset($event){
+        $user = $event->getUserReg()->getUser();
+        $confirmationToken = $event->getUserReg()->getComfirmationToken();
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Slaptažodžio atstatymas')
+            ->setFrom('nfqglobalus@gmail.com')
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->container->get('templating')->render(
+                    'AppBundle:Email:reset.html.twig',
                     array('name' => $user->getUsername(),
                         'token' => $confirmationToken)
                 ),

@@ -45,7 +45,7 @@ class ProfileController extends Controller
 
             /** @var User $user */
             $user = $this->getUser();
-            //fos_user.security.login_manager
+            
             $user = $profileService->getUserById($user->getId(), $password);
             $user->setPlainPassword($password);
 
@@ -54,8 +54,8 @@ class ProfileController extends Controller
             $userManager->updateUser($user, true);
 
 
-            ///TODO change return
-            return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
+            ///TODO validation
+            return $this->redirectToRoute('app.successPassChange', ['id' => $user->getId()]);
         }
 
         return $this->render('AppBundle:Profile:create.html.twig',
@@ -64,5 +64,17 @@ class ProfileController extends Controller
             ]
         );
 
+    }
+    /**
+     * @Route("/successPassChange/{id}", name="app.successPassChange")
+     */
+    public function showSuccessPassChange($id)
+    {
+        $userService = $this->get('app.user');
+        return $this->render('AppBundle:Profile:successPassChange.html.twig',
+            [
+                'user' => $userService->getUserById($id),
+            ]
+        );
     }
 }

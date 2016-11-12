@@ -19,4 +19,4 @@ services:
         class: AppBundle\Event\EventSubscriber
         arguments: [ "@service_container" ]
         tags:
-          - {name: kernel.event_subscriber, event: app.email_send, method: changeEngine }
+          - {name: kernel.event_subscriber, event: app.email_send }

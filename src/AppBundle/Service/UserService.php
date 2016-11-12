@@ -62,7 +62,7 @@ class UserService
         foreach ($users as $user){
             if($user->getConfirmationToken()===$confirmationToken)
             {
-                $user->setEnabled(true);
+               // $user->setEnabled(true);
                 $user->setConfirmationToken(null);
                 $user->setPlainPassword($password);
                 return $user;
@@ -71,6 +71,18 @@ class UserService
 
         /**/
         //throw new Exception();
+        return null;
+    }
+    public function findUserByConfirmToken($confirmationToken){
+        $q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
+        $users = $q->getResult();
+        foreach ($users as $user){
+            if($user->getConfirmationToken()===$confirmationToken)
+            {
+
+                return $user;
+            }
+        }
         return null;
     }
 }

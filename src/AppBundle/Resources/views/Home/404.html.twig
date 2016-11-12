@@ -1,0 +1,29 @@
+{% block title %}404{% endblock %}
+
+{% block stylesheets %}
+
+    <style>
+        body {
+            background-image: url({{ asset('bundles/app/style/sad_box.jpg') }});
+            background-repeat: no-repeat;
+
+            background-size: cover;
+
+
+
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    <div class="container main" style="margin: 50px;">
+        <div>
+            <h1>Nerastas puslapis</h1>
+            <a href="{{ path('homepage') }}">Pradžia</a>
+        </div>
+
+
+    </div>
+
+{% endblock %}
