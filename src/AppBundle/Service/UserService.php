@@ -36,9 +36,9 @@ class UserService
                 return $user;
             }
         }
-        $posts = $repository->findBy(array("email"=>$email));
+        //$posts = $repository->findBy(array("email"=>$email));
 
-        return $posts;
+        return null;
     }
     public function enableUser($confirmationToken){
         $repository = $this->em->getRepository('AppBundle:User');

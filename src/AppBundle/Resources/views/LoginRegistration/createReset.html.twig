@@ -6,9 +6,17 @@
         <div>
             <h5>Įveskite slaptažodį</h5>
         </div>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <input type="submit" value="Siųsti" class="btn btn-default pull-right" />
-    {{ form_end(form) }}
+        {% if error is defined %}
+            <div class="col-lg-12">
+                <p style="color: red; font-family: KacstOffice">
+                    {{ error }}
+                </p>
+            </div>
+        {% endif %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" value="Siųsti" class="btn btn-default pull-right"/>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

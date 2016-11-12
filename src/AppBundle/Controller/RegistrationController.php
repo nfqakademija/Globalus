@@ -37,6 +37,49 @@ class RegistrationController extends Controller
             /** @var User $user */
             $user = $form->getData();
             $user->setEnabled(false);
+            $userService = $this->get('app.user');
+            if ($userService->getUserByEmail($user->getEmail()) != null) {
+                return $this->render('AppBundle:LoginRegistration:create.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'error' => 'Toks Vartotojas jau yra užregistruotas'
+                    ]
+                );
+            }
+            $password = $user->getPlainPassword();
+
+
+            if (strlen($password) < '8' || strlen($password) > '32') {
+                return $this->render('AppBundle:LoginRegistration:create.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi būti didesnis tarp 8 ir 32 simbolių'
+                    ]
+                );
+            } elseif (!preg_match("#[0-9]+#", $password)) {
+                return $this->render('AppBundle:LoginRegistration:create.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi turėti bent vieną numerį'
+                    ]
+                );
+            } elseif (!preg_match("#[A-Z]+#", $password)) {
+                return $this->render('AppBundle:LoginRegistration:create.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi turėti bent vieną didžiąją raidę'
+                    ]
+                );
+            } elseif (!preg_match("#[a-z]+#", $password)) {
+                return $this->render('AppBundle:LoginRegistration:create.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi turėti bent vieną mažąją raidę'
+                    ]
+                );
+            }
+
+
             // random hash used for confirmation token
             $random_hash = md5(uniqid(rand(), true));
             $user->setConfirmationToken($random_hash);
@@ -174,11 +217,40 @@ class RegistrationController extends Controller
                 /** @var User $user */
                 $user = $form->getData();
                 $password = $user->getPassword();
+                if (strlen($password) < '8' || strlen($password) > '32') {
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'error' => 'Slaptažodis turi būti didesnis tarp 8 ir 32 simbolių'
+                        ]
+                    );
+                } elseif (!preg_match("#[0-9]+#", $password)) {
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'error' => 'Slaptažodis turi turėti bent vieną numerį'
+                        ]
+                    );
+                } elseif (!preg_match("#[A-Z]+#", $password)) {
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'error' => 'Slaptažodis turi turėti bent vieną didžiąją raidę'
+                        ]
+                    );
+                } elseif (!preg_match("#[a-z]+#", $password)) {
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'error' => 'Slaptažodis turi turėti bent vieną mažąją raidę'
+                        ]
+                    );
+                }
                 $user = $userService->changePassword($password, $confirmationToken);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
-                ///TODO valiation
+
                 return $this->redirectToRoute('app.successReset', ['id' => $user->getId()]);
             }
 

@@ -45,7 +45,7 @@ class ProfileController extends Controller
 
             /** @var User $user */
             $user = $this->getUser();
-            
+
             $user = $profileService->getUserById($user->getId(), $password);
             $user->setPlainPassword($password);
 

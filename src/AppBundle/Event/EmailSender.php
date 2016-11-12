@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use AppBundle\Entity\User;
 use AppBundle\Event\UserReg;
 
-class EmailSender
+class EmailSender extends Sender
 {
     /**
      * @var EventDispatcherInterface
