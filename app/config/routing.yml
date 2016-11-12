@@ -5,6 +5,10 @@ app.profile:
     resource: "@AppBundle/Controller/ProfileController.php"
     type: annotation
     prefix: /profile
+app.admin:
+    resource: "@AppBundle/Controller/AdminController.php"
+    type: annotation
+    prefix: /admin
 #FosUserBundle Routes
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"

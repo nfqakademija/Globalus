@@ -1,0 +1,50 @@
+<!-- Sidebar -->
+
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+
+            <a href="{{ path('adminHome') }}">
+                Testuok! Admin
+            </a>
+
+
+
+        </li>
+        <li>
+            {% if app.user.username is defined %}
+                <p>{{ app.user.username }}</p>
+            {% endif %}
+        </li>
+        <li>
+            <a  href="{{ path('userAction') }}"><span class="navig">Vartotojai</span></a>
+        </li>
+
+    </ul>
+    <script type="text/javascript" >
+
+        var url = window.location.pathname;
+
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+                ///alert("rRRRRReady");
+                if(url=="/app_dev.php/admin/"){
+                    //alert("someas");
+                    $('.navig').removeClass('active');
+                }
+                else if (url=="/app_dev.php/admin/user"){
+                    $('.navig').removeClass('active');
+                    $('.navig').eq(0).addClass('active');
+                }
+                //$('.w3-btn').first().removeClass('w3-white w3-hide-small').addClass('w3-green');
+                // document is ready. Do your stuff here
+            }
+        };
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('document is ready. I can sleep now');
+        });
+
+
+    </script>
+</div>
+<!-- /#sidebar-wrapper -->

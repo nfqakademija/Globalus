@@ -85,4 +85,16 @@ class UserService
         }
         return null;
     }
+    public function getAllUsers($user)
+    {
+        $repository = $this->em->getRepository('AppBundle:User');
+        $users = $repository->findAll();
+
+
+        /*foreach ($posts as $item){
+            echo $item->getUsername().'<br>';
+        }
+        throw new Exception();*/
+        return $users;
+    }
 }
