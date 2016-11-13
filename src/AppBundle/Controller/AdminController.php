@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Controller;
+use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\ChangeRolesType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,20 +47,34 @@ class AdminController extends Controller
         $form = $this->createForm(ChangeRolesType::class, $roles);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $roles = $request->get('change_roles');
+            $numberOfSelectedRoles=0;
+            foreach($roles  as $role) {
+                if(substr($role, 0, 4)=="ROLE"){
+                    $numberOfSelectedRoles++;
+                }
 
+            }
+            if($numberOfSelectedRoles==0){
+                return $this->render('AppBundle:Admin:userAction.html.twig', [
+                    'user' => $user,
+                    'form' => $form->createView(),
+                    'error' => 'Nepasirinkote rolių'
+                ]);
+            }
             $user->removeRole('ROLE_USER');
             $user->removeRole('ROLE_ADMIN');
             $user->removeRole('ROLE_SUPER_ADMIN');
 
-            $deleteMessages = $request->get('change_roles');
-            foreach($deleteMessages  as $deleteMessageId) {
+
+            foreach($roles  as $role) {
                 //Do something with the ID
 
-                if(substr($deleteMessageId, 0, 4)=="ROLE"){
+                if(substr($role, 0, 4)=="ROLE"){
 
 
-                        $user->addRole($deleteMessageId);
-                    
+                        $user->addRole($role);
+
 
                 }
 
@@ -86,5 +101,63 @@ class AdminController extends Controller
         $em->remove($user);
         $em->flush();
         return $this->render('AppBundle:Admin:index.html.twig', []);
+    }
+    /**
+     * @Route("/user/changePassword/{id}", name="userChangePassword")
+     */
+    public function userChangePassword($id, Request $request)
+    {
+        $userService = $this->get('app.user');
+        $user = $userService->getUserById($id);
+        $userType = new User();
+        $form = $this->createForm(ChangePasswordType::class, $userType);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $password = $userType->getPassword();
+            if (strlen($password) < '8' || strlen($password) > '32') {
+                return $this->render('AppBundle:Admin:changePassword.html.twig',
+                    [
+                        'user' => $user,
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi būti didesnis tarp 8 ir 32 simbolių'
+                    ]
+                );
+            } elseif (!preg_match("#[0-9]+#", $password)) {
+                return $this->render('AppBundle:Admin:changePassword.html.twig',
+                    [
+                        'user' => $user,
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi turėti bent vieną numerį'
+                    ]
+                );
+            } elseif (!preg_match("#[A-Z]+#", $password)) {
+                return $this->render('AppBundle:Admin:changePassword.html.twig',
+                    [
+                        'user' => $user,
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi turėti bent vieną didžiąją raidę'
+                    ]
+                );
+            } elseif (!preg_match("#[a-z]+#", $password)) {
+                return $this->render('AppBundle:Admin:changePassword.html.twig',
+                    [
+                        'user' => $user,
+                        'form' => $form->createView(),
+                        'error' => 'Slaptažodis turi turėti bent vieną mažąją raidę'
+                    ]
+                );
+            }
+
+            $user->setPlainPassword($userType->getPassword());
+            $userManager = $this->container->get('fos_user.user_manager');
+
+            $userManager->updateUser($user, true);
+            return $this->render('AppBundle:Admin:index.html.twig', []);
+        }
+        return $this->render('AppBundle:Admin:changePassword.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
     }
 }
