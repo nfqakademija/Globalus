@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Controller;
+use AppBundle\Form\ChangeRolesType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,12 +38,40 @@ class AdminController extends Controller
     /**
      * @Route("/user/{id}", name="userAction")
      */
-    public function userActionList($id)
+    public function userActionList($id, Request $request)
     {
         $userService = $this->get('app.user');
         $user = $userService->getUserById($id);
+        $roles=null;
+        $form = $this->createForm(ChangeRolesType::class, $roles);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->removeRole('ROLE_USER');
+            $user->removeRole('ROLE_ADMIN');
+            $user->removeRole('ROLE_SUPER_ADMIN');
+
+            $deleteMessages = $request->get('change_roles');
+            foreach($deleteMessages  as $deleteMessageId) {
+                //Do something with the ID
+
+                if(substr($deleteMessageId, 0, 4)=="ROLE"){
+
+
+                        $user->addRole($deleteMessageId);
+                    
+
+                }
+
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            return $this->render('AppBundle:Admin:index.html.twig', []);
+        }
         return $this->render('AppBundle:Admin:userAction.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
     /**

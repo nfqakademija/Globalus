@@ -55,7 +55,10 @@
 
                     </div>
                     <div class="col-lg-4">
-
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <input type="submit" value="Keisti roles" class="btn btn-default pull-right" />
+                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>
