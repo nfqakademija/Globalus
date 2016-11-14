@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 
-<div id="sidebar-wrapper">
+<div id="sidebar-wrapper" class="col-lg-12 col-md-12 col-sm-12">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
 
@@ -17,7 +17,7 @@
             {% endif %}
         </li>
         <li>
-            <a  href="{{ path('users') }}"><span class="navig">Vartotojai</span></a>
+            <a class="navig" href="{{ path('users') }}"><span class="navigSpan">Vartotojai</span></a>
         </li>
 
     </ul>
@@ -31,10 +31,13 @@
                 if(pagename==""){
 
                     $('.navig').removeClass('active');
+                    $('.navigSpan').removeClass('active');
                 }
-                else if (pagename=="user"){
+                else if (pagename=="user" || pagename=="userByEmailASC" || pagename=="userByEmailDESC"){
                     $('.navig').removeClass('active');
                     $('.navig').eq(0).addClass('active');
+                    $('.navigSpan').removeClass('active');
+                    $('.navigSpan').eq(0).addClass('active');
                 }
 
             }

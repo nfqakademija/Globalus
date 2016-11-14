@@ -6,7 +6,13 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
     <style>
-
+        @media (max-width: 480px) {
+            .col-xxs {
+                display:block;
+                float:none;
+                width: 100%
+            }
+        }
         .title {
             margin: 20px auto;
             text-align: center;
@@ -44,22 +50,22 @@
     <header class="w3-container" id="portfolio">
         <h1><b>Profilis</b></h1>
         <h5 style="float: right"><a href="{{ path('fos_user_security_logout') }}">Atsijungti</a></h5>
-        <div class="w3-section w3-bottombar w3-padding-16">
+        <div class="w3-section w3-bottombar w3-padding-16 col-md-12 col-sm-12 col-xs-12 col-xxs">
 
             <a href="{{ path('profile') }}" onclick="myfuncT()">
-                <button class="w3-btn w3-white w3-hide-small"  >
+                <button class="w3-btn w3-white w3-hide-small col-md-4 col-sm-12 col-xs-12 col-xxs" >
                     <i class="fa fa-diamond w3-margin-right"></i>
                     Informacija
                 </button>
             </a>
             <a href="#">
-                <button class="w3-btn w3-white w3-hide-small" >
+                <button class="w3-btn w3-white w3-hide-small col-md-4 col-sm-12 col-xs-12 col-xxs" >
                     <i class="fa fa-diamond w3-margin-right"></i>
                     Testai
                 </button>
             </a>
             <a href="{{ path('changePassword') }}">
-                <button class="w3-btn w3-white w3-hide-small" >
+                <button class="w3-btn w3-white w3-hide-small col-md-4 col-sm-12 col-xs-12" >
                     <i class="fa fa-user w3-margin-right"></i>
                     Slaptažodžio keitimas
                 </button>
