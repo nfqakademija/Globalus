@@ -89,12 +89,20 @@ class UserService
     {
         $repository = $this->em->getRepository('AppBundle:User');
         $users = $repository->findAll();
-
-
-        /*foreach ($posts as $item){
-            echo $item->getUsername().'<br>';
-        }
-        throw new Exception();*/
+        return $users;
+    }
+    public function getAllUsersASC($user)
+    {
+        $repository = $this->em->getRepository('AppBundle:User');
+        $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email asc");
+        $users = $q->getResult();
+        return $users;
+    }
+    public function getAllUsersDESC($user)
+    {
+        $repository = $this->em->getRepository('AppBundle:User');
+        $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email desc");
+        $users = $q->getResult();
         return $users;
     }
 }

@@ -72,17 +72,16 @@
 
     <script type="text/javascript" >
 
-        var url = window.location.pathname;
-
+        var pagename= location.pathname.split('/').pop();
         document.onreadystatechange = function () {
             if (document.readyState == "complete") {
                 ///alert("rRRRRReady");
-                if(url=="/app_dev.php/profile/"){
+                if(pagename==""){
                     //alert("someas");
                     $('.w3-btn').removeClass('w3-green').addClass('w3-white w3-hide-small');
                     $('.w3-btn').first().removeClass('w3-white w3-hide-small').addClass('w3-green');
                 }
-                else if (url=="/app_dev.php/profile/changePassword"){
+                else if (pagename=="changePassword"){
                     $('.w3-btn').removeClass('w3-green').addClass('w3-white w3-hide-small');
                     $('.w3-btn').eq(2).removeClass('w3-white w3-hide-small').addClass('w3-green');
                 }
@@ -90,9 +89,7 @@
                 // document is ready. Do your stuff here
             }
         };
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('document is ready. I can sleep now');
-        });
+
 
 
     </script>

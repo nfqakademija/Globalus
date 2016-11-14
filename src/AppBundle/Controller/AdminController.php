@@ -160,4 +160,27 @@ class AdminController extends Controller
             'form' => $form->createView()
         ]);
     }
+    /**
+     * @Route("/userByEmailASC", name="usersbyEmailASC")
+     */
+    public function userActionEmailASC()
+    {
+        $userService = $this->get('app.user');
+        $users = $userService->getAllUsersASC($this->getUser());
+        return $this->render('AppBundle:Admin:user.html.twig', [
+            'users' => $users
+        ]);
+    }
+    /**
+     * @Route("/userByEmailDESC", name="usersbyEmailDESC")
+     */
+    public function userActionEmailDESC()
+    {
+        $userService = $this->get('app.user');
+        $users = $userService->getAllUsersDESC($this->getUser());
+        return $this->render('AppBundle:Admin:user.html.twig', [
+            'users' => $users
+        ]);
+    }
+
 }

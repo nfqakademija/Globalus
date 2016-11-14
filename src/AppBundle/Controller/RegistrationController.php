@@ -208,7 +208,7 @@ class RegistrationController extends Controller
         $userService = $this->get('app.user');
         $mainUser = $userService->findUserByConfirmToken($confirmationToken);
         if ($mainUser == null) {
-            return $this->render('AppBundle:Home:404.html.twig');
+            return $this->render('AppBundle:Home:index.html.twig');
         } else {
             $user = new User();
             $form = $this->createForm(ResetPasswordType::class, $user);

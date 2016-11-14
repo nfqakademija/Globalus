@@ -29,7 +29,17 @@
                     <div class="col-lg-12">
                         <table class="table">
                             <tr>
-                                <td>id</td><td>el paštas</td><td>rolės</td>
+                                <td>id</td>
+                                <td>
+                                    <a href="{{ path('usersbyEmailASC') }}">
+                                        <button class="glyphicon glyphicon-arrow-up"></button>
+                                    </a>
+                                    <a href="{{ path('usersbyEmailDESC') }}">
+                                        <button class="glyphicon glyphicon-arrow-down"></button>
+                                    </a>
+                                    el paštas
+                                </td>
+                                <td>rolės</td>
                             </tr>
 
                         {% for user in users %}

@@ -23,25 +23,23 @@
     </ul>
     <script type="text/javascript" >
 
-        var url = window.location.pathname;
 
+        var pagename= location.pathname.split('/').pop();
         document.onreadystatechange = function () {
             if (document.readyState == "complete") {
 
-                if(url=="/app_dev.php/admin/"){
+                if(pagename==""){
 
                     $('.navig').removeClass('active');
                 }
-                else if (url=="/app_dev.php/admin/user"){
+                else if (pagename=="user"){
                     $('.navig').removeClass('active');
                     $('.navig').eq(0).addClass('active');
                 }
 
             }
         };
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('document is ready. I can sleep now');
-        });
+
 
 
     </script>
