@@ -27,11 +27,11 @@ class Test
      */
     private $description;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $timeLimit;
     /**
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20, nullable=true)
      */
     private $password;
     /**
@@ -42,23 +42,10 @@ class Test
      * @ORM\OneToMany(targetEntity="Question", mappedBy="test")
      */
     private $questions;
-    /**
-     * Test constructor.
-     * @param $id
-     * @param $name
-     * @param $description
-     * @param $questionsLimit
-     * @param $password
-     * @param $author
-     */
-    public function __construct($id, $name, $description, $questionsLimit, $password, $author)
+
+
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->description = $description;
-        $this->questionsLimit = $questionsLimit;
-        $this->password = $password;
-        $this->author = $author;
         $this->questions = new ArrayCollection();
     }
 

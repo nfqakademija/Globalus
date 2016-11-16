@@ -2,17 +2,163 @@
 {% extends "@App/layout.html.twig" %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
-{% block content %}
+{% block body %}
+
+
 
     <div style="margin: 20px 20px;">
         {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {# render the task's only field: description #}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+
+        <h3>Klausimai</h3>
+        <ul class="questions" data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
+            {# iterate over each existing tag and render its only field: name #}
+            {% for question in form.questions %}
+                <li>{{ form_row(question.question) }}</li>
+
+
+                <ul class="answers" data-prototype="{{ form_widget(question.answers.vars.prototype)|e('html_attr') }}">
+                     {#iterate over each existing tag and render its only field: name #}
+                    {% for answer in question.answers %}
+                        <li>{{ form_row(answer.text) }}</li>
+
+
+
+                    {% endfor %}
+                    {#<button id="createQuestion">Prideti</button>#}
+                </ul>
+
+
+            {% endfor %}
+            {#<button id="createQuestion">Prideti</button>#}
+        </ul>
         {{ form_end(form) }}
     </div>
-    <script>
-    jQuery(document).ready(function() {
-        aler("ready");
 
-    });
+    <script>
+        var $collectionHolder_answer;
+
+        // setup an "add a tag" link
+        var $addTagLink_answer = $('<a href="#" class="add_tag_link_answer">Prideti atsakyma</a>');
+        var $newLinkLi_answer = $('<li></li>').append($addTagLink_answer);
+
+        function Bind_Answers($answers_form)  {
+            $answers_form.append($newLinkLi_answer);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $answers_form.data('index', $answers_form.find(':input').length);
+
+            $addTagLink_answer.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm_answers($answers_form, $newLinkLi_answer);
+            });
+        };
+
+
+
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link">Prideti klausima</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('ul.questions');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                console.log("asdsadasd");
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+        });
+
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/questions___name__/g, "questions_"+index);
+            newForm = newForm.replace(/\[questions\]\[__name__\]/g, "[questions]["+index+"]");
+            console.log(newForm);
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+            Bind_Answers($collectionHolder.find("#form_questions_"+index+"_answers"));
+
+        };
+
+        function addTagForm_answers($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+            console.log(prototype);
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+            console.log(newForm);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newFormLi.find(".control-label").remove();
+            $newLinkLi.before($newFormLi);
+        }
+//
+//        function addTagForm2($collectionHolder2, $newLinkLi2) {
+//            // Get the data-prototype explained earlier
+//            var prototype = $collectionHolder2.data('prototype');
+//
+//            // get the new index
+//            var index = $collectionHolder2.data('index');
+//
+//            // Replace '__name__' in the prototype's HTML to
+//            // instead be a number based on how many items we have
+//            var newForm = prototype.replace(/__name__/g, index);
+//
+//            // increase the index with one for the next item
+//            $collectionHolder2.data('index', index + 1);
+//
+//            // Display the form in the page in an li, before the "Add a tag" link li
+//            var $newFormLi2 = $('<li></li>').append(newForm);
+//            $newLinkLi2.before($newFormLi2);
+//        }
+    </script>
+    {#<div style="margin: 20px 20px;">#}
+        {#{{ form_start(form) }}#}
+        {#{{ form_widget(form) }}#}
+        {#{{ form_end(form) }}#}
+    {#</div>#}
+    <script>
+//    jQuery(document).ready(function() {
+//        alert("ready");
+//
+//    });
     </script>
 {% endblock %}
