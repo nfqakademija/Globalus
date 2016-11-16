@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Answer
 {
     /**
-     * @ORM\id
+     * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */

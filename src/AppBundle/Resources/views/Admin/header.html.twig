@@ -1,0 +1,50 @@
+<!-- Sidebar -->
+
+<div id="sidebar-wrapper" class="">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+
+            <a href="{{ path('adminHome') }}">
+                Testuok! Admin
+            </a>
+
+
+
+        </li>
+        <li>
+            {% if app.user.username is defined %}
+                <p>{{ app.user.username }}</p>
+            {% endif %}
+        </li>
+        <li>
+            <a class="navig" href="{{ path('users') }}"><span class="navigSpan">Vartotojai</span></a>
+        </li>
+
+    </ul>
+    <script type="text/javascript" >
+
+
+        var pagename= location.pathname.split('/').pop();
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+
+                if(pagename==""){
+
+                    $('.navig').removeClass('active');
+                    $('.navigSpan').removeClass('active');
+                }
+                else if (pagename=="user" || pagename=="userByEmailASC" || pagename=="userByEmailDESC"){
+                    $('.navig').removeClass('active');
+                    $('.navig').eq(0).addClass('active');
+                    $('.navigSpan').removeClass('active');
+                    $('.navigSpan').eq(0).addClass('active');
+                }
+
+            }
+        };
+
+
+
+    </script>
+</div>
+<!-- /#sidebar-wrapper -->

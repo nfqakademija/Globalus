@@ -1,0 +1,26 @@
+{# app/Resources/TwigBundle/views/Exception/error404.html.twig #}
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background-image: url({{ asset('bundles/app/style/sad_box.jpg') }});
+            background-repeat: no-repeat;
+
+            background-size: cover;
+            color: green;
+
+
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div style="margin-bottom:250px">
+    <h1>Nerastas puslapis</h1>
+    <p>
+        Puslapis su tokiu url nerastas. Patikrinkite puslapyje dėl galimų klaidų
+        arba <a href="{{ path('homepage') }}">grįškite į pagrindinį puslapį</a>.
+    </p>
+    </div>
+{% endblock %}

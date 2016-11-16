@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 class Test
 {
     /**
-     * @ORM\id
+     * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
