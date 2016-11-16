@@ -22,7 +22,6 @@ class Answer
      */
     private $id;
     /**
-     * @ORM\Column(type="integer")
      * @ORM\ManyToOne(targetEntity="Question",inversedBy="answers")
      */
     private $question;
@@ -34,6 +33,10 @@ class Answer
      * @ORM\Column(type="boolean")
      */
     private $correct;
+    /**
+     * @ORM\ManyToMany(targetEntity="Solution", mappedBy="answers")
+     */
+    private $solutions;
 
     /**
      * Answer constructor.
@@ -42,12 +45,31 @@ class Answer
      * @param $text
      * @param $correct
      */
-    public function __construct($id, $questionId, $text, $correct)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->questionId = $questionId;
-        $this->text = $text;
-        $this->correct = $correct;
+        $this->solutions = new ArrayCollection();
+    }
+
+    public function addSolution($solution)
+    {
+        $this->solutions->add($solution);
+        $solution->setUser($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSolutions()
+    {
+        return $this->solutions;
+    }
+
+    /**
+     * @param mixed $solutions
+     */
+    public function setSolutions($solutions)
+    {
+        $this->solutions = $solutions;
     }
 
     /**

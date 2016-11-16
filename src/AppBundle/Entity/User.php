@@ -26,11 +26,16 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Test", mappedBy="user")
      */
     protected $tests;
+    /**
+     * @ORM\OneToMany(targetEntity="Solution", mappedBy="user")
+     */
+    private $solutions;
 
     public function __construct()
     {
         parent::__construct();
         $this->tests = new ArrayCollection();
+        $this->solutions = new ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
@@ -65,6 +70,28 @@ class User extends BaseUser
     {
         $this->tests->add($test);
         $test->setUser($this);
+    }
+
+    public function addSolution($solution)
+    {
+        $this->solutions->add($solution);
+        $solution->setUser($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSolutions()
+    {
+        return $this->solutions;
+    }
+
+    /**
+     * @param mixed $solutions
+     */
+    public function setSolutions($solutions)
+    {
+        $this->solutions = $solutions;
     }
 
 

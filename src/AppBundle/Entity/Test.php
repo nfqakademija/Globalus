@@ -43,23 +43,36 @@ class Test
      */
     private $questions;
     /**
-     * Test constructor.
-     * @param $id
-     * @param $name
-     * @param $description
-     * @param $questionsLimit
-     * @param $password
-     * @param $author
+     * @ORM\OneToMany(targetEntity="Solution", mappedBy="test")
      */
-    public function __construct($id, $name, $description, $questionsLimit, $password, $author)
+    private $solutions;
+
+    public function __construct()
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->description = $description;
-        $this->questionsLimit = $questionsLimit;
-        $this->password = $password;
-        $this->author = $author;
+        $this->solutions = new ArrayCollection();
         $this->questions = new ArrayCollection();
+    }
+
+    public function addSolution($solution)
+    {
+        $this->solutions->add($solution);
+        $solution->setUser($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSolutions()
+    {
+        return $this->solutions;
+    }
+
+    /**
+     * @param mixed $solutions
+     */
+    public function setSolutions($solutions)
+    {
+        $this->solutions = $solutions;
     }
 
     /**
@@ -195,7 +208,7 @@ class Test
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getQuestions()
     {
