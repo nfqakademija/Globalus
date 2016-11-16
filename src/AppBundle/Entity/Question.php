@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,31 +11,30 @@ use Doctrine\ORM\Mapping as ORM;
 class Question
 {
     /**
+     * @ORM\id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\ManyToOne(targetEntity="tests")
+     * @ORM\ManyToOne(targetEntity="Test", inversedBy="questions")
      */
-    private $testId;
+    private $test;
     /**
      * @ORM\Column(length=255)
      */
     private $text;
+    /**
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     */
+    private $answers;
 
     /**
      * Question constructor.
-     * @param $id
-     * @param $testId
-     * @param $text
      */
-    public function __construct($id, $testId, $text)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->testId = $testId;
-        $this->text = $text;
+        $this->answers = new ArrayCollection();
     }
 
     /**
@@ -58,20 +58,24 @@ class Question
     /**
      * @return mixed
      */
-    public function getTestId()
+    public function getAnswers()
     {
-        return $this->testId;
+        return $this->answers;
     }
 
     /**
-     * @param mixed $testId
-     * @return Question
+     * @param mixed $answers
      */
-    public function setTestId($testId)
+    public function setAnswers($answers)
     {
-        $this->testId = $testId;
-        return $this;
+        $this->answers = $answers;
     }
+    public function addAnswer($answer)
+    {
+        $this->answers->add($answer);
+    }
+
+
 
     /**
      * @return mixed
@@ -89,6 +93,22 @@ class Question
     {
         $this->text = $text;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTest()
+    {
+        return $this->test;
+    }
+
+    /**
+     * @param mixed $test
+     */
+    public function setTest($test)
+    {
+        $this->test = $test;
     }
 
 }

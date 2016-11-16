@@ -16,15 +16,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Answer
 {
     /**
+     * @ORM\id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
     /**
      * @ORM\Column(type="integer")
-     * @ORM\ManyToOne(targetEntity="questions")
+     * @ORM\ManyToOne(targetEntity="Question",inversedBy="answers")
      */
-    private $questionId;
+    private $question;
     /**
      * @ORM\Column(length=500)
      */

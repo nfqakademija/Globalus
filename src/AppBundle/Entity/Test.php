@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Id;
 
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping\Id;
 class Test
 {
     /**
+     * @ORM\id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -21,11 +23,11 @@ class Test
      */
     private $name;
     /**
-     * @ORM\Column(length=500)
+     * @ORM\Column(type="text")
      */
     private $description;
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="integer")
      */
     private $timeLimit;
     /**
@@ -33,10 +35,13 @@ class Test
      */
     private $password;
     /**
-     * @ORM\Column(length=255)
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="tests")
      */
-    private $author;
-
+    private $user;
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="test")
+     */
+    private $questions;
     /**
      * Test constructor.
      * @param $id
@@ -54,6 +59,7 @@ class Test
         $this->questionsLimit = $questionsLimit;
         $this->password = $password;
         $this->author = $author;
+        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -183,5 +189,31 @@ class Test
         return $this;
     }
 
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * @param mixed $questions
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+    }
+    /**
+     * @param Question $question
+     */
+    public function addQuestions($question)
+    {
+        $this->questions->add($question);
+    }
 }
