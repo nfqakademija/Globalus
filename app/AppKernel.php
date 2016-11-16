@@ -35,21 +35,25 @@ class AppKernel extends Kernel
     {
         return __DIR__;
     }
-   public function getCacheDir()
-{
-    if($this->getEnvironment()=="dev")
-        return '/var/project/cache/'.$this->getEnvironment();
 
-    return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
-}
+    public function getCacheDir()
+    {
+        if($this->getEnvironment() == "dev") {
+            return '/var/project/cache/' . $this->getEnvironment();
+        }
 
-public function getLogDir()
-{
-    if($this->getEnvironment()=="dev")
-        return '/var/project/logs';
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
 
-    return dirname(__DIR__).'/var/logs';
-}
+    public function getLogDir()
+    {
+        if($this->getEnvironment() == "dev") {
+            return '/var/project/logs';
+        }
+
+        return dirname(__DIR__).'/var/logs';
+    }
+
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');

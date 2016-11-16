@@ -2,9 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * User
  *
@@ -21,10 +22,15 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    /**
+     * @ORM\OneToMany(targetEntity="Test", mappedBy="user")
+     */
+    protected $tests;
 
     public function __construct()
     {
         parent::__construct();
+        $this->tests = new ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
@@ -36,6 +42,31 @@ class User extends BaseUser
     {
         return $this->id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTests()
+    {
+        return $this->tests;
+    }
+
+    /**
+     * @param mixed $tests
+     */
+    public function setTests($tests)
+    {
+        $this->tests = $tests;
+    }
+    /**
+     *
+     */
+    public function addTest($test)
+    {
+        $this->tests->add($test);
+        $test->setUser($this);
+    }
+
 
     /** @ORM\Column(name="facebook_id", type="string", length=255, nullable=true) */
     protected $facebook_id;
