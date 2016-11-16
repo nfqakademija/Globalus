@@ -60,7 +60,7 @@ class TestController extends Controller
             return $this->render('AppBundle:Test:success.html.twig',[]);
         }
 
-        return $this->render('AppBundle:Test:index.html.twig', [
+        return $this->render('AppBundle:Test:create.html.twig', [
             'form' => $form->createView(),
         ]);
 

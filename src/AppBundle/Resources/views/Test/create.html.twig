@@ -4,8 +4,6 @@
 
 {% block body %}
 
-
-
     <div style="margin: 20px 20px;">
         {{ form_start(form) }}
         {# render the task's only field: description #}
@@ -24,22 +22,15 @@
                     {% for answer in question.answers %}
                         <li>{{ form_row(answer.text) }}</li>
 
-
-
                     {% endfor %}
-                    {#<button id="createQuestion">Prideti</button>#}
                 </ul>
 
-
             {% endfor %}
-            {#<button id="createQuestion">Prideti</button>#}
         </ul>
         {{ form_end(form) }}
     </div>
 
     <script>
-        var $collectionHolder_answer;
-
         // setup an "add a tag" link
         var $addTagLink_answer = $('<a href="#" class="add_tag_link_answer">Prideti atsakyma</a>');
         var $newLinkLi_answer = $('<li></li>').append($addTagLink_answer);
@@ -59,8 +50,6 @@
                 addTagForm_answers($answers_form, $newLinkLi_answer);
             });
         };
-
-
 
         var $collectionHolder;
 
@@ -82,7 +71,6 @@
             $addTagLink.on('click', function(e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
-                console.log("asdsadasd");
                 // add a new tag form (see next code block)
                 addTagForm($collectionHolder, $newLinkLi);
             });
@@ -99,7 +87,6 @@
             // instead be a number based on how many items we have
             var newForm = prototype.replace(/questions___name__/g, "questions_"+index);
             newForm = newForm.replace(/\[questions\]\[__name__\]/g, "[questions]["+index+"]");
-            console.log(newForm);
             // increase the index with one for the next item
             $collectionHolder.data('index', index + 1);
 
@@ -113,14 +100,12 @@
         function addTagForm_answers($collectionHolder, $newLinkLi) {
             // Get the data-prototype explained earlier
             var prototype = $collectionHolder.data('prototype');
-            console.log(prototype);
             // get the new index
             var index = $collectionHolder.data('index');
 
             // Replace '__name__' in the prototype's HTML to
             // instead be a number based on how many items we have
             var newForm = prototype.replace(/__name__/g, index);
-            console.log(newForm);
 
             // increase the index with one for the next item
             $collectionHolder.data('index', index + 1);
@@ -129,36 +114,7 @@
             var $newFormLi = $('<li></li>').append(newForm);
             $newFormLi.find(".control-label").remove();
             $newLinkLi.before($newFormLi);
-        }
-//
-//        function addTagForm2($collectionHolder2, $newLinkLi2) {
-//            // Get the data-prototype explained earlier
-//            var prototype = $collectionHolder2.data('prototype');
-//
-//            // get the new index
-//            var index = $collectionHolder2.data('index');
-//
-//            // Replace '__name__' in the prototype's HTML to
-//            // instead be a number based on how many items we have
-//            var newForm = prototype.replace(/__name__/g, index);
-//
-//            // increase the index with one for the next item
-//            $collectionHolder2.data('index', index + 1);
-//
-//            // Display the form in the page in an li, before the "Add a tag" link li
-//            var $newFormLi2 = $('<li></li>').append(newForm);
-//            $newLinkLi2.before($newFormLi2);
-//        }
-    </script>
-    {#<div style="margin: 20px 20px;">#}
-        {#{{ form_start(form) }}#}
-        {#{{ form_widget(form) }}#}
-        {#{{ form_end(form) }}#}
-    {#</div>#}
-    <script>
-//    jQuery(document).ready(function() {
-//        alert("ready");
-//
-//    });
+        };
+
     </script>
 {% endblock %}
