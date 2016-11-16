@@ -28,66 +28,50 @@ class UserService
     public function getUserByEmail($email)
     {
         $repository = $this->em->getRepository('AppBundle:User');
-        $q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
-        $users = $q->getResult();
-        /*$repository =$this->em->createQueryBuilder();
-        $user = $repository->select('*')->from('user')->where("confirmation_token ='.$confirmationToken.'");*/
-        //$user = $repository->findOneBy(array('confirmation_token' => $confirmationToken));
-        foreach ($users as $user){
-            if($user->getEmail()===$email)
-            {
-                /*$user->setEnabled(true);
-                $user->setConfirmationToken(null);
-                $user->setPlainPassword($password);*/
-                //$q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
-                return $user;
-            }
-        }
-        $posts = $repository->findBy(array("email"=>$email));
+        $user = $repository->findOneByEmail($email);
+        return $user;
 
-        return $posts;
     }
     public function enableUser($confirmationToken){
         $repository = $this->em->getRepository('AppBundle:User');
-        $q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
-        $users = $q->getResult();
-        /*$repository =$this->em->createQueryBuilder();
-        $user = $repository->select('*')->from('user')->where("confirmation_token ='.$confirmationToken.'");*/
-        //$user = $repository->findOneBy(array('confirmation_token' => $confirmationToken));
-        foreach ($users as $user){
-            if($user->getConfirmationToken()===$confirmationToken)
-            {
-                $user->setEnabled(true);
-                $user->setConfirmationToken(null);
-                //$q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
-                return $user;
-            }
-        }
+        $user = $repository->findOneBy(['confirmationToken' => $confirmationToken]);
+        $user->setEnabled(true);
+        $user->setConfirmationToken(null);
+        return $user;
 
-        /**/
-        //throw new Exception();
-        return null;
     }
     public function changePassword($password,$confirmationToken){
         $repository = $this->em->getRepository('AppBundle:User');
-        $q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
-        $users = $q->getResult();
-        /*$repository =$this->em->createQueryBuilder();
-        $user = $repository->select('*')->from('user')->where("confirmation_token ='.$confirmationToken.'");*/
-        //$user = $repository->findOneBy(array('confirmation_token' => $confirmationToken));
-        foreach ($users as $user){
-            if($user->getConfirmationToken()===$confirmationToken)
-            {
-                $user->setEnabled(true);
-                $user->setConfirmationToken(null);
-                $user->setPlainPassword($password);
-                //$q = $this->em->createQuery("select u from AppBundle\Entity\User u ");
-                return $user;
-            }
-        }
+        $user = $repository->findOneBy(['confirmationToken' => $confirmationToken]);
+        $user->setConfirmationToken(null);
+        $user->setPlainPassword($password);
+        return $user;
 
-        /**/
-        //throw new Exception();
-        return null;
+    }
+    public function findUserByConfirmToken($confirmationToken){
+        $repository = $this->em->getRepository('AppBundle:User');
+        $user = $repository->findOneBy(['confirmationToken' => $confirmationToken]);
+        return $user;
+
+    }
+    public function getAllUsers($user)
+    {
+        $repository = $this->em->getRepository('AppBundle:User');
+        $users = $repository->findAll();
+        return $users;
+    }
+    public function getAllUsersASC($user)
+    {
+        $repository = $this->em->getRepository('AppBundle:User');
+        $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email asc");
+        $users = $q->getResult();
+        return $users;
+    }
+    public function getAllUsersDESC($user)
+    {
+        $repository = $this->em->getRepository('AppBundle:User');
+        $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email desc");
+        $users = $q->getResult();
+        return $users;
     }
 }

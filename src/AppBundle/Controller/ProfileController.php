@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 class ProfileController extends Controller
 {
     /**
@@ -40,12 +41,12 @@ class ProfileController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-            $password=$user->getPlainPassword();
+            $password = $user->getPlainPassword();
 
             /** @var User $user */
             $user = $this->getUser();
-            //fos_user.security.login_manager
-            $user=$profileService->getUserById($user->getId(), $password);
+
+            $user = $profileService->getUserById($user->getId(), $password);
             $user->setPlainPassword($password);
 
             $userManager = $this->container->get('fos_user.user_manager');
@@ -53,8 +54,8 @@ class ProfileController extends Controller
             $userManager->updateUser($user, true);
 
 
-            ///TODO change return
-            return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
+            ///TODO validation
+            return $this->redirectToRoute('app.successPassChange', ['id' => $user->getId()]);
         }
 
         return $this->render('AppBundle:Profile:create.html.twig',
@@ -63,5 +64,17 @@ class ProfileController extends Controller
             ]
         );
 
+    }
+    /**
+     * @Route("/successPassChange/{id}", name="app.successPassChange")
+     */
+    public function showSuccessPassChange($id)
+    {
+        $userService = $this->get('app.user');
+        return $this->render('AppBundle:Profile:successPassChange.html.twig',
+            [
+                'user' => $userService->getUserById($id),
+            ]
+        );
     }
 }

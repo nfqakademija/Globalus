@@ -1,61 +1,41 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dziugas
- * Date: 16.11.9
- * Time: 17.27
- */
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
- * Question
- *
- * @ORM\Table(name="question")
  * @ORM\Entity()
+ * @ORM\Table(name="questions")
  */
-
 class Question
 {
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
+    /**
+     * @ORM\ManyToOne(targetEntity="Test", inversedBy="questions")
+     */
+    private $test;
+    /**
+     * @ORM\Column(length=255)
+     */
+    private $text;
+    /**
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     */
+    private $answers;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * Question constructor.
      */
-    protected $question;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Test", inversedBy="question")
-     */
-    protected $test;
-
-    /**
-     * @return mixed
-     */
-    public function getTest()
+    public function __construct()
     {
-        return $this->test;
+        $this->answers = new ArrayCollection();
     }
-
-    /**
-     * @param mixed $test
-     * @return Question
-     */
-    public function setTest($test)
-    {
-        $this->test = $test;
-        return $this;
-    }
-
 
     /**
      * @return mixed
@@ -67,7 +47,7 @@ class Question
 
     /**
      * @param mixed $id
-     * @return Test
+     * @return Question
      */
     public function setId($id)
     {
@@ -75,6 +55,60 @@ class Question
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
 
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+    }
+    public function addAnswer($answer)
+    {
+        $this->answers->add($answer);
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param mixed $text
+     * @return Question
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTest()
+    {
+        return $this->test;
+    }
+
+    /**
+     * @param mixed $test
+     */
+    public function setTest($test)
+    {
+        $this->test = $test;
+    }
 
 }

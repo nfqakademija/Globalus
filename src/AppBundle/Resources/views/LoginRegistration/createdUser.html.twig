@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+{% block title %}Sukurti naują įrašą{% endblock %}
+{% block body %}
+    <div style="margin-bottom: 270px;color: red;font-family: Georgia;font-size: 20px;text-align: center">
+    {% if error is defined %}
+        <div >
+            {{ error }}
+        </div>
+    {% else %}
+        <h3>Sėkmingai įgalintas vartotojas</h3>
+    {% endif %}
+        <div>
+            <h4 style="margin-top: 20px;"><a href="{{ path('homepage') }}">Grįžti į pagrindinį puslapį</a></h4>
+        </div>
+    </div>
+{% endblock %}

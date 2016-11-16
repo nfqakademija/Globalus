@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+{% block title %}Išsiųstas laiškas{% endblock %}
+{% block body %}
+
+    <div style="margin-bottom: 120px;">
+        <h1>{{ user.username}}</h1>
+        <p>Išsiųstas laiškas</p>
+        <p>Greitu metu gausite el. paštą</p>
+       <a href="{{ path('homepage') }}">pradžia </a>
+        <hr/>
+    </div>
+
+{% endblock %}

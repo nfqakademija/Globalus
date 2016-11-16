@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{{ "Globalus admin" }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+        <style>
+            .active{
+                color:green;
+                background: #fff;
+            }
+        </style>
+    {% endblock %}
+
+    {% block canonical_meta %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    {% block container %}
+        {% block header %}
+
+        {% endblock %}
+        {% block body %}{% endblock %}
+    {% endblock %}
+</div>
+{% block footer %}
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/script.js') }}"></script>
+{% endblock %}
+</body>
+</html>
