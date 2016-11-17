@@ -25,7 +25,9 @@ class QuestionType extends AbstractType
         $builder->add('answers', CollectionType::class, [
             'entry_type' => AnswerType::class,
             'label' => false,
-            'allow_add' => true
+            'prototype_name' => '__a_name__',
+            'by_reference' => false,
+            'allow_add' => true,
         ]);
     }
 

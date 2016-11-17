@@ -32,9 +32,11 @@ class TestController extends Controller
                 'label' => 'Aprasymas'
             ])
             ->add('questions', CollectionType::class, [
-                'label' => 'Klausimas',
+                'label' => 'Klausimai',
                 'entry_type' => QuestionType::class,
-                'allow_add' => true
+                'allow_add' => true,
+                'by_reference' => false,
+                'prototype_name' => '__q_name__',
             ])
 
             ->add('save', SubmitType::class, array('label' => 'Sukurti'))
