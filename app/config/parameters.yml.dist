@@ -19,8 +19,8 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            SuperSecretAcademyHashKeyDoNotTellAnyone
     
-    facebook_client_secret: ~
-    facebook_client_id: ~
-    google_client_id: ~
-    google_client_secret: ~
+    facebook_client_secret: 1111
+    facebook_client_id: 1111
+    google_client_id: 1111
+    google_client_secret: 1111
     
