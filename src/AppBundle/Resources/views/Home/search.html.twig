@@ -1,0 +1,75 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Homepage - {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+    <style>
+
+
+        h2 {
+            color: forestgreen;
+
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="title" style="padding :10px; text-align: center"><h2>Testai</h2></div>
+
+
+        {% include "AppBundle:Home:breadcrumb.html.twig" %}
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            Kategorijos
+        </div>
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti testo" title="Type in a name">
+
+            <table class="table" id="myTable">
+                <tr>
+                    <td>
+                        Pavadinimas
+                    </td>
+                    <td>
+                        Aprašymas
+                    </td>
+                </tr>
+
+                {% for test in tests %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('search') }}/{{ test.id }}">
+                                {{ test.name }}
+                            </a>
+                        </td>
+                        <td>{{ test.description }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

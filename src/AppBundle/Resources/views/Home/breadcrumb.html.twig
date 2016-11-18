@@ -1,0 +1,40 @@
+
+
+{% block body %}
+    <style>
+        .new{
+            color:green;
+        }
+    </style>
+    <ol class="breadcrumb" style="background-color: white">
+        <li class="BreC"><a href="{{ path('homepage') }}"><span>Home</span></a></li>
+        <li class="BreC"><a href="#"><span>Testai</span></a></li>
+        <li class="BreC"><a href="#"><span>Testas</span></a></li>
+    </ol>
+    <script type="text/javascript" >
+
+        var pagename= location.pathname.split('/').pop();
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+                ///alert("rRRRRReady");
+                if(pagename==""){
+                    //alert("someas");
+                    $('.BreC').removeClass('active').addClass('active');
+                    $('.BreC').first().removeClass('active').addClass('active');
+                }
+                else if (pagename=="search"){
+                    $('li.BreC').removeClass('new');
+                    $('li.BreC').eq(1).addClass('new');
+                    $('li.BreC a span').eq(1).unwrap();
+
+                    $( 'li.BreC a span' ).eq(1).unwrap();
+                }
+                //$('.w3-btn').first().removeClass('w3-white w3-hide-small').addClass('w3-green');
+                // document is ready. Do your stuff here
+            }
+        };
+
+
+
+    </script>
+{% endblock %}

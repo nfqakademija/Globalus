@@ -1,5 +1,5 @@
 {% extends "::base.html.twig" %}
-
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block title %}Homepage - {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
@@ -18,11 +18,7 @@
         }
 
         .search {
-            border-radius: 5px;
-            border-width: 5px;
-            border-style: solid;
-            background-color: #3c763d;
-            border-color: #3c763d;
+
 
         }
 
@@ -41,10 +37,17 @@
         <div class="row search">
 
             <form action="" method="post">
+                <div style="margin: 40px 20px;">
+                    {{ form_start(form) }}
 
 
-                <input class="col-lg-10 col-md-10 col-sm-12 col-xs-12" placeholder="Paieška" name="search" type="text"/>
-                <button class="col-lg-2 col-md-2 col-sm-12 col-xs-12" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    <input class="col-lg-10 col-md-10 col-sm-12 col-xs-12" id="search" name="search" required="required" type="search">
+                    <button class="col-lg-2 col-md-2 col-sm-12 col-xs-12" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    <a href="{{ path('search') }}" style="float: right;"><span style="color: green;">Naršyti visus testus</span></a>
+                    {{ form_end(form) }}
+                </div>
+
+
             </form>
         </div>
         <div class="row" style="padding: 20px 20px;">
