@@ -26,9 +26,11 @@ class HomeController extends Controller
 
             return $this->redirectToRoute('searchByName',array('name' => $data));
         }
+        $tests = $this->get('app.tests')->get5RecentTests();
 
         return $this->render('AppBundle:Home:index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tests' => $tests
         ]);
 
     }
@@ -51,7 +53,7 @@ class HomeController extends Controller
     public function searchByNameAction($name)
     {
 
-        $tests=$this->get('app.user')->getTests($name);
+        $tests=$this->get('app.tests')->getTests($name);
         return $this->render('AppBundle:Home:search.html.twig', [
             'tests' => $tests
         ]);

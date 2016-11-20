@@ -19,6 +19,9 @@
         <li>
             <a class="navig" href="{{ path('users') }}"><span class="navigSpan">Vartotojai</span></a>
         </li>
+        <li>
+            <a class="navig" href="{{ path('tests') }}"><span class="navigSpan">Testai</span></a>
+        </li>
 
     </ul>
     <script type="text/javascript" >
@@ -38,6 +41,12 @@
                     $('.navig').eq(0).addClass('active');
                     $('.navigSpan').removeClass('active');
                     $('.navigSpan').eq(0).addClass('active');
+                }
+                else if (pagename=="tests"){
+                    $('.navig').removeClass('active');
+                    $('.navig').eq(1).addClass('active');
+                    $('.navigSpan').removeClass('active');
+                    $('.navigSpan').eq(1).addClass('active');
                 }
 
             }

@@ -31,7 +31,7 @@ class AdminController extends Controller
     public function userAction()
     {
         $userService = $this->get('app.user');
-        $users = $userService->getAllUsers($this->getUser());
+        $users = $userService->getAllUsers();
         return $this->render('AppBundle:Admin:user.html.twig', [
             'users' => $users
         ]);
@@ -166,7 +166,7 @@ class AdminController extends Controller
     public function userActionEmailASC()
     {
         $userService = $this->get('app.user');
-        $users = $userService->getAllUsersASC($this->getUser());
+        $users = $userService->getAllUsersASC();
         return $this->render('AppBundle:Admin:user.html.twig', [
             'users' => $users
         ]);
@@ -177,10 +177,46 @@ class AdminController extends Controller
     public function userActionEmailDESC()
     {
         $userService = $this->get('app.user');
-        $users = $userService->getAllUsersDESC($this->getUser());
+        $users = $userService->getAllUsersDESC();
         return $this->render('AppBundle:Admin:user.html.twig', [
             'users' => $users
         ]);
     }
+    /**
+     * @Route("/tests", name="tests")
+     */
+    public function testsAction(){
 
+        $tests = $this->getDoctrine()->getRepository('AppBundle:Test')->findAll();
+   // print_r($tests);
+        return $this->render('AppBundle:Admin:tests.html.twig', [
+            'tests' => $tests
+        ]);
+    }
+    /**
+     * @Route("/tests/{id}", name="testsAction")
+     */
+    public function testActionList($id)
+    {
+        $testsService = $this->get('app.tests');
+        $test = $testsService->getTestById($id);
+
+
+        return $this->render('AppBundle:Admin:testAction.html.twig', [
+            'test' => $test
+        ]);
+    }
+    /**
+     * @Route("/tests/delete/{id}", name="testsDelete")
+     */
+    public function testDelete($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $user = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+        return $this->render('AppBundle:Admin:index.html.twig', []);
+    }
 }
