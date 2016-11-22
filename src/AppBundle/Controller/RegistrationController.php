@@ -21,6 +21,7 @@ use AppBundle\Event\Events;
 use AppBundle\Form\RegistrationType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
+use ReCaptcha\ReCaptcha;
 
 class RegistrationController extends Controller
 {
@@ -79,7 +80,20 @@ class RegistrationController extends Controller
                 );
             }
 
+            $recaptcha = new ReCaptcha('6LfgEwsUAAAAAFPhwhOUMu5V_PthvwTa42jhxfSe');
+            $resp = $recaptcha->verify($request->request->get('g-recaptcha-response'), $request->getClientIp());
 
+            if (!$resp->isSuccess()) {
+                return $this->render('AppBundle:LoginRegistration:create.html.twig',
+                    [
+                        'form' => $form->createView(),
+                        'error' => 'Nepatvirtinote, kad nesate robotas'
+                    ]
+                );
+            }else{
+                
+                // Everything works good ;)
+            };
             // random hash used for confirmation token
             $random_hash = md5(uniqid(rand(), true));
             $user->setConfirmationToken($random_hash);
