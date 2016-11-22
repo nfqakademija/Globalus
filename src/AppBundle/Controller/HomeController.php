@@ -15,8 +15,7 @@ class HomeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /*$user = new User();
-        $profileService = $this->get('app.user');*/
+
         $data=null;
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
@@ -26,11 +25,12 @@ class HomeController extends Controller
 
             return $this->redirectToRoute('searchByName',array('name' => $data));
         }
-        $tests = $this->get('app.tests')->get5RecentTests();
-
+        $recentTests = $this->get('app.tests')->get5RecentTests();
+        $popularTest = $this->get('app.tests')->get5MostPopularTests();
         return $this->render('AppBundle:Home:index.html.twig', [
             'form' => $form->createView(),
-            'tests' => $tests
+            'testsPop' => $popularTest,
+            'tests' => $recentTests
         ]);
 
     }

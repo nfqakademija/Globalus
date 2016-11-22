@@ -30,7 +30,7 @@ class TestService
         return $posts;
     }
     public function getTests($name){
-        //for mysql???
+
         $repository = $this->em->getRepository('AppBundle:Test');
         $query = $repository->createQueryBuilder('p')
             ->where('p.name LIKE :name')
@@ -39,17 +39,20 @@ class TestService
             ->getQuery();
         $tests_result = $query->getResult();
 
-        /*$tests=$repository->findAll();
-        $counter = 0;
-        foreach($tests as $test){
-            if(preg_match("/['.$name.']/",$test->getName())==true)$tests_result[$counter++]=$test;
-        }*/
 
         return $tests_result;
     }
     public function get5RecentTests(){
 
         $q = $this->em->createQuery("select u from AppBundle\Entity\Test u order by u.createdAt desc ");
+        $q->setMaxResults(5);
+        $tests = $q->getResult();
+
+        return $tests;
+    }
+    public function get5MostPopularTests(){
+
+        $q = $this->em->createQuery("select u from AppBundle\Entity\Test u order by u.timesStarted desc ");
         $q->setMaxResults(5);
         $tests = $q->getResult();
 

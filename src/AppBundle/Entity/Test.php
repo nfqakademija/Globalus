@@ -47,6 +47,28 @@ class Test
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $timesStarted;
+
+    /**
+     * @return mixed
+     */
+    public function getTimesStarted()
+    {
+        return $this->timesStarted;
+    }
+
+    /**
+     * @param mixed $timesStarted
+     */
+    public function setTimesStarted($timesStarted)
+    {
+        $this->timesStarted = $timesStarted;
+    }
+
+
 
     /**
      * @return mixed
