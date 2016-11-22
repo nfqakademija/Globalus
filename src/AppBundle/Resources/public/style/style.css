@@ -43,5 +43,5 @@ label[for="username"]:after
 label[for="username"].othertext:before{content:'Some other text!'}
 .socialLogin{
     display: inline-block;
-    margin: 10px 20px;
+
 }

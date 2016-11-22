@@ -32,11 +32,18 @@ class TestService
     public function getTests($name){
         //for mysql???
         $repository = $this->em->getRepository('AppBundle:Test');
-        $tests=$repository->findAll();
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.name LIKE :name')
+            ->orWhere('p.description LIKE :name')
+            ->setParameter('name', '%'.$name.'%')
+            ->getQuery();
+        $tests_result = $query->getResult();
+
+        /*$tests=$repository->findAll();
         $counter = 0;
         foreach($tests as $test){
             if(preg_match("/['.$name.']/",$test->getName())==true)$tests_result[$counter++]=$test;
-        }
+        }*/
 
         return $tests_result;
     }

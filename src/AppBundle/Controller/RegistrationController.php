@@ -91,7 +91,7 @@ class RegistrationController extends Controller
                     ]
                 );
             }else{
-                
+
                 // Everything works good ;)
             };
             // random hash used for confirmation token
