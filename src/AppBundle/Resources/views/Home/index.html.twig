@@ -5,32 +5,41 @@
 {% block stylesheets %}
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
+    <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
     <style>
 
         .title {
-            margin: 20px auto;
+            font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;
+            color: rgba(0,0,0,0.7);
+            text-shadow: 3px 3px 3px #fff;
+            color:#21c221;
+        }
+        .main-header {
             text-align: center;
-            font-size: 96px;
-            margin: 0;
-            padding: 0;
-            font-weight: 100;
-            font-family: 'Lato';
         }
-
-        .search {
-
-
+        #banner {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            height: 450px;
+            z-index: -1;
         }
+    body{
 
-        h2 {
-            color: forestgreen;
+    }
 
-        }
+
     </style>
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
 {% endblock %}
 
 {% block body %}
+    <header class="main-header" role="banner">
+        <img id="banner" src="{{ asset('bundles/app/style/test.jpg') }}"
+             alt="BannerImg" height="" width="" style="margin:auto">
+    </header>
     <div class="title" style="padding :10px">Testuokis</div>
     <div class="container">
 
@@ -43,15 +52,15 @@
 
                     <input class="col-lg-10 col-md-10 col-sm-12 col-xs-12" id="search" name="search" required="required" type="search">
 
-                    <button class="col-lg-2 col-md-2 col-sm-12 col-xs-12" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                    <a href="{{ path('search') }}" style="float: right;"><span style="color: green;">Naršyti visus testus</span></a>
+                    <button class="buttonP col-lg-2 col-md-2 col-sm-12 col-xs-12" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    <a href="{{ path('search') }}" style="float: right;"><span style="color: white;">Naršyti visus testus</span></a>
                     {{ form_end(form) }}
                 </div>
 
 
             </form>
         </div>
-        <div class="row" style="padding: 20px 20px;">
+        <div class="row" style="padding: 20px 20px;padding-top: 150px;    ">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <h2>Populiariausi</h2>
                 <table class="table" >
