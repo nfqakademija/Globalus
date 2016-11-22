@@ -156,19 +156,7 @@ class RegistrationController extends Controller
             $emailSender = $this->container->get('app.email_send');
             $emailSender->send($user, $random_hash, 'reset');
 
-            /*$message = \Swift_Message::newInstance()
-                ->setSubject('Pabaikite registraciją')
-                ->setFrom('nfqglobalus@gmail.com')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'AppBundle:Email:reset.html.twig',
-                        array('name' => $user->getUsername(),
-                            'token' => $random_hash)
-                    ),
-                    'text/html'
-                );
-            $this->get('swiftmailer.mailer.default')->send($message);*/
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -208,7 +196,8 @@ class RegistrationController extends Controller
         $userService = $this->get('app.user');
         $mainUser = $userService->findUserByConfirmToken($confirmationToken);
         if ($mainUser == null) {
-            return $this->render('AppBundle:Home:index.html.twig');
+            return $this->render('@App/LoginRegistration/createdUser.html.twig',[
+                'error' => 'Nėra tokio vartotojo arba neteisingas puslapis']);
         } else {
             $user = new User();
             $form = $this->createForm(ResetPasswordType::class, $user);
