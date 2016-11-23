@@ -5,50 +5,31 @@
 {% block stylesheets %}
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
-    <style>
-
-
-        h2 {
-            color: forestgreen;
-
-        }
-    </style>
+    <link rel="stylesheet" href={{ asset('bundles/app/style/search.css') }} />
+    <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
 
 {% endblock %}
 
 {% block body %}
     <div class="container">
-        <div class="title" style="padding :10px; text-align: center"><h2>Testai</h2></div>
-
-
-        {% include "AppBundle:Home:breadcrumb.html.twig" %}
-        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2">
-            Kategorijos
+        <div class="title" style="padding :10px; text-align: center">
+            <h2 style="color:greenyellow">Testai</h2>
         </div>
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
 
+        <div >
+        {% include "AppBundle:Home:breadcrumb.html.twig" %}
+        <ol class="rectangle-list">
+            {% for test in tests %}
+                <li>
 
-            <table class="table" id="myTable">
-                <tr>
-                    <td>
-                        Pavadinimas
-                    </td>
-                    <td>
-                        Aprašymas
-                    </td>
-                </tr>
+                        <a href="{{ path('search') }}/{{ test.id }}">
+                            {{ test.name }}<span style="padding: 20px;"></span>{{ test.description }}
+                        </a>
 
-                {% for test in tests %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('search') }}/{{ test.id }}">
-                                {{ test.name }}
-                            </a>
-                        </td>
-                        <td>{{ test.description }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+                </li>
+            {% endfor %}
+
+        </ol>
         </div>
 
     </div>

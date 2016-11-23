@@ -9,13 +9,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
-    <style>
-    td{
-        padding-bottom: 5px;
-        padding-right: 10px;
-    }
-    </style>
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/tests.css') }} />
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 {% endblock %}
 {% block body %}
     <div id="wrapper">
@@ -27,31 +22,21 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+
                         <a  href="#menu-toggle" id="toggle"><span></span></a>
-                        <table class="table" id="myTable">
-                            <tr>
-                                <td>Id</td>
-                                <td>
-                                    Pavadinimas
-                                </td>
-                                <td>Aprašymas</td>
-                                <td>
-                                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti testo" title="Type in a name">
-                                </td>
-                            </tr>
+                        <h2>Testai</h2>
+                        <ol class="rectangle-list">
 
                         {% for user in tests %}
-                            <tr >
-                                <td>{{ user.id }}</td>
-                                <td>
-                                    <a href="{{ path('tests') }}/{{ user.id }}">{{ user.name }}</a>
-                                </td>
-                                <td>
-                                    {{ user.description }}
-                                </td>
-                            </tr>
+
+                                <li><a class="w3-tooltip" href="{{ path('tests') }}/{{ user.id }}"><span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Id {{ user.id }} Aprašymas {{ user.description }}</span>{{ user.name }}</a>
+
+                                </li>
+
+
                         {% endfor %}
-                        </table>
+                            </ol>
+
                     </div>
                 </div>
             </div>
@@ -65,28 +50,7 @@
     <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
 
 
-    <!-- Menu Toggle Script -->
 
-
-        <script>
-        function myFunction() {
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 1; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
 
 
 
