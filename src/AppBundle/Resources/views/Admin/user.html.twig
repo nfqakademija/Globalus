@@ -10,7 +10,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
 
+<style>
 
+
+
+</style>
 {% endblock %}
 {% block body %}
     <div id="wrapper">
@@ -19,16 +23,24 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Atidarykite/Uždaryktie meniu</a>
-                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti el pašo" title="Type in a name" style="color:black">
+
+
+
+
 
                         <section>
-                            <!--for demo wrap-->
+                            <!--for wrap-->
                             <h1>Vartotojai</h1>
-                            <div class="tbl-header">
+                            <a  href="#menu-toggle" id="toggle"><span></span></a>
+
+
+                            <input  type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti pagal el paštą" title="Type in a name" style="color:black">
+
+                                <div class="tbl-header">
                                 <table cellpadding="0" cellspacing="0" border="0">
                                     <thead>
 
@@ -36,10 +48,10 @@
                                         <th>Id</th>
                                         <th>
                                             <p>El. paštas</p>
-                                            <a href="{{ path('usersbyEmailASC') }}">
+                                            <a href="{{ path('usersbyEmailASC') }}" style="color:black">
                                                 <button class="glyphicon glyphicon-arrow-up"></button>
                                             </a>
-                                            <a href="{{ path('usersbyEmailDESC') }}">
+                                            <a href="{{ path('usersbyEmailDESC') }}" style="color:black">
                                                 <button class="glyphicon glyphicon-arrow-down"></button>
                                             </a>
                                         </th>
@@ -67,8 +79,6 @@
                                 </table>
                             </div>
                         </section>
-
-
                     </div>
                 </div>
             </div>
@@ -80,21 +90,7 @@
 
     <!-- jQuery -->
     <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
-
-
-    <!-- Menu Toggle Script -->
     <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-        $(window).on("load resize ", function() {
-            var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
-            $('.tbl-header').css({'padding-right':scrollWidth});
-        }).resize();
-    </script>
-
-        <script>
         function myFunction() {
             var input, filter, table, tr, td, i;
             input = document.getElementById("myInput");
@@ -113,8 +109,4 @@
             }
         }
     </script>
-
-
-
-
 {% endblock %}

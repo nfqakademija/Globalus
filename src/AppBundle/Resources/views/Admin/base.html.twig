@@ -14,6 +14,7 @@
                 color:green;
                 background: #fff;
             }
+
         </style>
     {% endblock %}
 
@@ -33,6 +34,12 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        $("#toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 {% endblock %}
 </body>
 </html>
