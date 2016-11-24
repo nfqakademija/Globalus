@@ -25,8 +25,8 @@ class HomeController extends Controller
 
             return $this->redirectToRoute('searchByName',array('name' => $data));
         }
-        $recentTests = $this->get('app.tests')->get5RecentTests();
-        $popularTest = $this->get('app.tests')->get5MostPopularTests();
+        $recentTests = $this->get('app.tests')->getRecentTests();
+        $popularTest = $this->get('app.tests')->getMostPopularTests();
         return $this->render('AppBundle:Home:index.html.twig', [
             'form' => $form->createView(),
             'testsPop' => $popularTest,
@@ -57,6 +57,13 @@ class HomeController extends Controller
         return $this->render('AppBundle:Home:search.html.twig', [
             'tests' => $tests
         ]);
+    }
+    /**
+     * @Route("/about", name="about")
+     */
+    public function aboutPage()
+    {
+        return $this->render('AppBundle:Home:about.html.twig', [  ]);
     }
 
 }

@@ -1,6 +1,6 @@
 {% extends "@App/Admin/base.html.twig" %}
 
-{% block title %}Vartotojai - {{ parent() }}{% endblock %}
+{% block title %}Testai{% endblock %}
 
 {% block stylesheets %}
 
@@ -27,16 +27,15 @@
                         <h2>Testai</h2>
                         <ol class="rectangle-list">
 
-                        {% for user in tests %}
+                        {% for test in tests %}
 
-                                <li><a class="w3-tooltip" href="{{ path('tests') }}/{{ user.id }}"><span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Id {{ user.id }} Aprašymas {{ user.description }}</span>{{ user.name }}</a>
-
+                                <li>
+                                    <a class="w3-tooltip" href="{{ path('tests') }}/{{ test.id }}">
+                                        <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Id {{ test.id }} Aprašymas {{ test.description }}</span>
+                                        {{ test.name }}</a>
                                 </li>
-
-
                         {% endfor %}
-                            </ol>
-
+                        </ol>
                     </div>
                 </div>
             </div>
@@ -48,11 +47,5 @@
 
     <!-- jQuery -->
     <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
-
-
-
-
-
-
 
 {% endblock %}

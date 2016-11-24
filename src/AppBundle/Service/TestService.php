@@ -42,18 +42,18 @@ class TestService
 
         return $tests_result;
     }
-    public function get5RecentTests(){
+    public function getRecentTests($count = 5){
 
         $q = $this->em->createQuery("select u from AppBundle\Entity\Test u order by u.createdAt desc ");
-        $q->setMaxResults(5);
+        $q->setMaxResults($count);
         $tests = $q->getResult();
 
         return $tests;
     }
-    public function get5MostPopularTests(){
+    public function getMostPopularTests($count = 5){
 
         $q = $this->em->createQuery("select u from AppBundle\Entity\Test u order by u.timesStarted desc ");
-        $q->setMaxResults(5);
+        $q->setMaxResults($count);
         $tests = $q->getResult();
 
         return $tests;
