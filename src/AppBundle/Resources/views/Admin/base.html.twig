@@ -8,11 +8,13 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico')}}">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+        <link rel="stylesheet" href={{ asset('bundles/app/style/admin/layout.css') }} />
         <style>
             .active{
                 color:green;
                 background: #fff;
             }
+
         </style>
     {% endblock %}
 
@@ -42,6 +44,12 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        $("#toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 {% endblock %}
 </body>
 </html>

@@ -9,13 +9,12 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
-    <style>
-    td{
-        padding-bottom: 5px;
-        padding-right: 10px;
-    }
-    </style>
 
+<style>
+
+
+
+</style>
 {% endblock %}
 {% block body %}
     <div id="wrapper">
@@ -24,39 +23,62 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Atidarykite/Uždaryktie meniu</a>
-                        <table class="table" id="myTable">
-                            <tr>
-                                <td>Id</td>
-                                <td>
-                                    <a href="{{ path('usersbyEmailASC') }}">
-                                        <button class="glyphicon glyphicon-arrow-up"></button>
-                                    </a>
-                                    <a href="{{ path('usersbyEmailDESC') }}">
-                                        <button class="glyphicon glyphicon-arrow-down"></button>
-                                    </a>
-                                    El paštas
-                                </td>
-                                <td>Rolės</td>
-                                <td>
-                                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti el pašo" title="Type in a name">
-                                </td>
-                            </tr>
 
-                        {% for user in users %}
-                            <tr >
-                                <td>{{ user.id }}</td><td><a href="{{ path('users') }}/{{ user.id }}">{{ user.email }}</a> </td>
-                                <td>
-                                    {% for role in user.roles %}
-                                    {{ role }}
+
+
+
+
+                        <section>
+                            <!--for wrap-->
+                            <h1>Vartotojai</h1>
+                            <a  href="#menu-toggle" id="toggle"><span></span></a>
+
+
+                            <input  type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti pagal el paštą" title="Type in a name" style="color:black">
+
+                                <div class="tbl-header">
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <thead>
+
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>
+                                            <p>El. paštas</p>
+                                            <a href="{{ path('usersbyEmailASC') }}" style="color:black">
+                                                <button class="glyphicon glyphicon-arrow-up"></button>
+                                            </a>
+                                            <a href="{{ path('usersbyEmailDESC') }}" style="color:black">
+                                                <button class="glyphicon glyphicon-arrow-down"></button>
+                                            </a>
+                                        </th>
+                                        <th>Rolės</th>
+
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="tbl-content">
+                                <table class="myTableContent" cellpadding="0" cellspacing="0" border="0">
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr >
+                                            <td>{{ user.id }}</td><td><a href="{{ path('users') }}/{{ user.id }}">{{ user.email }}</a> </td>
+                                            <td>
+                                                {% for role in user.roles %}
+                                                    {{ role }}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
                                     {% endfor %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </table>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -68,23 +90,13 @@
 
     <!-- jQuery -->
     <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
-
-
-    <!-- Menu Toggle Script -->
     <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
-
-        <script>
         function myFunction() {
             var input, filter, table, tr, td, i;
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
+            table = document.getElementsByClassName("myTableContent");
+            tr = document.getElementsByTagName("tr");
             for (i = 1; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[1];
                 if (td) {
@@ -97,8 +109,4 @@
             }
         }
     </script>
-
-
-
-
 {% endblock %}

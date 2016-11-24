@@ -1,58 +1,108 @@
 {% extends "::base.html.twig" %}
-
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block title %}Homepage - {{ parent() }}{% endblock %}
 
 {% block stylesheets %}
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
+    <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
     <style>
 
         .title {
-            margin: 20px auto;
+            font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;
+            color: rgba(0,0,0,0.7);
+            text-shadow: 3px 3px 3px #fff;
+            color:#21c221;
+        }
+        .main-header {
             text-align: center;
-            font-size: 96px;
-            margin: 0;
-            padding: 0;
-            font-weight: 100;
-            font-family: 'Lato';
         }
 
-        .search {
-            border-radius: 5px;
-            border-width: 5px;
-            border-style: solid;
-            background-color: #3c763d;
-            border-color: #3c763d;
 
-        }
 
-        h2 {
-            color: forestgreen;
-
-        }
     </style>
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
 {% endblock %}
 
 {% block body %}
+    <header class="main-header" role="banner">
+        <img id="banner" src="{{ asset('bundles/app/style/testing.jpg') }}"
+             alt="BannerImg" height="" width="" style="margin:auto">
+    </header>
     <div class="title" style="padding :10px">Testuokis</div>
     <div class="container">
 
         <div class="row search">
 
             <form action="" method="post">
+                <div style="margin: 40px 20px;">
+                    {{ form_start(form) }}
 
 
-                <input class="col-lg-10 col-md-10 col-sm-12 col-xs-12" placeholder="Paieška" name="search" type="text"/>
-                <button class="col-lg-2 col-md-2 col-sm-12 col-xs-12" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    <input class="col-lg-10 col-md-10 col-sm-12 col-xs-12" id="search" name="search" required="required" type="search">
+
+                    <button class="buttonP col-lg-2 col-md-2 col-sm-12 col-xs-12" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    <a href="{{ path('search') }}" style="float: right;"><span style="color: white;">Naršyti visus testus</span></a>
+                    {{ form_end(form) }}
+                </div>
+
+
             </form>
         </div>
-        <div class="row" style="padding: 20px 20px;">
+
+
+        <div class="row" style="padding: 20px 20px;padding-top: 250px;    ">
+
+
+
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <h2>Pop/Demo</h2>
+                <h2 class="homeH2">Populiariausi</h2>
+
+                <div class="popNew">
+                    <ol class="popNewList">
+                        {% for test in testsPop %}
+                            {% if loop.index is divisible by(2)  %}
+                                <li style="padding-left: 50px;">
+
+                            {% else %}
+                                <li >
+
+                            {% endif %}
+                            <span class="popNewSpan">{{ loop.index }}.</span>
+                            <p class="popNewP">
+                                <span>{{ test.name }}</span><br>
+                                <span>{{ test.description }}</span>
+                            </p>
+                            </li>
+                        {% endfor %}
+
+
+
+                    </ol>
+                </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <h2>Nauji</h2>
+                <h2 class="homeH2">Nauji</h2>
+                <div class="popNew">
+                    <ol class="popNewList">
+                        {% for test in tests %}
+                            {% if loop.index is divisible by(2)  %}
+                            <li style="padding-left: 50px;">
+
+                                {% else %}
+                                    <li >
+
+                        {% endif %}
+                            <span class="popNewSpan">{{ loop.index }}.</span>
+                            <p class="popNewP">
+                                <span>{{ test.name }}</span><br>
+                                <span>{{ test.description }}</span>
+                            </p>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+
             </div>
         </div>
     </div>

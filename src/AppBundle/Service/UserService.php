@@ -54,24 +54,23 @@ class UserService
         return $user;
 
     }
-    public function getAllUsers($user)
+    public function getAllUsers()
     {
         $repository = $this->em->getRepository('AppBundle:User');
         $users = $repository->findAll();
         return $users;
     }
-    public function getAllUsersASC($user)
+    public function getAllUsersASC()
     {
-        $repository = $this->em->getRepository('AppBundle:User');
         $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email asc");
         $users = $q->getResult();
         return $users;
     }
-    public function getAllUsersDESC($user)
+    public function getAllUsersDESC()
     {
-        $repository = $this->em->getRepository('AppBundle:User');
         $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email desc");
         $users = $q->getResult();
         return $users;
     }
+
 }
