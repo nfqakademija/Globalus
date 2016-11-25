@@ -77,4 +77,17 @@ class ProfileController extends Controller
             ]
         );
     }
+    /**
+     * @Route("/tests", name="user.tests")
+     */
+    public function showUserTests()
+    {
+        $testService = $this->get('app.tests');
+        $tests=$testService->getUserTests($this->getUser()->getId());
+        return $this->render('AppBundle:Profile:tests.html.twig',
+            [
+                'tests' => $tests
+            ]
+        );
+    }
 }

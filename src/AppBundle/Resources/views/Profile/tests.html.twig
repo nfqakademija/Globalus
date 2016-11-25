@@ -1,0 +1,22 @@
+
+{% extends "@App/Profile/heading.html.twig" %}
+
+{% block content %}
+
+    <div style="margin: 30px 20px;">
+        <a href="{{ path('testCreate') }}">Sukurti testa</a><br>
+        <a href="{{ path('createTest') }}">Sukurti testa</a><br>
+        <ol>
+        {% for test in tests %}
+
+                <li>
+                    {{ test.name }}
+                </li>
+
+        {% endfor %}
+
+        </ol>
+        <hr/>
+    </div>
+
+{% endblock %}

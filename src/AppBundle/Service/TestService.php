@@ -58,4 +58,10 @@ class TestService
 
         return $tests;
     }
+    public function getUserTests($id){
+        $repository = $this->em->getRepository('AppBundle:Test');
+        $tests_result = $repository->findBy(array('user'=>$id));
+
+        return $tests_result;
+    }
 }
