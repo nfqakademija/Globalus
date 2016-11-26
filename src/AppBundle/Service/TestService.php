@@ -44,7 +44,7 @@ class TestService
     }
     public function getRecentTests($count = 5){
 
-        $q = $this->em->createQuery("select u from AppBundle\Entity\Test u order by u.createdAt desc ");
+        $q = $this->em->createQuery("select u from AppBundle\Entity\Test u where u.published=1 order by u.createdAt desc ");
         $q->setMaxResults($count);
         $tests = $q->getResult();
 
@@ -52,7 +52,7 @@ class TestService
     }
     public function getMostPopularTests($count = 5){
 
-        $q = $this->em->createQuery("select u from AppBundle\Entity\Test u order by u.timesStarted desc ");
+        $q = $this->em->createQuery("select u from AppBundle\Entity\Test u where u.published=1 order by u.timesStarted desc ");
         $q->setMaxResults($count);
         $tests = $q->getResult();
 
@@ -63,5 +63,20 @@ class TestService
         $tests_result = $repository->findBy(array('user'=>$id));
 
         return $tests_result;
+    }
+    public function getTestQuestions($id)
+    {
+        $questions=$this->em->getRepository('AppBundle:Question')->findBy(array('test'=>$id));
+        return $questions;
+    }
+    public function getQuestionById($id)
+    {
+        $question=$this->em->getRepository('AppBundle:Question')->find($id);
+        return $question;
+    }
+    public function getQuestionAnswers($id)
+    {
+        $questions=$this->em->getRepository('AppBundle:Answer')->findBy(array('question'=>$id));
+        return $questions;
     }
 }

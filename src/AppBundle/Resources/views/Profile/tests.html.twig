@@ -10,7 +10,9 @@
         {% for test in tests %}
 
                 <li>
-                    {{ test.name }}
+                    <a href="{{ path('user.test', {'id': test.id }) }}">
+                        {{ test.name }}
+                    </a>
                 </li>
 
         {% endfor %}

@@ -1,0 +1,44 @@
+
+{% extends "@App/Profile/heading.html.twig" %}
+
+{% block content %}
+
+    <div style="margin: 30px 20px;">
+        <a href="{{ path('tests') }}">Testai</a>
+        <a href="{{ path('user.question.add.answer', {'id': question.id}) }}">Pridėti Atsakymą</a>
+        <table>
+            <tr>
+                <td>
+                    Pavadinimas
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ question.text }}
+                </td>
+            </tr>
+        </table>
+        <ol>
+            {% for answer in answers %}
+                <li>
+                    <ol>
+                        <li>
+                            {{ answer.text }}
+                        </li>
+                        <li>
+                            {% if answer.correct ==1%}
+                            Teisingas
+                            {% else %}
+                            Neteisingas
+                            {% endif %}
+                        </li>
+                    </ol>
+
+                </li>
+            {% endfor %}
+        </ol>
+
+        <hr/>
+    </div>
+
+{% endblock %}

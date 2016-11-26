@@ -1,0 +1,40 @@
+
+{% extends "@App/Profile/heading.html.twig" %}
+
+{% block content %}
+
+    <div style="margin: 30px 20px;">
+        <a href="{{ path('tests') }}">Atgal</a>
+        <a href="{{ path('user.test.add.question', {'id': test.id}) }}">Pridėti klausimą</a>
+        <table>
+            <tr>
+                <td>
+                    Pavadinimas
+                </td>
+                <td>
+                    Aprašymas
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ test.name }}
+                </td>
+                <td>
+                    {{ test.description }}
+                </td>
+            </tr>
+        </table>
+        <ol>
+            {% for question in questions %}
+                <li>
+                    <a href="{{ path('user.test.question' , {'id': question.id}) }}">
+                        {{ question.text }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
+
+        <hr/>
+    </div>
+
+{% endblock %}
