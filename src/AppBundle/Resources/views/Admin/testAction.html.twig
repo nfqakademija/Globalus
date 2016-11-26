@@ -51,6 +51,18 @@
                         </header>
                         <a href='{{ path('homepage') }}admin/tests/delete/{{ test.id }}'>Trinti</a>
                     </div>
+                    <div class="col-lg-4">
+                        <header>
+                            <p>
+                                Publikuoti testą
+                            </p>
+                        </header>
+                        {% if test.published == 0 %}
+                        <a href='{{ path('homepage') }}admin/tests/publish/{{ test.id }}'>Publikuoti</a>
+                        {% else %}
+                        <a href='{{ path('homepage') }}admin/tests/depublish/{{ test.id }}'>Depublikuoti</a>
+                        {% endif %}
+                    </div>
 
 
                 </div>

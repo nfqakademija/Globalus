@@ -41,7 +41,7 @@ class HomeController extends Controller
     public function searchAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $tests = $em->getRepository('AppBundle:Test')->findAll();
+        $tests = $em->getRepository('AppBundle:Test')->findby(array('published' => 1));
         return $this->render('AppBundle:Home:search.html.twig', [
             'tests' => $tests
         ]);

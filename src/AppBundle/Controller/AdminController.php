@@ -213,9 +213,37 @@ class AdminController extends Controller
     {
         $testsService = $this->get('app.tests');
 
-        $user = $testsService->getTestById($id);
+        $test = $testsService->getTestById($id);
         $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
+        $em->remove($test);
+        $em->flush();
+        return $this->render('AppBundle:Admin:index.html.twig', []);
+    }
+    /**
+     * @Route("/tests/publish/{id}", name="testsPublish")
+     */
+    public function testPublish($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $test = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $test->setPublished(1);
+        $em->persist($test);
+        $em->flush();
+        return $this->render('AppBundle:Admin:index.html.twig', []);
+    }
+    /**
+     * @Route("/tests/depublish/{id}", name="testsDepublish")
+     */
+    public function testDepublish($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $test = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $test->setPublished(0);
+        $em->persist($test);
         $em->flush();
         return $this->render('AppBundle:Admin:index.html.twig', []);
     }

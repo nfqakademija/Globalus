@@ -19,19 +19,23 @@
 
         <div >
         {% include "AppBundle:Home:breadcrumb.html.twig" %}
-        <ol class="rectangle-list">
-            {% for test in tests %}
-                <li>
+            {% if tests is empty %}
+                <h4>Nėra testų</h4>
+            {% else %}
+                <ol class="rectangle-list">
+                    {% for test in tests %}
+                        <li>
 
-                        <a class="w3-tooltip" href="{{ path('search') }}/{{ test.id }}">
-                            {{ test.name }}
-                            <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Aprašymas: {{ test.description }}</span>
-                        </a>
+                            <a class="w3-tooltip" href="{{ path('search') }}/{{ test.id }}">
+                                {{ test.name }}
+                                <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Aprašymas: {{ test.description }}</span>
+                            </a>
 
-                </li>
-            {% endfor %}
+                        </li>
+                    {% endfor %}
 
-        </ol>
+                </ol>
+            {% endif %}
         </div>
 
     </div>

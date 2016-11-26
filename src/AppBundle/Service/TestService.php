@@ -35,6 +35,7 @@ class TestService
         $query = $repository->createQueryBuilder('p')
             ->where('p.name LIKE :name')
             ->orWhere('p.description LIKE :name')
+            ->andWhere('p.published = 1')
             ->setParameter('name', '%'.$name.'%')
             ->getQuery();
         $tests_result = $query->getResult();

@@ -71,7 +71,7 @@ class TestController extends Controller
 
     }
     /**
-     * @Route("/create/test" , name="createTest")
+     * @Route("/create/tests" , name="createTest")
      */
     public function createTest(Request $request){
         $test = new Test();
