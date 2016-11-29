@@ -75,6 +75,11 @@ class TestService
         $question=$this->em->getRepository('AppBundle:Question')->find($id);
         return $question;
     }
+    public function getAnswerById($id)
+    {
+        $question=$this->em->getRepository('AppBundle:Answer')->find($id);
+        return $question;
+    }
     public function getQuestionAnswers($id)
     {
         $questions=$this->em->getRepository('AppBundle:Answer')->findBy(array('question'=>$id));

@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Test;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -111,6 +112,128 @@ class ProfileController extends Controller
         );
     }
     /**
+     * @Route("/tests/edit/{id}", name="edit_user_test")
+     */
+    public function editUserTest($id,Request $request)
+    {
+        $testService = $this->get('app.tests');
+        $test=$testService->getTestById($id);
+
+        $formTest = new Test();
+
+        $form = $this->createFormBuilder($formTest)
+            ->add('name', TextType::class, [
+                'label' => 'Pavadinimas',
+                'data' => $test->getName()
+            ])
+            ->add('description', TextType::class, [
+                'label' => 'Aprasymas',
+                'data' => $test->getDescription()
+            ])
+            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formTest = $form->getData();
+
+            $test->setName($formTest->getName());
+            $test->setDescription($formTest->getDescription());
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($test);
+            $em->flush();
+
+            return $this->render('AppBundle:Profile:tests.html.twig',[]);
+        }
+
+        return $this->render('AppBundle:Profile:createTest.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+    /**
+     * @Route("/questions/edit/{id}", name="edit_test_question")
+     */
+    public function editTestQuestion($id,Request $request)
+    {
+        $testService = $this->get('app.tests');
+        $question=$testService->getQuestionById($id);
+
+        $formQuestion = new Question();
+
+        $form = $this->createFormBuilder($formQuestion)
+            ->add('text', TextType::class, [
+                'label' => 'Klausimas',
+                'data' => $question->getText()
+            ])
+            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formQuestion = $form->getData();
+
+            $question->setText($formQuestion->getText());
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($question);
+            $em->flush();
+
+            return $this->render('AppBundle:Profile:index.html.twig',[]);
+        }
+
+        return $this->render('AppBundle:Profile:createTest.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+    /**
+     * @Route("/answers/edit/{id}", name="edit_question_answer")
+     */
+    public function editQuestionAnswer($id,Request $request)
+    {
+        $testService = $this->get('app.tests');
+        $answer=$testService->getAnswerById($id);
+        $formAnswer = new Answer();
+
+        $form = $this->createFormBuilder($formAnswer)
+            ->add('text', TextType::class, [
+                'label' => 'Atsakymas',
+                'data' => $answer->getText()
+            ])
+            ->add('correct',CheckboxType::class,[
+                'label' => 'Teisingas',
+                'data' => $answer->getCorrect(),
+                'required'=>false
+            ])
+            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
+            ->getForm();
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formAnswer = $form->getData();
+
+            $answer->setText($formAnswer->getText());
+            $answer->setCorrect($formAnswer->getCorrect());
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($answer);
+            $em->flush();
+
+            return $this->render('AppBundle:Profile:index.html.twig',[]);
+        }
+
+        return $this->render('AppBundle:Profile:createTest.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+    /**
      * @Route("/tests/{id}/add/question", name="user.test.add.question")
      */
     public function addQuestionInTest($id,Request $request)
@@ -136,7 +259,7 @@ class ProfileController extends Controller
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Test:success.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig',[]);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig',
@@ -176,7 +299,7 @@ class ProfileController extends Controller
             $em->persist($answer);
             $em->flush();
 
-            return $this->render('AppBundle:Test:success.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig',[]);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig',

@@ -6,6 +6,7 @@
     <div style="margin: 30px 20px;">
         <a href="{{ path('tests') }}">Testai</a>
         <a href="{{ path('user.question.add.answer', {'id': question.id}) }}">Pridėti Atsakymą</a>
+        <a href="{{ path('edit_test_question', {'id': question.id}) }}">Redaguoti klausimą</a>
         <table>
             <tr>
                 <td>
@@ -21,7 +22,7 @@
         <ol>
             {% for answer in answers %}
                 <li>
-                    <ol>
+                    <ul>
                         <li>
                             {{ answer.text }}
                         </li>
@@ -32,7 +33,10 @@
                             Neteisingas
                             {% endif %}
                         </li>
-                    </ol>
+                        <li>
+                            <a href="{{ path('edit_question_answer', {'id': answer.id})}}">Redaguoti atsakymą</a>
+                        </li>
+                    </ul>
 
                 </li>
             {% endfor %}
