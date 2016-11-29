@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class HomeController extends Controller
 {
@@ -36,26 +37,38 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/search", name="search")
+     * @Route("/search/{page}", name="search")
      */
-    public function searchAction()
+    public function searchAction($page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-        $tests = $em->getRepository('AppBundle:Test')->findby(array('published' => 1));
+        /*$em = $this->getDoctrine()->getManager();
+        $tests1 = $em->getRepository('AppBundle:Test')->findby(array('published' => 1));*/
+        $limit = 5;
+        $tests = $this->get('app.tests')->getAllTest($page,$limit);
+
+        $maxPages = ceil($tests->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Home:search.html.twig', [
-            'tests' => $tests
+
+            'tests' => $tests,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
 
     /**
-     * @Route("/search/{name}", name="searchByName")
+     * @Route("/search/name/{name}/{page}", name="searchByName")
      */
-    public function searchByNameAction($name)
+    public function searchByNameAction($name,$page = 1)
     {
-
-        $tests=$this->get('app.tests')->getTests($name);
+        $limit = 2;
+        $tests=$this->get('app.tests')->getTests($name,$page,$limit);
+        $maxPages = ceil($tests->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Home:search.html.twig', [
-            'tests' => $tests
+            'tests' => $tests,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
     /**

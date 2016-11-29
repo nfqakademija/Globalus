@@ -9,6 +9,7 @@
 namespace AppBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class TestService
 {
@@ -29,7 +30,30 @@ class TestService
 
         return $posts;
     }
-    public function getTests($name){
+    public function getAllTest($currentPage = 1,$limit)
+    {
+
+        $repository = $this->em->getRepository('AppBundle:Test');
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.published = 1')
+            ->getQuery();
+        // No need to manually get get the result ($query->getResult())
+
+        $paginator = $this->paginate($query, $currentPage);
+
+        return $paginator;
+    }
+    public function paginate($dql, $page = 1, $limit = 5)
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
+    }
+    public function getTests($name,$currentPage = 1,$limit){
 
         $repository = $this->em->getRepository('AppBundle:Test');
         $query = $repository->createQueryBuilder('p')
@@ -38,10 +62,12 @@ class TestService
             ->andWhere('p.published = 1')
             ->setParameter('name', '%'.$name.'%')
             ->getQuery();
-        $tests_result = $query->getResult();
+       // $tests_result = $query->getResult();
+        $paginator = $this->paginate($query, $currentPage,$limit);
 
+        return $paginator;
 
-        return $tests_result;
+       // return $tests_result;
     }
     public function getRecentTests($count = 5){
 

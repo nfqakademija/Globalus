@@ -8,14 +8,22 @@
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href={{ asset('bundles/app/style/search.css') }} />
     <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
+<style>
+    .titleH {
+        font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;
+        color: rgba(0,0,0,0.7);
+        text-shadow: 3px 3px 3px #fff;
+        color:#21c221;
+    }
 
+</style>
 {% endblock %}
 
 {% block body %}
     <div class="container">
-        <div class="title" style="padding :10px; text-align: center">
-            <h1 style="color:greenyellow; font-family: Great Vibes; font-size: 110px">Testai</h1>
-        </div>
+
+        <div class="title titleH" style="color:greenyellow;text-align: center; padding :10px">Testai</div>
 
         <div >
         {% include "AppBundle:Home:breadcrumb.html.twig" %}
@@ -39,5 +47,46 @@
         </div>
 
     </div>
+    {% if maxPages > 1 %}
+        <ul class="pagination pagination-sm">
+            {% if app.request.attributes.get('_route') == 'searchByName' %}
+                {# `«` arrow  #}
+
+                <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+                {% for i in 1..maxPages %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {# `»` arrow #}
+                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+                
+            {% else %}
+                {# `«` arrow  #}
+                <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                    <a href="{{ path('search', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+
+                {# Render each page number #}
+                {% for i in 1..maxPages %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('search', {page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {# `»` arrow #}
+                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                    <a href="{{ path('search', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+            {% endif %}
+
+
+        </ul>
+    {% endif %}
 
 {% endblock %}
