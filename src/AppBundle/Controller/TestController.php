@@ -19,58 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 class TestController extends Controller
 {
     /**
-     * @Route("/test/create", name="testCreate")
-     */
-    public function createAction(Request $request)
-    {
-
-        $test = new Test();
-
-        $form = $this->createFormBuilder($test)
-            ->add('name', TextType::class, [
-                'label' => 'Pavadinimas'
-            ])
-            ->add('description', TextType::class, [
-                'label' => 'Aprasymas'
-            ])
-            ->add('questions', CollectionType::class, [
-                'label' => 'Klausimai',
-                'entry_type' => QuestionType::class,
-                'allow_add' => true,
-                'by_reference' => false,
-                'prototype_name' => '__q_name__',
-            ])
-
-            ->add('save', SubmitType::class, array('label' => 'Sukurti'))
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $test = $form->getData();
-            $em = $this->getDoctrine()->getManager();
-
-            foreach ($test->getQuestions() as $question){
-                foreach ($question->getAnswers() as $answer){
-                    $answer->setQuestion($question);
-                    $em->persist($answer);
-                }
-                $question->setTest($test);
-                $em->persist($question);
-            }
-            $em->persist($test);
-            $em->flush();
-
-            return $this->render('AppBundle:Test:success.html.twig',[]);
-        }
-
-        return $this->render('AppBundle:Test:create.html.twig', [
-            'form' => $form->createView(),
-        ]);
-
-
-    }
-    /**
      * @Route("/create/tests" , name="createTest")
      */
     public function createTest(Request $request){

@@ -65,7 +65,7 @@
                 <li {{ thisPage == maxPages ? 'class="disabled"' }}>
                     <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
                 </li>
-                
+
             {% else %}
                 {# `«` arrow  #}
                 <li {{ thisPage == 1 ? 'class="disabled"' }}>

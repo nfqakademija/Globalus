@@ -4,7 +4,6 @@
 {% block content %}
 
     <div style="margin: 30px 20px;">
-        <a href="{{ path('testCreate') }}">Sukurti testa</a><br>
         <a href="{{ path('createTest') }}">Sukurti testa</a><br>
         <ol>
         {% for test in tests %}
@@ -18,7 +17,26 @@
         {% endfor %}
 
         </ol>
+        {# `«` arrow  #}
+
         <hr/>
     </div>
+    <ol>
+        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+            <a href="{{ path('user.tests', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+        </li>
+
+        {# Render each page number #}
+        {% for i in 1..maxPages %}
+            <li {{ thisPage == i ? 'class="active"' }}>
+                <a href="{{ path('user.tests', {page: i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {# `»` arrow #}
+        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+            <a href="{{ path('user.tests', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+        </li>
+    </ol>
 
 {% endblock %}

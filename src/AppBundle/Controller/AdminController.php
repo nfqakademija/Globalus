@@ -26,18 +26,23 @@ class AdminController extends Controller
         return $this->render('AppBundle:Admin:index.html.twig', []);
     }
     /**
-     * @Route("/user", name="users")
+     * @Route("/user/{page}", name="users")
      */
-    public function userAction()
+    public function userAction($page = 1)
     {
         $userService = $this->get('app.user');
-        $users = $userService->getAllUsers();
+        $limit = 8;
+        $users = $userService->getAllUsers($page,$limit);
+        $maxPages = ceil($users->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Admin:user.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
     /**
-     * @Route("/user/{id}", name="userAction")
+     * @Route("/user/spec/{id}", name="userAction")
      */
     public function userActionList($id, Request $request)
     {
@@ -183,18 +188,26 @@ class AdminController extends Controller
         ]);
     }
     /**
-     * @Route("/tests", name="tests")
+     * @Route("/tests/{page}", name="tests")
      */
-    public function testsAction(){
-
-        $tests = $this->getDoctrine()->getRepository('AppBundle:Test')->findAll();
-   // print_r($tests);
+    public function testsAction($page = 1){
+        $testService = $this->get('app.tests');
+        $limit = 5;
+        $tests = $testService->getAllTest($page,$limit);
+        $maxPages = ceil($tests->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Admin:tests.html.twig', [
-            'tests' => $tests
+            'tests' => $tests,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
+   // print_r($tests);
+        /*return $this->render('AppBundle:Admin:tests.html.twig', [
+            'tests' => $tests
+        ]);*/
     }
     /**
-     * @Route("/tests/{id}", name="testsAction")
+     * @Route("/tests/test/{id}", name="testsAction")
      */
     public function testActionList($id)
     {

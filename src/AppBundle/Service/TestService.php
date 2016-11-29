@@ -30,7 +30,7 @@ class TestService
 
         return $posts;
     }
-    public function getAllTest($currentPage = 1,$limit)
+    public function getAllTest($currentPage = 1,$limit = 5)
     {
 
         $repository = $this->em->getRepository('AppBundle:Test');
@@ -39,7 +39,7 @@ class TestService
             ->getQuery();
         // No need to manually get get the result ($query->getResult())
 
-        $paginator = $this->paginate($query, $currentPage);
+        $paginator = $this->paginate($query, $currentPage, $limit);
 
         return $paginator;
     }
@@ -53,7 +53,7 @@ class TestService
 
         return $paginator;
     }
-    public function getTests($name,$currentPage = 1,$limit){
+    public function getTests($name,$currentPage = 1,$limit = 5){
 
         $repository = $this->em->getRepository('AppBundle:Test');
         $query = $repository->createQueryBuilder('p')
@@ -85,16 +85,32 @@ class TestService
 
         return $tests;
     }
-    public function getUserTests($id){
-        $repository = $this->em->getRepository('AppBundle:Test');
-        $tests_result = $repository->findBy(array('user'=>$id));
+    public function getUserTests($id,$currentPage = 1,$limit = 5){
+        /*$repository = $this->em->getRepository('AppBundle:Test');
+        $tests_result = $repository->findBy(array('user'=>$id));*/
 
-        return $tests_result;
+        $repository = $this->em->getRepository('AppBundle:Test');
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.user = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        $paginator = $this->paginate($query, $currentPage,$limit);
+
+        return $paginator;
+        //return $tests_result;
     }
-    public function getTestQuestions($id)
+    public function getTestQuestions($id,$currentPage = 1,$limit = 5)
     {
-        $questions=$this->em->getRepository('AppBundle:Question')->findBy(array('test'=>$id));
-        return $questions;
+        /*$questions=$this->em->getRepository('AppBundle:Question')->findBy(array('test'=>$id));
+        return $questions;*/
+        $repository = $this->em->getRepository('AppBundle:Question');
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.test = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        $paginator = $this->paginate($query, $currentPage,$limit);
+
+        return $paginator;
     }
     public function getQuestionById($id)
     {
@@ -106,9 +122,18 @@ class TestService
         $question=$this->em->getRepository('AppBundle:Answer')->find($id);
         return $question;
     }
-    public function getQuestionAnswers($id)
+    public function getQuestionAnswers($id,$currentPage = 1,$limit = 5)
     {
-        $questions=$this->em->getRepository('AppBundle:Answer')->findBy(array('question'=>$id));
-        return $questions;
+        /*$questions=$this->em->getRepository('AppBundle:Answer')->findBy(array('question'=>$id));
+        return $questions;*/
+
+        $repository = $this->em->getRepository('AppBundle:Answer');
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.question = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        $paginator = $this->paginate($query, $currentPage,$limit);
+
+        return $paginator;
     }
 }

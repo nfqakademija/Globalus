@@ -30,7 +30,7 @@
                         {% for test in tests %}
 
                                 <li>
-                                    <a class="w3-tooltip" href="{{ path('tests') }}/{{ test.id }}">
+                                    <a class="w3-tooltip" href="{{ path('testsAction',{id: test.id }) }}">
                                         <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Id {{ test.id }} Aprašymas {{ test.description }}</span>
                                         {{ test.name }}</a>
                                 </li>
@@ -40,6 +40,23 @@
                 </div>
             </div>
         </div>
+        <ol>
+            <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                <a href="{{ path('tests', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+            </li>
+
+            {# Render each page number #}
+            {% for i in 1..maxPages %}
+                <li {{ thisPage == i ? 'class="active"' }}>
+                    <a href="{{ path('tests', {page: i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+
+            {# `»` arrow #}
+            <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                <a href="{{ path('tests', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+            </li>
+        </ol>
         <!-- /#page-content-wrapper -->
 
     </div>

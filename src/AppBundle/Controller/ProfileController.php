@@ -84,30 +84,41 @@ class ProfileController extends Controller
         );
     }
     /**
-     * @Route("/tests", name="user.tests")
+     * @Route("/tests/{page}", name="user.tests")
      */
-    public function showUserTests()
+    public function showUserTests($page = 1)
     {
         $testService = $this->get('app.tests');
-        $tests=$testService->getUserTests($this->getUser()->getId());
+        $limit = 10;
+
+        $tests=$testService->getUserTests($this->getUser()->getId(),$page,$limit);
+        $maxPages = ceil($tests->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Profile:tests.html.twig',
             [
-                'tests' => $tests
+                'tests' => $tests,
+                'maxPages' => $maxPages,
+                'thisPage' => $thisPage
             ]
         );
     }
     /**
-     * @Route("/tests/{id}", name="user.test")
+     * @Route("/tests/test/{id}/{page}", name="user.test")
      */
-    public function showUserTest($id)
+    public function showUserTest($id,$page = 1)
     {
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
-        $questions=$testService->getTestQuestions($id);
+        $limit = 2;
+        $questions=$testService->getTestQuestions($id,$page,$limit);
+        $maxPages = ceil($questions->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Profile:testInfo.html.twig',
             [
                 'test' => $test,
-                'questions' =>$questions
+                'questions' =>$questions,
+                'maxPages' => $maxPages,
+                'thisPage' => $thisPage
             ]
         );
     }
@@ -310,17 +321,23 @@ class ProfileController extends Controller
         );
     }
     /**
-     * @Route("/tests/question/{id}", name="user.test.question")
+     * @Route("/tests/question/{id}/{page}", name="user.test.question")
      */
-    public function showTestQuestion($id)
+    public function showTestQuestion($id,$page = 1)
     {
         $testService = $this->get('app.tests');
         $questions=$testService->getQuestionById($id);
-        $answers=$testService->getQuestionAnswers($id);
+        $limit = 2;
+        $answers=$testService->getQuestionAnswers($id,$page,$limit);
+        $maxPages = ceil($answers->count() / $limit);
+        $thisPage = $page;
+
         return $this->render('AppBundle:Profile:questionInfo.html.twig',
             [
                 'question' => $questions,
-                'answers' => $answers
+                'answers' => $answers,
+                'maxPages' => $maxPages,
+                'thisPage' => $thisPage
             ]
         );
     }

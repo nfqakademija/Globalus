@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
-
+use AppBundle\Service\TestService;
 class UserService
 {
     /**
@@ -54,11 +54,19 @@ class UserService
         return $user;
 
     }
-    public function getAllUsers()
+    public function getAllUsers($currentPage = 1,$limit = 5)
     {
-        $repository = $this->em->getRepository('AppBundle:User');
+        /*$repository = $this->em->getRepository('AppBundle:User');
         $users = $repository->findAll();
-        return $users;
+        return $users;*/
+
+        $repository = $this->em->getRepository('AppBundle:User');
+        $query = $repository->createQueryBuilder('p')
+            ->getQuery();
+        $testService = new TestService($this->em);
+        $paginator = $testService->paginate($query, $currentPage,$limit);
+
+        return $paginator;
     }
     public function getAllUsersASC()
     {
