@@ -54,6 +54,9 @@
 
                     <div class="col-lg-4">
                         <p>Testai</p>
+                        <a href="{{ path('edit_admin_question', {id:question.id}) }}">
+                            Redaguoti
+                        </a>
                     </div>
                     <div class="col-lg-12">
                         <ol>
@@ -71,7 +74,15 @@
                                         </span>
                                         {{ answer.text }}</a>
                                 </li>
-                                <li><a href="{{ path('answerDelete', {id:answer.id}) }}">Trinti</a></li>
+                                <li>
+                                    <a href="{{ path('answerDelete', {id:answer.id}) }}">
+                                        Trinti</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('edit_admin_answer', {id:answer.id}) }}">
+                                        Redaguoti
+                                    </a>
+                                </li>
                             {% endfor %}
 
                         </ol>
