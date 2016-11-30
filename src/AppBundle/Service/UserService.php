@@ -56,10 +56,6 @@ class UserService
     }
     public function getAllUsers($currentPage = 1,$limit = 5)
     {
-        /*$repository = $this->em->getRepository('AppBundle:User');
-        $users = $repository->findAll();
-        return $users;*/
-
         $repository = $this->em->getRepository('AppBundle:User');
         $query = $repository->createQueryBuilder('p')
             ->getQuery();
@@ -68,17 +64,34 @@ class UserService
 
         return $paginator;
     }
-    public function getAllUsersASC()
+    public function getAllUsersASC($currentPage = 1,$limit = 5)
     {
-        $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email asc");
-        $users = $q->getResult();
+        $query = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email asc");
+
+        $testService = new TestService($this->em);
+        $paginator = $testService->paginate($query, $currentPage,$limit);
+
+        /*$users = $q->getResult();
         return $users;
+
+        $repository = $this->em->getRepository('AppBundle:User');
+        $query = $repository->createQueryBuilder('p')
+            ->orderBy('p.email asc')
+            ->getQuery();
+        $testService = new TestService($this->em);
+        $paginator = $testService->paginate($query, $currentPage,$limit);*/
+
+        return $paginator;
     }
-    public function getAllUsersDESC()
+    public function getAllUsersDESC($currentPage = 1,$limit = 5)
     {
         $q = $this->em->createQuery("select u from AppBundle\Entity\User u order by u.email desc");
-        $users = $q->getResult();
-        return $users;
+        $testService = new TestService($this->em);
+        $paginator = $testService->paginate($q, $currentPage,$limit);
+        /*$users = $q->getResult();
+        return $users;*/
+        return $paginator;
+
     }
 
 }

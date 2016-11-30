@@ -31,16 +31,14 @@
                     <div class="col-lg-12">
                         <table class="table">
                             <thead>
-                            Pasirinktas Testas
+                            Pasirinktas Klausimas
                             </thead>
                             <tr>
-                                <td>id</td><td>Pavadinimas</td><td>Aprašymas</td>
+                                <td>id</td><td>Pavadinimas</td>
                             </tr>
                                 <tr >
-                                    <td>{{ test.id }}</td><td>{{ test.name }} </td>
-                                    <td>
-                                        {{ test.description }}
-                                    </td>
+                                    <td>{{ question.id }}</td><td>{{ question.text }} </td>
+
                                 </tr>
                         </table>
 
@@ -48,36 +46,32 @@
                     <div class="col-lg-4">
                         <header>
                             <p>
-                                Ištrinti testą
+                                Trinti
                             </p>
                         </header>
-                        <a href='{{ path('homepage') }}admin/tests/delete/{{ test.id }}'>Trinti</a>
+                        <a  href="{{ path('questionDelete', {id:question.id}) }}">Trinti klausimą</a>
                     </div>
-                    <div class="col-lg-4">
-                        <header>
-                            <p>
-                                Publikuoti testą
-                            </p>
-                        </header>
-                        {% if test.published == 0 %}
-                        <a href='{{ path('homepage') }}admin/tests/publish/{{ test.id }}'>Publikuoti</a>
-                        {% else %}
-                        <a href='{{ path('homepage') }}admin/tests/depublish/{{ test.id }}'>Depublikuoti</a>
-                        {% endif %}
-                    </div>
+
                     <div class="col-lg-4">
                         <p>Testai</p>
                     </div>
                     <div class="col-lg-12">
                         <ol>
-                            {% for question in questions %}
+                            {% for answer in answers %}
 
                                 <li>
-                                    <a class="w3-tooltip" href="{{ path('questionInfo',{id: question.id }) }}/1">
+                                    <a class="w3-tooltip">
                                         <span style="position:absolute;left: -40px;bottom: 30px;background: black;"
-                                              class="w3-text w3-tag">Id {{ question.id }}</span>
-                                        {{ question.text }}</a>
+                                              class="w3-text w3-tag">Id {{ answer.id }} Atsakymas yra
+                                        {% if answer.correct == 1 %}
+                                            teisingas
+                                            {% else %}
+                                            neteisingas
+                                            {% endif %}
+                                        </span>
+                                        {{ answer.text }}</a>
                                 </li>
+                                <li><a href="{{ path('answerDelete', {id:answer.id}) }}">Trinti</a></li>
                             {% endfor %}
 
                         </ol>
@@ -88,19 +82,19 @@
         </div>
         <ol>
             <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                <a href="{{ path('testsAction', {id: test.id,page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                <a href="{{ path('questionInfo', {id: question.id,page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
             </li>
 
             {# Render each page number #}
             {% for i in 1..maxPages %}
                 <li {{ thisPage == i ? 'class="active"' }}>
-                    <a href="{{ path('testsAction', {id: test.id,page: i}) }}">{{ i }}</a>
+                    <a href="{{ path('questionInfo', {id: question.id,page: i}) }}">{{ i }}</a>
                 </li>
             {% endfor %}
 
             {# `»` arrow #}
             <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                <a href="{{ path('testsAction', {id: test.id,page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                <a href="{{ path('questionInfo', {id: question.id,page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
             </li>
         </ol>
         <!-- /#page-content-wrapper -->

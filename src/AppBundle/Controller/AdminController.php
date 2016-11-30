@@ -166,25 +166,35 @@ class AdminController extends Controller
         ]);
     }
     /**
-     * @Route("/userByEmailASC", name="usersbyEmailASC")
+     * @Route("/userByEmailASC/{page}", name="usersbyEmailASC")
      */
-    public function userActionEmailASC()
+    public function userActionEmailASC($page = 1)
     {
         $userService = $this->get('app.user');
-        $users = $userService->getAllUsersASC();
+        $limit = 8;
+        $users = $userService->getAllUsersASC($page,$limit);
+        $maxPages = ceil($users->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Admin:user.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
     /**
-     * @Route("/userByEmailDESC", name="usersbyEmailDESC")
+     * @Route("/userByEmailDESC/{page}", name="usersbyEmailDESC")
      */
-    public function userActionEmailDESC()
+    public function userActionEmailDESC($page = 1)
     {
         $userService = $this->get('app.user');
-        $users = $userService->getAllUsersDESC();
+        $limit = 8;
+        $users = $userService->getAllUsersDESC($page,$limit);
+        $maxPages = ceil($users->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Admin:user.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
     /**
@@ -207,16 +217,21 @@ class AdminController extends Controller
         ]);*/
     }
     /**
-     * @Route("/tests/test/{id}", name="testsAction")
+     * @Route("/tests/test/{id}/{page}", name="testsAction")
      */
-    public function testActionList($id)
+    public function testActionList($id,$page =1)
     {
         $testsService = $this->get('app.tests');
         $test = $testsService->getTestById($id);
-
-
+        $limit = 2;
+        $questions = $testsService->getTestQuestions($id,$page,$limit);
+        $maxPages = ceil($questions->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Admin:testAction.html.twig', [
-            'test' => $test
+            'test' => $test,
+            'questions' => $questions,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
     /**
@@ -227,7 +242,15 @@ class AdminController extends Controller
         $testsService = $this->get('app.tests');
 
         $test = $testsService->getTestById($id);
+        $questions = $test->getQuestions();
         $em = $this->getDoctrine()->getManager();
+        foreach ($questions as $question){
+            $answers=$question->getAnswers();
+            foreach ($answers as $answer){
+                $em->remove($answer);
+            }
+            $em->remove($question);
+        }
         $em->remove($test);
         $em->flush();
         return $this->render('AppBundle:Admin:index.html.twig', []);
@@ -257,6 +280,55 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $test->setPublished(0);
         $em->persist($test);
+        $em->flush();
+        return $this->render('AppBundle:Admin:index.html.twig', []);
+    }
+    /**
+     * @Route("/tests/test/question/{id}/{page}", name="questionInfo")
+     */
+    public function showTestQestionInfo($id,$page =1)
+    {
+        $testsService = $this->get('app.tests');
+        //$test = $testsService->getTestById($id);
+        $question = $testsService->getQuestionById($id);
+        $limit = 2;
+        $answers = $testsService->getQuestionAnswers($id,$page,$limit);
+        $maxPages = ceil($answers->count() / $limit);
+        $thisPage = $page;
+        return $this->render('AppBundle:Admin:questionAction.html.twig', [
+            'question' => $question,
+            'answers' => $answers,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
+        ]);
+    }
+    /**
+     * @Route("/tests/test/questions/question/delete/{id}", name="questionDelete")
+     */
+    public function questionDelete($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $question = $testsService->getQuestionById($id);
+        $em = $this->getDoctrine()->getManager();
+        $answers=$question->getAnswers();
+        $em->remove($question);
+        foreach ($answers as $answer){
+            $em->remove($answer);
+        }
+        $em->flush();
+        return $this->render('AppBundle:Admin:index.html.twig', []);
+    }
+    /**
+     * @Route("/tests/test/question/answer/delete/{id}", name="answerDelete")
+     */
+    public function answerDelete($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $answer = $testsService->getAnswerById($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($answer);
         $em->flush();
         return $this->render('AppBundle:Admin:index.html.twig', []);
     }
