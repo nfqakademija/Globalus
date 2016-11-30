@@ -102,6 +102,66 @@ class ProfileController extends Controller
             ]
         );
     }
+
+    /**
+     * @Route("/tests/test/delete/{id}", name="user.tests.delete")
+     */
+    public function deleteUserTest($id)
+    {
+        $testService = $this->get('app.tests');
+        $test = $testService->getTestById($id);
+        $questions = $test->getQuestions();
+        $em = $this->getDoctrine()->getManager();
+        foreach ($questions as $question) {
+            $answers = $question->getAnswers();
+            foreach ($answers as $answer) {
+                $em->remove($answer);
+            }
+            $em->remove($question);
+        }
+        $em->remove($test);
+        $em->flush();
+        return $this->render('AppBundle:Profile:index.html.twig',
+            [
+            ]
+        );
+    }
+
+    /**
+     * @Route("/tests/test/question/delete/{id}", name="user.question.delete")
+     */
+    public function deleteTestQuestion($id)
+    {
+        $testService = $this->get('app.tests');
+        $question = $testService->getQuestionById($id);
+        $em = $this->getDoctrine()->getManager();
+        $answers = $question->getAnswers();
+        foreach ($answers as $answer) {
+            $em->remove($answer);
+        }
+        $em->remove($question);
+        $em->flush();
+        return $this->render('AppBundle:Profile:index.html.twig',
+            [
+            ]
+        );
+    }
+
+    /**
+     * @Route("/tests/test/question/answer/delete/{id}", name="user.answer.delete")
+     */
+    public function deleteQuestionAnswer($id)
+    {
+        $testService = $this->get('app.tests');
+        $answer = $testService->getAnswerById($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($answer);
+        $em->flush();
+        return $this->render('AppBundle:Profile:index.html.twig',
+            [
+            ]
+        );
+    }
     /**
      * @Route("/tests/test/{id}/{page}", name="user.test")
      */
@@ -156,7 +216,7 @@ class ProfileController extends Controller
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:tests.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig',[]);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [

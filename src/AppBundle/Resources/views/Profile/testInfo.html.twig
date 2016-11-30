@@ -32,6 +32,13 @@
                         {{ question.text }}
                     </a>
                 </li>
+                <ul>
+                    <li>
+                        <a href="{{ path('user.question.delete', {'id': question.id}) }}">
+                            Trinti
+                        </a>
+                    </li>
+                </ul>
             {% endfor %}
         </ol>
 

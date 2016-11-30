@@ -36,9 +36,15 @@
                         <li>
                             <a href="{{ path('edit_question_answer', {'id': answer.id})}}">Redaguoti atsakymą</a>
                         </li>
+                        <li>
+                            <a href="{{ path('user.answer.delete', {'id': answer.id}) }}">
+                                Trinti
+                            </a>
+                        </li>
                     </ul>
 
                 </li>
+                
             {% endfor %}
         </ol>
 

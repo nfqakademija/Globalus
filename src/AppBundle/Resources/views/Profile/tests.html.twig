@@ -13,7 +13,13 @@
                         {{ test.name }}
                     </a>
                 </li>
-
+                <ul>
+                    <li>
+                        <a href="{{ path('user.tests.delete', {'id':test.id}) }}">
+                            Trinti
+                        </a>
+                    </li>
+                </ul>
         {% endfor %}
 
         </ol>
