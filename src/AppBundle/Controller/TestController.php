@@ -49,7 +49,7 @@ class TestController extends Controller
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Test:success.html.twig', []);
+            return $this->render('AppBundle:Profile:index.html.twig', []);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [

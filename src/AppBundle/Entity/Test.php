@@ -52,7 +52,7 @@ class Test
      */
     private $timesStarted;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $published;
 
@@ -110,6 +110,7 @@ class Test
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->published = false;
     }
 
     /**
