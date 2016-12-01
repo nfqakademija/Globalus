@@ -31,13 +31,19 @@ class TestService
 
         return $posts;
     }
-    public function getAllTest($currentPage = 1, $limit = 5)
+    public function getAllTest($currentPage = 1, $limit = 5, $published = false)
     {
 
         $repository = $this->em->getRepository('AppBundle:Test');
-        $query = $repository->createQueryBuilder('p')
-            ->where('p.published = 1')
-            ->getQuery();
+        if ($published == true) {
+            $query = $repository->createQueryBuilder('p')
+                ->where('p.published = 1')
+                ->getQuery();
+        } else {
+            $query = $repository->createQueryBuilder('p')
+                ->getQuery();
+        }
+
         $paginator = $this->paginate($query, $currentPage, $limit);
 
         return $paginator;

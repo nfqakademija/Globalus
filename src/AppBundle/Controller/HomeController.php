@@ -42,7 +42,7 @@ class HomeController extends Controller
     {
 
         $limit = 10;
-        $tests = $this->get('app.tests')->getAllTest($page, $limit);
+        $tests = $this->get('app.tests')->getAllTest($page, $limit ,true);
 
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;
