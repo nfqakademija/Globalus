@@ -7,6 +7,7 @@ use AppBundle\Entity\Question;
 use AppBundle\Entity\Solution;
 use AppBundle\Entity\Test;
 use AppBundle\Repository\QuestionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -129,7 +130,7 @@ class TestController extends Controller
             }
 
             if((count($solution->getAnswers())==0)&&($old!=null)){
-                $manager->remove($solution);
+                $solution->clearAnswers();
             }
             $manager->flush();
 
@@ -158,15 +159,80 @@ class TestController extends Controller
      * @Route("/test/details/{tid}/{hash}", name="test-result")
      */
     public function showResult($tid, $hash){
-        /*
-            TASKS:
-            Skaiciuoti rezultata
-        */
-
         /** @var Solution $solution */
-        $solution = $this->getDoctrine()->getRepository('AppBundle:Solution')->findOneBy(array('test' => $tid, 'hash' => $hash));
+        $solutions = $this->getDoctrine()->getRepository('AppBundle:Solution')->findBy(array('test' => $tid, 'hash' => $hash));
 
         //var_dump($solution);
+
+        if($solutions==null){
+            $message = 'Toks testo sprendimas neegzistuoja';
+            return $this->render('AppBundle:Test:error.html.twig', array(
+                'message' => $message
+            ));
+        }else {
+            if ($this->getUser() != $solutions[0]->getUser()) {
+                $message = 'Peržiūrėti galima tik savo testų rezultatus';
+                return $this->render('AppBundle:Test:error.html.twig', array(
+                    'message' => $message
+                ));
+            }else{
+                $test = $this->getDoctrine()->getRepository('AppBundle:Test')->find($tid);
+                $maxPoints = $test->getQuestionsLimit();
+                $points = 0;
+
+
+
+                foreach ($solutions as $solution){
+                    $question = $this->getDoctrine()->getRepository('AppBundle:Question')->find($solution->getQuestion());
+                    $qAnswers = $question->getAnswers();
+                    $qCorrectAnswers = 0;
+                    foreach ($qAnswers as $answer){
+                        if($answer->getCorrect()==true){
+                            $qCorrectAnswers++;
+                        }
+                    }
+
+                    $answers = $solution->getAnswers();
+                    if(($answers!=null)&&(count($answers)>0)){
+                        $correctAnswers = 0;
+                        $incorrectAnswers = 0;
+                        foreach ($answers as $answer){
+                            if($answer->getCorrect()==true){
+                                $correctAnswers++;
+                            }else{
+                                $incorrectAnswers++;
+                            }
+                        }
+                        if($incorrectAnswers==0){
+                            if($qCorrectAnswers>1){
+                                $points = $points + round(($correctAnswers/$qCorrectAnswers), 2);
+                            }else{
+                                $points++;
+                            }
+                        }
+                    }
+                }
+
+                $result = round(($points*100/$maxPoints), 2);
+
+                return $this->render('AppBundle:Test:result.html.twig', array(
+                    'testName' => $test->getName(),
+                    'result' => $result
+                ));
+            }
+
+
+        }
+    }
+
+    /**
+     * @Route("/test/answers/{tid}/{qid}/{hash}", name="test-answers")
+     */
+    public function showAnswers($tid, $qid, $hash){
+        /** @var Solution $solution */
+        $solution = $this->getDoctrine()->getRepository('AppBundle:Solution')->findOneBy(array('test' => $tid, 'question' => $qid, 'user' => $this->getUser(), 'hash' => $hash));
+
+
 
         if($solution==null){
             $message = 'Toks testo sprendimas neegzistuoja';
@@ -174,23 +240,37 @@ class TestController extends Controller
                 'message' => $message
             ));
         }else {
-            /** @var Test $test */
-            $test = $solution->getTest();
+            $answers = $solution->getQuestion()->getAnswers();
 
-            if ($this->getUser() != $solution->getUser()) {
-                echo "a";
-                $message = 'Peržiūrėti galima tik savo testų rezultatus';
-                return $this->render('AppBundle:Test:error.html.twig', array(
-                    'message' => $message
-                ));
-            }else{
-                return $this->render('AppBundle:Test:result.html.twig', array(
-                    'testName' => $test->getName(),
-                    'result' => 100
-                ));
+            $choices = array();
+            $selected = array();
+            for($i=0;$i<count($answers);$i++){
+                    foreach ($solution->getAnswers() as $answer){
+                        if(($answer==$answers[$i])&&(!in_array($answers[$i]->getId(), $selected))){
+                            $selected[] = $answers[$i]->getId();
+                        }
+                    }
+                $choices[] = array(
+                    $answers[$i]->getText()=>$answers[$i]->getId()
+                );
             }
 
+            $form = $this->createFormBuilder()
+                ->add('answers', ChoiceType::class, array(
+                    'label' => $solution->getQuestion()->getText(),
+                    'choices' => $choices,
+                    'data' => $selected,
+                    'expanded' => true,
+                    'multiple' => true,
+                    'disabled' => true
+                ))
+                ->getForm();
 
+            return $this->render('AppBundle:Test:answers.html.twig', array(
+                'form' => $form->createView(),
+                'testName' => $solution->getTest()->getName(),
+                'questionLimit' => $solution->getTest()->getQuestionsLimit()
+            ));
         }
     }
 }
