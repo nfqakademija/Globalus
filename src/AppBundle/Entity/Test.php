@@ -43,6 +43,10 @@ class Test
      */
     private $questions;
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $questionsLimit;
+    /**
      * Test constructor.
      * @param $id
      * @param $name
@@ -61,6 +65,8 @@ class Test
         $this->author = $author;
         $this->questions = new ArrayCollection();
     }
+
+
 
     /**
      * @return mixed
@@ -187,6 +193,10 @@ class Test
     {
         $this->author = $author;
         return $this;
+    }
+
+    public function getUser(){
+        return $this->user;
     }
 
     public function setUser($user)

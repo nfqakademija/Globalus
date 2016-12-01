@@ -1,0 +1,29 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Klaida - {{ parent() }}{% endblock %}
+
+
+{% block stylesheets %}
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/app/style/test.css') }}"/>
+
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

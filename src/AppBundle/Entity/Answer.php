@@ -22,7 +22,6 @@ class Answer
      */
     private $id;
     /**
-     * @ORM\Column(type="integer")
      * @ORM\ManyToOne(targetEntity="Question",inversedBy="answers")
      */
     private $question;
@@ -71,19 +70,17 @@ class Answer
     /**
      * @return mixed
      */
-    public function getQuestionId()
+    public function getQuestion()
     {
-        return $this->questionId;
+        return $this->question;
     }
 
     /**
-     * @param mixed $questionId
-     * @return Answer
+     * @param mixed $question
      */
-    public function setQuestionId($questionId)
+    public function setQuestion($question)
     {
-        $this->questionId = $questionId;
-        return $this;
+        $this->question = $question;
     }
 
     /**
