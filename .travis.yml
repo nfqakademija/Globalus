@@ -7,6 +7,7 @@ services:
 before_script:
 # Get the token from github and put it in travis repo under GITHUB_COMPOSER_AUTH ENV variable, then uncomment line below.
 #  - composer config -g github-oauth.github.com $GITHUB_COMPOSER_AUTH
+  - SYMFONY_ENV=prod
   - composer install --no-interaction --prefer-dist
 script:
   - vendor/bin/phpcs -p --standard=PSR2 --extensions=php ./src
