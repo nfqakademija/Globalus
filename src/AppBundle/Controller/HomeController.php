@@ -40,9 +40,8 @@ class HomeController extends Controller
      */
     public function searchAction($page = 1)
     {
-        /*$em = $this->getDoctrine()->getManager();
-        $tests1 = $em->getRepository('AppBundle:Test')->findby(array('published' => 1));*/
-        $limit = 5;
+
+        $limit = 10;
         $tests = $this->get('app.tests')->getAllTest($page, $limit);
 
         $maxPages = ceil($tests->count() / $limit);
@@ -60,7 +59,7 @@ class HomeController extends Controller
      */
     public function searchByNameAction($name, $page = 1)
     {
-        $limit = 2;
+        $limit = 10;
         $tests=$this->get('app.tests')->getTests($name, $page, $limit);
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;

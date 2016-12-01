@@ -37,7 +37,7 @@ class AdminController extends Controller
     public function userAction($page = 1)
     {
         $userService = $this->get('app.user');
-        $limit = 8;
+        $limit = 10;
         $users = $userService->getAllUsers($page,$limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
@@ -177,7 +177,7 @@ class AdminController extends Controller
     public function userActionEmailASC($page = 1)
     {
         $userService = $this->get('app.user');
-        $limit = 8;
+        $limit = 10;
         $users = $userService->getAllUsersASC($page,$limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
@@ -193,7 +193,7 @@ class AdminController extends Controller
     public function userActionEmailDESC($page = 1)
     {
         $userService = $this->get('app.user');
-        $limit = 8;
+        $limit = 10;
         $users = $userService->getAllUsersDESC($page,$limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
@@ -208,7 +208,7 @@ class AdminController extends Controller
      */
     public function testsAction($page = 1){
         $testService = $this->get('app.tests');
-        $limit = 5;
+        $limit = 10;
         $tests = $testService->getAllTest($page,$limit);
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;
@@ -229,7 +229,7 @@ class AdminController extends Controller
     {
         $testsService = $this->get('app.tests');
         $test = $testsService->getTestById($id);
-        $limit = 2;
+        $limit = 10;
         $questions = $testsService->getTestQuestions($id,$page,$limit);
         $maxPages = ceil($questions->count() / $limit);
         $thisPage = $page;
@@ -297,7 +297,7 @@ class AdminController extends Controller
         $testsService = $this->get('app.tests');
         //$test = $testsService->getTestById($id);
         $question = $testsService->getQuestionById($id);
-        $limit = 2;
+        $limit = 10;
         $answers = $testsService->getQuestionAnswers($id,$page,$limit);
         $maxPages = ceil($answers->count() / $limit);
         $thisPage = $page;

@@ -38,25 +38,28 @@
                         </ol>
                     </div>
                 </div>
+                {% if tests.count > 0 %}
+                    <ol class="pagination">
+                        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                            <a href="{{ path('tests', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                        </li>
+
+                        {# Render each page number #}
+                        {% for i in 1..maxPages %}
+                            <li {{ thisPage == i ? 'class="active"' }}>
+                                <a href="{{ path('tests', {page: i}) }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {# `»` arrow #}
+                        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                            <a href="{{ path('tests', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                        </li>
+                    </ol>
+                {% endif %}
             </div>
         </div>
-        <ol>
-            <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                <a href="{{ path('tests', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-            </li>
 
-            {# Render each page number #}
-            {% for i in 1..maxPages %}
-                <li {{ thisPage == i ? 'class="active"' }}>
-                    <a href="{{ path('tests', {page: i}) }}">{{ i }}</a>
-                </li>
-            {% endfor %}
-
-            {# `»` arrow #}
-            <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                <a href="{{ path('tests', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-            </li>
-        </ol>
         <!-- /#page-content-wrapper -->
 
     </div>

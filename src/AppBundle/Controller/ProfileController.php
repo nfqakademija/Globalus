@@ -169,7 +169,7 @@ class ProfileController extends Controller
     {
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
-        $limit = 2;
+        $limit = 10;
         $questions=$testService->getTestQuestions($id,$page,$limit);
         $maxPages = ceil($questions->count() / $limit);
         $thisPage = $page;

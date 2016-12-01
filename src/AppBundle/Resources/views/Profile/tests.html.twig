@@ -1,33 +1,41 @@
 
 {% extends "@App/Profile/heading.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
 
+{% endblock %}
 {% block content %}
 
     <div style="margin: 30px 20px;">
-        <a href="{{ path('createTest') }}">Sukurti testa</a><br>
-        <ol>
-        {% for test in tests %}
+        <div></div>
+        <a href="{{ path('createTest') }}">Sukurti testa</a>
+        <br>
 
-                <li>
+
+        {% for test in tests %}
+            <ul style="list-style: none outside none;padding: 20px 20px;border-bottom: 1px solid greenyellow">
+                <li class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="float: left;display: block;">
                     <a href="{{ path('user.test', {'id': test.id }) }}">
                         {{ test.name }}
                     </a>
                 </li>
-                <ul>
-                    <li>
-                        <a href="{{ path('user.tests.delete', {'id':test.id}) }}">
-                            Trinti
-                        </a>
-                    </li>
-                </ul>
+                <li class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="float: left;display: block;">
+                    <a href="{{ path('user.tests.delete', {'id':test.id}) }}">
+                        Trinti
+                    </a>
+                </li>
+            </ul>
+
+
+
         {% endfor %}
 
-        </ol>
         {# `«` arrow  #}
 
-        <hr/>
     </div>
-    <ol>
+    {% if tests.count > 0 %}
+    <ol class="pagination" style="padding-top: 20px">
         <li {{ thisPage == 1 ? 'class="disabled"' }}>
             <a href="{{ path('user.tests', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
         </li>
@@ -44,5 +52,6 @@
             <a href="{{ path('user.tests', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
         </li>
     </ol>
+    {% endif %}
 
 {% endblock %}

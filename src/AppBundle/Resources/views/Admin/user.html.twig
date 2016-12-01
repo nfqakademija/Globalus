@@ -46,8 +46,15 @@
                                 <li class="users">
                                     <a class="w3-tooltip" href="{{ path('userAction', {id: user.id}) }}">
                                         <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Id {{ user.id }}
-                                            Rolės {% for role in user.roles %}
-                                                {{ role }}
+                                            Rolės:
+                                            {% for role in user.roles %}
+                                            {% if role == "ROLE_USER" %}
+                                            Vartotojas
+                                            {% elseif role == "ROLE_ADMIN" %}
+                                                Admin
+                                            {% elseif role == "ROLE_SUPER_ADMIN" %}
+                                                Super admin
+                                            {% endif %}
                                                  {% endfor %}
                                         </span>
                                         <span class="userEmail">{{ user.email }}</span>
@@ -61,7 +68,8 @@
             </div>
         </div>
         <div>
-            <ol>
+            {% if users.count > 0 %}
+            <ol class="pagination">
                 {% if app.request.attributes.get('_route') == 'usersbyEmailASC' %}
                     <li {{ thisPage == 1 ? 'class="disabled"' }}>
                         <a href="{{ path('usersbyEmailASC', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
@@ -114,6 +122,7 @@
 
 
             </ol>
+            {% endif %}
         </div>
 
 
