@@ -8,7 +8,6 @@
 
 namespace AppBundle\Event;
 
-
 class Events
 {
     const CREATE_EVENT = "app.create_event";

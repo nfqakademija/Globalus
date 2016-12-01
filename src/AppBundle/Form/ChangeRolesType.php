@@ -21,18 +21,11 @@ class ChangeRolesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('ROLE_USER',CheckboxType::class,array('label' => 'Vartotojas','value' => 'ROLE_USER','required' => ''))
-        ->add('ROLE_ADMIN',CheckboxType::class,array('label' => 'Admin','value' => 'ROLE_ADMIN','required' => ''))
-        ->add('ROLE_SUPER_ADMIN',CheckboxType::class,array('label' => 'Super admin','value' => 'ROLE_SUPER_ADMIN','required' => ''));
+        $builder->add('ROLE_USER', CheckboxType::class, array('label' => 'Vartotojas',
+            'value' => 'ROLE_USER','required' => ''))
+        ->add('ROLE_ADMIN', CheckboxType::class, array('label' => 'Admin',
+            'value' => 'ROLE_ADMIN','required' => ''))
+        ->add('ROLE_SUPER_ADMIN', CheckboxType::class, array('label' => 'Super admin',
+            'value' => 'ROLE_SUPER_ADMIN','required' => ''));
     }
-
-    /**
-     * @param OptionsResolver $resolver
-     */
-    /*public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
-        ));
-    }*/
 }

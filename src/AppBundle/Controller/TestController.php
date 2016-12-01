@@ -21,7 +21,8 @@ class TestController extends Controller
     /**
      * @Route("/create/tests" , name="createTest")
      */
-    public function createTest(Request $request){
+    public function createTest(Request $request)
+    {
         $test = new Test();
 
         $form = $this->createFormBuilder($test)
@@ -48,13 +49,11 @@ class TestController extends Controller
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Test:success.html.twig',[]);
+            return $this->render('AppBundle:Test:success.html.twig', []);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
-
 }

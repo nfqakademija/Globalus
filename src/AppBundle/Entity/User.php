@@ -140,6 +140,4 @@ class User extends BaseUser
     {
         $this->google_access_token = $google_access_token;
     }
-
 }
-

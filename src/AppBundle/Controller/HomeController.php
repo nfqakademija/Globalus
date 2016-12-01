@@ -24,7 +24,7 @@ class HomeController extends Controller
             $data=$form->getData();
 
 
-            return $this->redirectToRoute('searchByName',array('name' => $data));
+            return $this->redirectToRoute('searchByName', array('name' => $data));
         }
         $recentTests = $this->get('app.tests')->getRecentTests();
         $popularTest = $this->get('app.tests')->getMostPopularTests();
@@ -33,7 +33,6 @@ class HomeController extends Controller
             'testsPop' => $popularTest,
             'tests' => $recentTests
         ]);
-
     }
 
     /**
@@ -44,7 +43,7 @@ class HomeController extends Controller
         /*$em = $this->getDoctrine()->getManager();
         $tests1 = $em->getRepository('AppBundle:Test')->findby(array('published' => 1));*/
         $limit = 5;
-        $tests = $this->get('app.tests')->getAllTest($page,$limit);
+        $tests = $this->get('app.tests')->getAllTest($page, $limit);
 
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;
@@ -59,10 +58,10 @@ class HomeController extends Controller
     /**
      * @Route("/search/name/{name}/{page}", name="searchByName")
      */
-    public function searchByNameAction($name,$page = 1)
+    public function searchByNameAction($name, $page = 1)
     {
         $limit = 2;
-        $tests=$this->get('app.tests')->getTests($name,$page,$limit);
+        $tests=$this->get('app.tests')->getTests($name, $page, $limit);
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Home:search.html.twig', [
@@ -78,5 +77,4 @@ class HomeController extends Controller
     {
         return $this->render('AppBundle:Home:about.html.twig', [  ]);
     }
-
 }

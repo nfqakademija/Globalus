@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -105,5 +106,4 @@ class Answer
         $this->correct = $correct;
         return $this;
     }
-
 }
