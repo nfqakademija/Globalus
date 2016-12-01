@@ -3,7 +3,8 @@
 NFQ Akademija Globalus
 ============
 
-https://travis-ci.org/nfqakademija/Globalus.svg?branch=master
+### Status
+[![Build Status](https://travis-ci.org/nfqakademija/Globalus.svg?branch=master)](https://travis-ci.org/nfqakademija/Globalus)
 
 # Nariai
 
