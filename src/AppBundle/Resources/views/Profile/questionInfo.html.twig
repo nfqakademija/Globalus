@@ -1,0 +1,71 @@
+
+{% extends "@App/Profile/heading.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
+
+{% endblock %}
+
+{% block content %}
+    <div style="margin: 30px 20px;">
+        <a href="{{ path('user.tests') }}">Testai</a>
+        <span>|</span>
+        <a href="{{ path('user.question.add.answer', {'id': question.id}) }}">Pridėti Atsakymą</a>
+        <span>|</span>
+        <a href="{{ path('edit_test_question', {'id': question.id}) }}">Redaguoti klausimą</a>
+        <br><br>
+
+        <p>Klausimo pavadinimas: {{ question.text }}</p>
+        <br>
+        <h5>Atsakymai</h5>
+
+            {% for answer in answers %}
+                <ul style="list-style: outside;padding: 45px 40px;border-bottom: 1px solid greenyellow">
+                    <li class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float: left;display: block;">
+                        {{ answer.text }}
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="float: left;display: block;">
+                        Atsakymas yra -
+                        {% if answer.correct == 1%}
+                            Teisingas
+                        {% else %}
+                            Neteisingas
+                        {% endif %}
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="float: left;display: block;">
+                        <a href="{{ path('edit_question_answer', {'id': answer.id})}}">
+                            Redaguoti atsakymą
+                        </a>
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="float: left;display: block;">
+                        <a href="{{ path('user.answer.delete', {'id': answer.id}) }}">
+                            Trinti
+                        </a>
+                    </li>
+                </ul>
+
+
+            {% endfor %}
+
+    </div>
+    {% if answers.count > 0 %}
+    <ol class="pagination" style="padding-top: 20px">
+        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+            <a href="{{ path('user.test.question', {id: app.request.attributes.get('_route_params')['id'],page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+        </li>
+
+        {# Render each page number #}
+        {% for i in 1..maxPages %}
+            <li {{ thisPage == i ? 'class="active"' }} >
+                <a href="{{ path('user.test.question', {id: app.request.attributes.get('_route_params')['id'],page: i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {# `»` arrow #}
+        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+            <a href="{{ path('user.test.question', {id: app.request.attributes.get('_route_params')['id'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+        </li>
+    </ol>
+    {% endif %}
+
+{% endblock %}

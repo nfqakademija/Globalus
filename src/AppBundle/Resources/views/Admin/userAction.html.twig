@@ -40,7 +40,13 @@
                                     <td>{{ user.id }}</td><td>{{ user.email }} </td>
                                     <td>
                                         {% for role in user.roles %}
-                                            {{ role }}
+                                            {% if role == "ROLE_USER" %}
+                                                Vartotojas
+                                            {% elseif role == "ROLE_ADMIN" %}
+                                                Admin
+                                            {% elseif role == "ROLE_SUPER_ADMIN" %}
+                                                Super admin
+                                            {% endif %}
                                         {% endfor %}
                                     </td>
                                 </tr>

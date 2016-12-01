@@ -47,13 +47,13 @@
 
                 <a href="{{ path('profile') }}">
                     <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
-                        <i class="fa fa-diamond w3-margin-right"></i>
+                        <i class="fa fa-universal-access w3-margin-right"></i>
                         Informacija
                     </button>
                 </a>
-                <a href="#">
+                <a href="{{ path('user.tests') }}">
                     <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
-                        <i class="fa fa-diamond w3-margin-right"></i>
+                        <i class="fa fa-book w3-margin-right"></i>
                         Testai
                     </button>
                 </a>
@@ -76,19 +76,28 @@
 
     <script type="text/javascript">
 
-        var pagename = location.pathname.split('/').pop();
+        //var pagename = location.pathname.split('/').pop();
+        var pageNameSplitArr = location.pathname.split('/');
         document.onreadystatechange = function () {
+
             if (document.readyState == "complete") {
+                for (var i=0; i<=location.pathname.split('/').length;i++){
+                    if (pageNameSplitArr[i] == "") {
 
-                if (pagename == "") {
+                        $('.nvBtn').removeClass('active');
+                        $('.nvBtn').first().addClass('active');
+                    }
+                    else if (pageNameSplitArr[i] == "changePassword") {
+                        $('.nvBtn').removeClass('active');
+                        $('.nvBtn').eq(2).addClass('active');
+                    }
+                    else if (pageNameSplitArr[i] == "tests" || pageNameSplitArr[i] == "questions") {
+                        $('.nvBtn').removeClass('active');
+                        $('.nvBtn').eq(1).addClass('active');
+                    }
 
-                    $('.nvBtn').removeClass('active');
-                    $('.nvBtn').first().addClass('active');
                 }
-                else if (pagename == "changePassword") {
-                    $('.nvBtn').removeClass('active');
-                    $('.nvBtn').eq(2).addClass('active');
-                }
+
 
             }
         };

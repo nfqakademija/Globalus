@@ -1,0 +1,124 @@
+{% extends "@App/Admin/base.html.twig" %}
+
+{% block title %}Testas{% endblock %}
+
+{% block stylesheets %}
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
+    <style>
+    td{
+        padding-bottom: 5px;
+        padding-right: 10px;
+    }
+    </style>
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/tests.css') }} />
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+{% endblock %}
+{% block body %}
+    <div id="wrapper">
+
+        {% include "AppBundle:Admin:header.html.twig" %}
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table">
+                            <thead>
+                            Pasirinktas Klausimas
+                            </thead>
+                            <tr>
+                                <td>id</td><td>Pavadinimas</td>
+                            </tr>
+                                <tr >
+                                    <td>{{ question.id }}</td><td>{{ question.text }} </td>
+
+                                </tr>
+                        </table>
+
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <a  href="{{ path('questionDelete', {id:question.id}) }}">
+                            Trinti klausimą
+                        </a>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                        <a href="{{ path('edit_admin_question', {id:question.id}) }}">
+                            Redaguoti klausimą
+                        </a>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h5>Atsakymai</h5>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <ol class="rectangle-list">
+                            {% for answer in answers %}
+
+                                <li>
+                                    <a class="w3-tooltip">
+                                        <span style="position:absolute;left: -40px;bottom: 30px;background: black;"
+                                              class="w3-text w3-tag">Id {{ answer.id }} Atsakymas yra
+                                        {% if answer.correct == 1 %}
+                                            teisingas
+                                            {% else %}
+                                            neteisingas
+                                            {% endif %}
+                                        </span>
+                                        {{ answer.text }}</a>
+                                    <table style="list-style: none outside none;">
+                                        <tr>
+                                            <td>
+                                            <a href="{{ path('answerDelete', {id:answer.id}) }}">
+                                                Trinti</a>
+                                            </td>
+                                            <td>
+                                            <a href="{{ path('edit_admin_answer', {id:answer.id}) }}">
+                                                Redaguoti
+                                            </a>
+                                            </td>
+                                            </tr>
+                                    </table>
+                                </li>
+
+                            {% endfor %}
+
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+            {% if answers.count > 0 %}
+                <ol class="pagination">
+                    <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                        <a href="{{ path('questionInfo', {id: question.id,page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                    </li>
+
+                    {# Render each page number #}
+                    {% for i in 1..maxPages %}
+                        <li {{ thisPage == i ? 'class="active"' }}>
+                            <a href="{{ path('questionInfo', {id: question.id,page: i}) }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {# `»` arrow #}
+                    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                        <a href="{{ path('questionInfo', {id: question.id,page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                    </li>
+                </ol>
+            {% endif %}
+        </div>
+
+        <!-- /#page-content-wrapper -->
+
+    </div>
+
+{% endblock %}

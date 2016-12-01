@@ -51,6 +51,26 @@ class Test
      * @ORM\Column(type="integer")
      */
     private $timesStarted;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $published;
+
+    /**
+     * @return mixed
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * @param mixed $published
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+    }
 
     /**
      * @return mixed
@@ -204,25 +224,19 @@ class Test
     /**
      * @return mixed
      */
-    public function getAuthor()
+    public function getUser()
     {
-        return $this->author;
+        return $this->user;
     }
 
     /**
-     * @param mixed $author
-     * @return Test
+     * @param mixed $user
      */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
-        return $this;
-    }
-
     public function setUser($user)
     {
         $this->user = $user;
     }
+
 
     /**
      * @return mixed
