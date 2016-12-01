@@ -1,7 +1,14 @@
 {% extends "::base.html.twig" %}
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% block title %}Sukurti naują įrašą{% endblock %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+    <style>
 
+    </style>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
 {% block body %}
     <div>
     <div class="col-lg-4" >
@@ -28,6 +35,7 @@
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <input type="submit" value="Registruotis" class="btn btn-default pull-right"/>
+            <div class="g-recaptcha" data-sitekey="6LfgEwsUAAAAALpzD57KTyrTr59zEmY6irLPSpJf"></div>
             {{ form_end(form) }}
         </div>
     </div>

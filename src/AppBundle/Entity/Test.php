@@ -27,11 +27,11 @@ class Test
      */
     private $description;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $timeLimit;
     /**
-     * @ORM\Column(length=20)
+     * @ORM\Column(length=20, nullable=true)
      */
     private $password;
     /**
@@ -47,26 +47,53 @@ class Test
      */
     private $questionsLimit;
     /**
-     * Test constructor.
-     * @param $id
-     * @param $name
-     * @param $description
-     * @param $questionsLimit
-     * @param $password
-     * @param $author
+     * @ORM\Column(type="datetime")
      */
-    public function __construct($id, $name, $description, $questionsLimit, $password, $author)
+    private $createdAt;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $timesStarted;
+
+    /**
+     * @return mixed
+     */
+    public function getTimesStarted()
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->description = $description;
-        $this->questionsLimit = $questionsLimit;
-        $this->password = $password;
-        $this->author = $author;
-        $this->questions = new ArrayCollection();
+        return $this->timesStarted;
+    }
+
+    /**
+     * @param mixed $timesStarted
+     */
+    public function setTimesStarted($timesStarted)
+    {
+        $this->timesStarted = $timesStarted;
     }
 
 
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
 
     /**
      * @return mixed

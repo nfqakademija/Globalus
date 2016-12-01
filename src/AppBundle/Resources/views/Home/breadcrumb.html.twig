@@ -1,0 +1,35 @@
+
+
+{% block body %}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/breadcrumb.css') }} />
+
+
+    <ul id="breadcrumbs-three">
+        <li class="BreC"><a href="{{ path('homepage') }}">Home</a></li>
+        <li class="BreC"><a href="{{ path('search') }}" >Testai</a></li>
+        <li class="BreC"><a href="#">Testas</a></li>
+    </ul>
+    <br /><br />
+
+
+    <!-- Prefixfree -->
+    <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>
+    <script type="text/javascript" >
+
+        var pagename= location.pathname.split('/').pop();
+        var pageNameSecondLast = location.pathname.split('/')[location.pathname.split('/').length-2];
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+
+                if (pagename=="search"||pageNameSecondLast=="search"){
+                    $('li.BreC').removeClass('current');
+                    $('li.BreC').eq(1).addClass('current');
+                }
+
+            }
+        };
+
+
+
+    </script>
+{% endblock %}

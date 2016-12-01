@@ -74,6 +74,7 @@ class Question
     public function addAnswer($answer)
     {
         $this->answers->add($answer);
+        $answer->setQuestion($this);
     }
 
 
