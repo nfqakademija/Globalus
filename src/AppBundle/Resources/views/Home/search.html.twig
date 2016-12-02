@@ -28,66 +28,62 @@
 
         <div >
         {% include "AppBundle:Home:breadcrumb.html.twig" %}
-            {% if tests is empty %}
-                <h4>Nėra testų</h4>
-            {% else %}
-                <ol class="rectangle-list">
-                    {% for test in tests %}
-                        <li>
+            <div class="col-lg-6" >
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-field" placeholder="ieškoti testo pavadinimo">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Ieškoti!</button>
+                    </span>
+                </div>
+            </div>
+            <div style="margin-top: 50px">
+                <div id="list">
 
-                            <a class="w3-tooltip" href="{{ path('search') }}/{{ test.id }}">
-                                {{ test.name }}
-                                <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Aprašymas: {{ test.description }}</span>
-                            </a>
-
-                        </li>
-                    {% endfor %}
-
-                </ol>
-            {% endif %}
+                </div>
+            {% include "AppBundle:Home:list.html.twig" %}
+            </div>
         </div>
 
+
+
     </div>
-    {% if maxPages > 1 %}
-        <ul class="pagination pagination-sm">
-            {% if app.request.attributes.get('_route') == 'searchByName' %}
-                {# `«` arrow  #}
+<script>
+    $(function(){
+        console.log('desperate for');
 
-                <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                </li>
-                {% for i in 1..maxPages %}
-                    <li {{ thisPage == i ? 'class="active"' }}>
-                        <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: i}) }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
+        var searchField = $('#search-field');
+        var userTable = $('#user-table');
+        var userListDiv = $('#user-list-div');
+        var userPagination = $('.pagination');
+        var list=$('#list');
+        searchField.keyup(function(evt){
+            console.log($(this).val());
 
-                {# `»` arrow #}
-                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                </li>
+            $.ajax({
+                url: '{{ path('search') }}',
+                method: "POST",
+                data: "id=" + $(this).val() ,
+                dataType: 'html',
+                success: function(result, request) {
 
-            {% else %}
-                {# `«` arrow  #}
-                <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                    <a href="{{ path('search', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                </li>
-
-                {# Render each page number #}
-                {% for i in 1..maxPages %}
-                    <li {{ thisPage == i ? 'class="active"' }}>
-                        <a href="{{ path('search', {page: i}) }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
-
-                {# `»` arrow #}
-                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                    <a href="{{ path('search', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                </li>
-            {% endif %}
+                    var parsedData =JSON.parse(result);
+                    console.log(parsedData);
+                    if(parsedData.status ==='success'){
+                        console.log('hete');
+                        userListDiv.empty();
+                        userPagination.empty();
+                        //userListDiv.html(parsedData.data);
+                        list.empty();
+                        list.html(parsedData.data);
+                    }else{
+                        //handle no result case
+                    }
+                }
+            });
+        });
+    });
 
 
-        </ul>
-    {% endif %}
 
+</script>
 {% endblock %}

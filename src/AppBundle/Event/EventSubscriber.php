@@ -7,12 +7,14 @@
  */
 
 namespace AppBundle\Event;
+
 use AppBundle\Controller\RegistrationController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 class EventSubscriber implements EventSubscriberInterface
 {
     protected $container;
@@ -21,18 +23,18 @@ class EventSubscriber implements EventSubscriberInterface
     {
         $this->container = $container;
     }
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             Events::CREATE_EVENT => 'sendRegistrationConfirm',
             Events::RESET_EMAIL_EVENT => 'sendReset'
         );
-        //return Events::CREATE_EVENT;
     }
     /**
      * @param SendEvent $event
      */
-    public function sendRegistrationConfirm($event){
+    public function sendRegistrationConfirm($event)
+    {
         $user = $event->getUserReg()->getUser();
 
         $confirmationToken = $event->getUserReg()->getComfirmationToken();
@@ -56,7 +58,8 @@ class EventSubscriber implements EventSubscriberInterface
     /**
      * @param SendEvent $event
      */
-    public function sendReset($event){
+    public function sendReset($event)
+    {
         $user = $event->getUserReg()->getUser();
         $confirmationToken = $event->getUserReg()->getComfirmationToken();
         $message = \Swift_Message::newInstance()

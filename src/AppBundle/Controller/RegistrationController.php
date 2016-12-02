@@ -8,7 +8,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Form\ResetPasswordType;
 use AppBundle\Form\SendEmailPswResetType;
 use FOS\UserBundle\FOSUserBundle;
@@ -40,60 +39,48 @@ class RegistrationController extends Controller
             $user->setEnabled(false);
             $userService = $this->get('app.user');
             if ($userService->getUserByEmail($user->getEmail()) != null) {
-                return $this->render('AppBundle:LoginRegistration:create.html.twig',
-                    [
+                return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                         'form' => $form->createView(),
                         'error' => 'Toks Vartotojas jau yra užregistruotas'
-                    ]
-                );
+                    ]);
             }
             $password = $user->getPlainPassword();
 
 
             if (strlen($password) < '8' || strlen($password) > '32') {
-                return $this->render('AppBundle:LoginRegistration:create.html.twig',
-                    [
+                return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi būti didesnis tarp 8 ir 32 simbolių'
-                    ]
-                );
+                    ]);
             } elseif (!preg_match("#[0-9]+#", $password)) {
-                return $this->render('AppBundle:LoginRegistration:create.html.twig',
-                    [
+                return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi turėti bent vieną numerį'
-                    ]
-                );
+                    ]);
             } elseif (!preg_match("#[A-Z]+#", $password)) {
-                return $this->render('AppBundle:LoginRegistration:create.html.twig',
-                    [
+                return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi turėti bent vieną didžiąją raidę'
-                    ]
-                );
+                    ]);
             } elseif (!preg_match("#[a-z]+#", $password)) {
-                return $this->render('AppBundle:LoginRegistration:create.html.twig',
-                    [
+                return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi turėti bent vieną mažąją raidę'
-                    ]
-                );
+                    ]);
             }
 
             $recaptcha = new ReCaptcha('6LfgEwsUAAAAAFPhwhOUMu5V_PthvwTa42jhxfSe');
             $resp = $recaptcha->verify($request->request->get('g-recaptcha-response'), $request->getClientIp());
 
             if (!$resp->isSuccess()) {
-                return $this->render('AppBundle:LoginRegistration:create.html.twig',
-                    [
+                return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                         'form' => $form->createView(),
                         'error' => 'Nepatvirtinote, kad nesate robotas'
-                    ]
-                );
-            }else{
-
+                    ]);
+            }
+            /*else{
                 // Everything works good ;)
-            };
+            };*/
             // random hash used for confirmation token
             $random_hash = md5(uniqid(rand(), true));
             $user->setConfirmationToken($random_hash);
@@ -109,11 +96,9 @@ class RegistrationController extends Controller
             return $this->redirectToRoute('app.successReg', ['id' => $user->getId()]);
         }
 
-        return $this->render('AppBundle:LoginRegistration:create.html.twig',
-            [
+        return $this->render('AppBundle:LoginRegistration:create.html.twig', [
                 'form' => $form->createView()
-            ]
-        );
+            ]);
     }
 
     /**
@@ -122,11 +107,9 @@ class RegistrationController extends Controller
     public function showSuccessRegistration($id)
     {
         $userService = $this->get('app.user');
-        return $this->render('AppBundle:LoginRegistration:successReg.html.twig',
-            [
+        return $this->render('AppBundle:LoginRegistration:successReg.html.twig', [
                 'user' => $userService->getUserById($id),
-            ]
-        );
+            ]);
     }
 
     /**
@@ -137,8 +120,9 @@ class RegistrationController extends Controller
         $userService = $this->get('app.user');
         $user = $userService->enableUser($confirmationToken);
         if ($user == null) {
-            return $this->render('@App/LoginRegistration/createdUser.html.twig',
-                ['error' => 'Nėra tokio vartotojo arba neteisingas puslapis']);
+            return $this->render('@App/LoginRegistration/createdUser.html.twig', [
+                'error' => 'Nėra tokio vartotojo arba neteisingas puslapis'
+            ]);
         } else {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -176,17 +160,12 @@ class RegistrationController extends Controller
             $em->persist($user);
             $em->flush();
 
-            ///TODO valiation
+
             return $this->redirectToRoute('app.successSendReset', ['id' => $user->getId()]);
         }
-
-        return $this->render('AppBundle:LoginRegistration:createSendReset.html.twig',
-            [
+        return $this->render('AppBundle:LoginRegistration:createSendReset.html.twig', [
                 'form' => $form->createView()
-            ]
-        );
-
-
+            ]);
     }
 
     /**
@@ -195,11 +174,9 @@ class RegistrationController extends Controller
     public function showSuccessSendReset($id)
     {
         $exampleService = $this->get('app.user');
-        return $this->render('AppBundle:LoginRegistration:successSendReset.html.twig',
-            [
+        return $this->render('AppBundle:LoginRegistration:successSendReset.html.twig', [
                 'user' => $exampleService->getUserById($id),
-            ]
-        );
+            ]);
     }
 
     /**
@@ -210,7 +187,7 @@ class RegistrationController extends Controller
         $userService = $this->get('app.user');
         $mainUser = $userService->findUserByConfirmToken($confirmationToken);
         if ($mainUser == null) {
-            return $this->render('@App/LoginRegistration/createdUser.html.twig',[
+            return $this->render('@App/LoginRegistration/createdUser.html.twig', [
                 'error' => 'Nėra tokio vartotojo arba neteisingas puslapis']);
         } else {
             $user = new User();
@@ -221,33 +198,25 @@ class RegistrationController extends Controller
                 $user = $form->getData();
                 $password = $user->getPassword();
                 if (strlen($password) < '8' || strlen($password) > '32') {
-                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
-                        [
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig', [
                             'form' => $form->createView(),
                             'error' => 'Slaptažodis turi būti didesnis tarp 8 ir 32 simbolių'
-                        ]
-                    );
+                        ]);
                 } elseif (!preg_match("#[0-9]+#", $password)) {
-                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
-                        [
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig', [
                             'form' => $form->createView(),
                             'error' => 'Slaptažodis turi turėti bent vieną numerį'
-                        ]
-                    );
+                        ]);
                 } elseif (!preg_match("#[A-Z]+#", $password)) {
-                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
-                        [
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig', [
                             'form' => $form->createView(),
                             'error' => 'Slaptažodis turi turėti bent vieną didžiąją raidę'
-                        ]
-                    );
+                        ]);
                 } elseif (!preg_match("#[a-z]+#", $password)) {
-                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
-                        [
+                    return $this->render('AppBundle:LoginRegistration:createReset.html.twig', [
                             'form' => $form->createView(),
                             'error' => 'Slaptažodis turi turėti bent vieną mažąją raidę'
-                        ]
-                    );
+                        ]);
                 }
                 $user = $userService->changePassword($password, $confirmationToken);
                 $em = $this->getDoctrine()->getManager();
@@ -257,11 +226,9 @@ class RegistrationController extends Controller
                 return $this->redirectToRoute('app.successReset', ['id' => $user->getId()]);
             }
 
-            return $this->render('AppBundle:LoginRegistration:createReset.html.twig',
-                [
+            return $this->render('AppBundle:LoginRegistration:createReset.html.twig', [
                     'form' => $form->createView()
-                ]
-            );
+                ]);
         }
     }
 
@@ -271,10 +238,8 @@ class RegistrationController extends Controller
     public function showSuccessReset($id)
     {
         $userService = $this->get('app.user');
-        return $this->render('AppBundle:LoginRegistration:successReset.html.twig',
-            [
+        return $this->render('AppBundle:LoginRegistration:successReset.html.twig', [
                 'user' => $userService->getUserById($id),
-            ]
-        );
+            ]);
     }
 }

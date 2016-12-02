@@ -8,8 +8,7 @@
 
 namespace AppBundle\Event;
 
-
 abstract class Sender
 {
-    protected abstract function send($user,$confirmation_token, $action);
+    abstract protected function send($user, $confirmation_token, $action);
 }

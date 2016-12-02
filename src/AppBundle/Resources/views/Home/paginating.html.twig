@@ -1,0 +1,48 @@
+{% block stylesheets %}
+
+    <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
+
+{% endblock %}
+{% block body %}
+    {% if maxPages > 1 %}
+        <ul class="pagination pagination-sm">
+            {% if app.request.attributes.get('_route') == 'searchByName' %}
+                {# `«` arrow  #}
+
+                <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+                {% for i in 1..maxPages %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {# `»` arrow #}
+                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+
+            {% else %}
+                {# `«` arrow  #}
+                <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                    <a href="{{ path('search', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+
+                {# Render each page number #}
+                {% for i in 1..maxPages %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('search', {page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {# `»` arrow #}
+                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                    <a href="{{ path('search', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+            {% endif %}
+
+
+        </ul>
+    {% endif %}
+{% endblock %}
