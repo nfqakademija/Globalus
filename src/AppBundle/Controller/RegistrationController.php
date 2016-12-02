@@ -113,7 +113,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @Route("/confirmUser/{confirmationToken}")
+     * @Route("/confirmUser/{confirmationToken}", name="app.confirmUser")
      */
     public function confirmUser($confirmationToken)
     {
@@ -180,7 +180,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @Route("/resetPassword/{confirmationToken}")
+     * @Route("/resetPassword/{confirmationToken}", name="app.resetPassword")
      */
     public function resetPassword(Request $request, $confirmationToken)
     {
