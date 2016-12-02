@@ -8,9 +8,6 @@ NFQ Akademija Globalus
 
 # Nariai
 
-Sveiki! Tai yra Jūsų startinis projekto "template". 
-Šioje repositorijoje rasite Symfony 3.1 startinį prjekto paketa su jau paruoštais 
-visais reikalingais failais ir įrankiais darbui:
  
 - Arnoldas Milkus
 - Lukas Arbačiauskas
@@ -19,4 +16,21 @@ visais reikalingais failais ir įrankiais darbui:
 Mentorius
 - Aivaras Spaičys
 
+### Reikalavimai
 
+- virtualbox
+- vagrant
+
+### Projekto paleidimas
+
+
+```bash
+
+vagrant up
+
+```
+### Pasiekiamumas
+
+Projektas pasiekimas per http://192.168.4.100
+Dev aplinka http://192.168.4.100/app_dev.php
+MailCather http://192.168.4.100:1080
