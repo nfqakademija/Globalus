@@ -156,7 +156,7 @@ class TestController extends Controller
 
 
     /**
-     * @Route("/test/details/{tid}/{hash}", name="test-result")
+     * @Route("/test/result/{tid}/{hash}", name="test-result")
      */
     public function showResult($tid, $hash){
         /** @var Solution $solution */
@@ -183,34 +183,7 @@ class TestController extends Controller
 
 
                 foreach ($solutions as $solution){
-                    $question = $this->getDoctrine()->getRepository('AppBundle:Question')->find($solution->getQuestion());
-                    $qAnswers = $question->getAnswers();
-                    $qCorrectAnswers = 0;
-                    foreach ($qAnswers as $answer){
-                        if($answer->getCorrect()==true){
-                            $qCorrectAnswers++;
-                        }
-                    }
-
-                    $answers = $solution->getAnswers();
-                    if(($answers!=null)&&(count($answers)>0)){
-                        $correctAnswers = 0;
-                        $incorrectAnswers = 0;
-                        foreach ($answers as $answer){
-                            if($answer->getCorrect()==true){
-                                $correctAnswers++;
-                            }else{
-                                $incorrectAnswers++;
-                            }
-                        }
-                        if($incorrectAnswers==0){
-                            if($qCorrectAnswers>1){
-                                $points = $points + round(($correctAnswers/$qCorrectAnswers), 2);
-                            }else{
-                                $points++;
-                            }
-                        }
-                    }
+                    $points += $this->countPoints($solution);
                 }
 
                 $result = round(($points*100/$maxPoints), 2);
@@ -228,11 +201,14 @@ class TestController extends Controller
     /**
      * @Route("/test/answers/{tid}/{qid}/{hash}", name="test-answers")
      */
-    public function showAnswers($tid, $qid, $hash){
+    public function showAnswers($tid, $qid, $hash, Request $request){
+        /*
+            TASKS:
+            Parodyti teisingus atsakymus
+         */
+        $questions = $this->getDoctrine()->getRepository('AppBundle:Question')->findBy(array('test' => $tid));
         /** @var Solution $solution */
-        $solution = $this->getDoctrine()->getRepository('AppBundle:Solution')->findOneBy(array('test' => $tid, 'question' => $qid, 'user' => $this->getUser(), 'hash' => $hash));
-
-
+        $solution = $this->getDoctrine()->getRepository('AppBundle:Solution')->findOneBy(array('test' => $tid, 'question' => $questions[$qid-1], 'user' => $this->getUser(), 'hash' => $hash));
 
         if($solution==null){
             $message = 'Toks testo sprendimas neegzistuoja';
@@ -244,15 +220,13 @@ class TestController extends Controller
 
             $choices = array();
             $selected = array();
-            for($i=0;$i<count($answers);$i++){
-                    foreach ($solution->getAnswers() as $answer){
-                        if(($answer==$answers[$i])&&(!in_array($answers[$i]->getId(), $selected))){
-                            $selected[] = $answers[$i]->getId();
-                        }
+            for($i=0;$i<count($answers);$i++) {
+                foreach ($solution->getAnswers() as $answer) {
+                    if (($answer == $answers[$i]) && (!in_array($answers[$i]->getId(), $selected))) {
+                        $selected[] = $answers[$i]->getId();
                     }
-                $choices[] = array(
-                    $answers[$i]->getText()=>$answers[$i]->getId()
-                );
+                }
+                $choices[$answers[$i]->getText()] = $answers[$i]->getId();
             }
 
             $form = $this->createFormBuilder()
@@ -264,13 +238,63 @@ class TestController extends Controller
                     'multiple' => true,
                     'disabled' => true
                 ))
+                ->add('save', SubmitType::class, array('label' => 'Baigti peržiūrą'))
                 ->getForm();
+
+            $correctAnswers = "";
+            foreach ($answers as $answer){
+                if($answer->getCorrect()==true){
+                    $correctAnswers = $correctAnswers.$answer->getText()."\n";
+                }
+            }
+            
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()){
+                return $this->redirectToRoute('test-result', array('tid' => $tid, 'hash' => $hash));
+            }
+
+            $points = $this->countPoints($solution);
 
             return $this->render('AppBundle:Test:answers.html.twig', array(
                 'form' => $form->createView(),
                 'testName' => $solution->getTest()->getName(),
-                'questionLimit' => $solution->getTest()->getQuestionsLimit()
+                'questionLimit' => $solution->getTest()->getQuestionsLimit(),
+                'correctAnswers' => $correctAnswers,
+                'points' => $points
             ));
         }
+    }
+
+    public function countPoints(Solution $solution){
+        $points=0;
+        $question = $this->getDoctrine()->getRepository('AppBundle:Question')->find($solution->getQuestion());
+        $qAnswers = $question->getAnswers();
+        $qCorrectAnswers = 0;
+        foreach ($qAnswers as $answer){
+            if($answer->getCorrect()==true){
+                $qCorrectAnswers++;
+            }
+        }
+
+        $answers = $solution->getAnswers();
+        if(($answers!=null)&&(count($answers)>0)){
+            $correctAnswers = 0;
+            $incorrectAnswers = 0;
+            foreach ($answers as $answer){
+                if($answer->getCorrect()==true){
+                    $correctAnswers++;
+                }else{
+                    $incorrectAnswers++;
+                }
+            }
+            if($incorrectAnswers==0){
+                if($qCorrectAnswers>1){
+                    $points = $points + round(($correctAnswers/$qCorrectAnswers), 2);
+                }else{
+                    $points++;
+                }
+            }
+        }
+        return $points;
     }
 }
