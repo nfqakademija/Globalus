@@ -247,7 +247,7 @@ class TestController extends Controller
                     $correctAnswers = $correctAnswers.$answer->getText()."\n";
                 }
             }
-            
+
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid()){
                 return $this->redirectToRoute('test-result', array('tid' => $tid, 'hash' => $hash));
