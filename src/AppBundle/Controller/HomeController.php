@@ -55,8 +55,10 @@ class HomeController extends Controller
 
             $tests = $this->get('app.tests')->getTests($searchParameter, $page, $limit);
 
+
             $maxPages = ceil($tests->count() / $limit);
             $thisPage = $page;
+            $tests = $this->get('app.tests')->getTestsWithoutPaginating($searchParameter);
 
             $status = 'error';
             $html = '';

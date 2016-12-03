@@ -40,6 +40,16 @@
                 <div id="list">
 
                 </div>
+                <div >
+                    <ol id="listingTable" class="rectangle-list">
+
+
+                    </ol>
+                </div>
+
+                <a href="javascript:prevPage()" id="btn_prev">Prev</a>
+                <a href="javascript:nextPage()" id="btn_next">Next</a>
+                page: <span id="page"></span>
             {% include "AppBundle:Home:list.html.twig" %}
             </div>
         </div>
@@ -48,16 +58,22 @@
 
     </div>
 <script>
-    $(function(){
+    //$(function(){
         console.log('desperate for');
+        var objJson=[];var objJsonId =[];var objJsonDescription =[
 
+        ];
+        var current_page=1;
+        var records_per_page=10;
         var searchField = $('#search-field');
-        var userTable = $('#user-table');
+        var prevButton = $('#btn_prev');
+        var nextButton = $('#btn_next');
+        var userList = $('#listingTable');
         var userListDiv = $('#user-list-div');
         var userPagination = $('.pagination');
         var list=$('#list');
         searchField.keyup(function(evt){
-            console.log($(this).val());
+            //console.log($(this).val());
 
             $.ajax({
                 url: '{{ path('search') }}',
@@ -75,14 +91,123 @@
                         //userListDiv.html(parsedData.data);
                         list.empty();
                         list.html(parsedData.data);
+
+
+                        userList.empty();
+                       objJson=[];objJsonId =[];objJsonDescription =[
+                        ];
+                        console.log('nope');
+                        var numberOfItems=$('.w3-tooltip span').length;
+                        var current_page = 1;
+                        var records_per_page = 10;
+                        var i;
+
+                        for (i = 0; i < numberOfItems; i++) {
+                            var text=$('.w3-tooltip span')[i].previousSibling.nodeValue;
+                            objJson[i]=text.toString();
+                        }
+                        console.log(objJson[0].toString());
+
+                        for (i = 0; i < numberOfItems; i++) {
+                            var hr = document.getElementsByClassName('w3-tooltip')[i].href;
+                            var text = hr.substr(hr.lastIndexOf('/')+1);
+                            objJsonId[i]=text.toString();
+                        }
+
+                        for (i = 0; i < numberOfItems; i++) {
+                            var text = $('.w3-tooltip span')[i].innerHTML;
+                            objJsonDescription[i]=text.toString();
+                        }
+
+                        //padarom empty , nes yra paginatintas listas
+                        userPagination.empty();
+                        list.empty();
+
+                        changePage(1);
+                        console.log('pagkei');
+                        current_page=1;
                     }else{
                         //handle no result case
                     }
                 }
             });
+           
         });
-    });
 
+        function prevPage()
+        {
+            if (current_page > 1) {
+                current_page--;
+                changePage(current_page);
+            }
+        }
+
+        function nextPage()
+        {
+            console.log('someyhing');
+            if (current_page < numPages()) {
+                current_page++;
+                changePage(current_page);
+            }
+        }
+
+        function changePage(page)
+        {
+            var btn_next = document.getElementById("btn_next");
+            var btn_prev = document.getElementById("btn_prev");
+            var listing_table = document.getElementById("listingTable");
+            var page_span = document.getElementById("page");
+
+            // Validate page
+            if (page < 1) page = 1;
+            if (page > numPages()) page = numPages();
+
+            listing_table.innerHTML = "";
+            console.log(records_per_page);
+            console.log('som');
+            for (var i = (page-1) * records_per_page; i < (page * records_per_page); i++) {
+                if(objJson[i]!=null) {
+                    listing_table.innerHTML += '<li id = "user-table"><a class="w3-tooltip" href="{{ path('search') }}/' + objJsonId[i] + '">' +
+                            objJson[i] + '<span style="position:absolute;left: -40px;bottom: 30px;background: black;"' +
+                            ' class="w3-text w3-tag"> ' + objJsonDescription[i] + '</span>' +
+                            "</a></li>";
+                }
+            }
+            console.log(listing_table.innerHTML);
+            page_span.innerHTML = page;
+
+            if (page == 1) {
+                btn_prev.style.visibility = "hidden";
+            } else {
+                btn_prev.style.visibility = "visible";
+            }
+
+            if (page == numPages()) {
+                btn_next.style.visibility = "hidden";
+            } else {
+                btn_next.style.visibility = "visible";
+            }
+        }
+
+        function numPages()
+        {
+            return Math.ceil(objJson.length / records_per_page);
+        }
+
+        window.onload = function() {
+            changePage(1);
+        };
+
+    //});
+
+
+    /*function nextPage()
+    {
+        if (current_page < numPages()) {
+            current_page++;
+            changePage(current_page);
+        }
+    }*/
 
 
 </script>
