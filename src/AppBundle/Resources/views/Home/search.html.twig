@@ -30,7 +30,7 @@
         {% include "AppBundle:Home:breadcrumb.html.twig" %}
             <div class="col-lg-6" >
                 <div class="input-group">
-                    <input type="text" class="form-control" id="search-field" placeholder="ieškoti testo pavadinimo">
+                    <input type="text" class="form-control" id="search-field" placeholder="ieškoti testo pavadinimo iš visų testų">
                     <span class="input-group-btn">
                     <button class="btn btn-default" type="button">Ieškoti!</button>
                     </span>
@@ -59,10 +59,10 @@
     </div>
 <script>
     //$(function(){
-        console.log('desperate for');
-        var objJson=[];var objJsonId =[];var objJsonDescription =[
-
-        ];
+        //console.log('desperate for');
+        var objJson=[];
+        var objJsonId =[];
+        var objJsonDescription =[];
         var firstLoad=true;
         var current_page=1;
         var records_per_page=10;
@@ -85,9 +85,9 @@
                 success: function(result, request) {
 
                     var parsedData =JSON.parse(result);
-                    console.log(parsedData);
+                    //console.log(parsedData);
                     if(parsedData.status ==='success'){
-                        console.log('hete');
+                        //console.log('hete');
                         userListDiv.empty();
                         userPagination.empty();
                         //userListDiv.html(parsedData.data);
@@ -96,9 +96,10 @@
 
 
                         userList.empty();
-                       objJson=[];objJsonId =[];objJsonDescription =[
-                        ];
-                        console.log('nope');
+                        objJson=[];
+                        objJsonId =[];
+                        objJsonDescription =[];
+                        //console.log('nope');
                         var numberOfItems=$('.w3-tooltip span').length;
                         var current_page = 1;
                         var records_per_page = 10;
@@ -108,7 +109,7 @@
                             var text=$('.w3-tooltip span')[i].previousSibling.nodeValue;
                             objJson[i]=text.toString();
                         }
-                        console.log(objJson[0].toString());
+                        //console.log(objJson[0].toString());
 
                         for (i = 0; i < numberOfItems; i++) {
                             var hr = document.getElementsByClassName('w3-tooltip')[i].href;
@@ -128,7 +129,7 @@
                                 '<a href="javascript:nextPage()" id="btn_next">Kitas psl.</a>'+
                                 ' <span id="pg">Puslapis: <span id="page"></span></span>';
                         changePage(1);
-                        console.log('pagkei');
+                        //console.log('pagkei');
                         current_page=1;
 
 

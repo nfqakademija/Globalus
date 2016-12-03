@@ -28,7 +28,7 @@ class HomeController extends Controller
         $popularTest = $this->get('app.tests')->getMostPopularTests();
         if ($form->isSubmitted() && $form->isValid()) {
             $data=$form->getData();
-            if (preg_match('/[\W]+/',$data)) {
+            if (preg_match('/[\W]+/', $data)) {
                 return $this->render('AppBundle:Home:index.html.twig', [
                     'form' => $form->createView(),
                     'testsPop' => $popularTest,
@@ -121,5 +121,27 @@ class HomeController extends Controller
     public function aboutPage()
     {
         return $this->render('AppBundle:Home:about.html.twig', [  ]);
+    }
+    /**
+     * @Route("/tests/popular", name="popularTests")
+     */
+    public function mostPopularTest()
+    {
+        $popularTest = $this->get('app.tests')->getMostPopularTests(10);
+        return $this->render('AppBundle:Home:popNewTests.html.twig', [
+            'tests' => $popularTest,
+            'title' => 'Populiariausi testai'
+        ]);
+    }
+    /**
+     * @Route("/tests/new", name="newTests")
+     */
+    public function newTest()
+    {
+        $recentTests = $this->get('app.tests')->getRecentTests(10);
+        return $this->render('AppBundle:Home:popNewTests.html.twig', [
+            'tests' => $recentTests,
+            'title' => 'Naujausi testai'
+        ]);
     }
 }
