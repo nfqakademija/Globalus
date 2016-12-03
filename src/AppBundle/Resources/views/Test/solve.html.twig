@@ -66,8 +66,8 @@
     </div>
     <input type="hidden" id="timeLimit" value="{{ deadline }}">
     {% block javascripts %}
-        <script src="{{ asset('bundles/app/js/timer.js') }}"></script>
-        <script src="{{ asset('bundles/app/js/jquery.cookie.js') }}"></script>
+        <script src="{{ asset('bundles/app/timer.js') }}"></script>
+        <script src="{{ asset('bundles/app/jquery.cookie.js') }}"></script>
         <script>
             var display = document.querySelector('#time');
             var deadline = $.cookie('deadline');
