@@ -28,11 +28,11 @@
     .title{
         counter-reset: lid 0;
     }
-    
+
     .rectangle-list a.last::before{
         counter-reset:   liq {{ thisPage }};
         content: counter(liq) counter(lid) ;
-        background: red;
+
     }
 </style>
 {% endblock %}
