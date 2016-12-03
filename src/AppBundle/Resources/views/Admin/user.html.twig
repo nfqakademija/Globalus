@@ -28,15 +28,16 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <a  href="#menu-toggle" id="toggle"><span></span></a>
-                        <h2>Testai</h2>
+                        <a  href="#menu-toggle" id="toggle" style="display: inline-block;padding-top: 18px;"><span></span></a>
+                        <h2 style="display: inline-block;">Vartotojai</h2>
                         <div>
                             <input  type="text" id="myInput" onkeyup="myFunction()" placeholder="Ieškoti pagal el paštą" title="Type in a name" style="color:black">
+                            <p style="display: inline-block;">Rikiuoti pagal el paštą</p>
                             <a href="{{ path('usersbyEmailASC') }}" style="color:black">
-                                <button class="glyphicon glyphicon-arrow-up"></button>
+                                <span class="glyphicon glyphicon-arrow-up"></span>
                             </a>
                             <a href="{{ path('usersbyEmailDESC') }}" style="color:black">
-                                <button class="glyphicon glyphicon-arrow-down"></button>
+                                <span class="glyphicon glyphicon-arrow-down"></span>
                             </a>
                         </div>
                         <ol class="rectangle-list">
@@ -66,64 +67,65 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
-            {% if users.count > 0 %}
-            <ol class="pagination">
-                {% if app.request.attributes.get('_route') == 'usersbyEmailASC' %}
-                    <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                        <a href="{{ path('usersbyEmailASC', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                    </li>
+            <div>
+                {% if users.count > 0 %}
+                    <ol class="pagination">
+                        {% if app.request.attributes.get('_route') == 'usersbyEmailASC' %}
+                            <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                                <a href="{{ path('usersbyEmailASC', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                            </li>
 
-                    {# Render each page number #}
-                    {% for i in 1..maxPages %}
-                        <li {{ thisPage == i ? 'class="active"' }}>
-                            <a href="{{ path('usersbyEmailASC', {page: i}) }}">{{ i }}</a>
-                        </li>
-                    {% endfor %}
+                            {# Render each page number #}
+                            {% for i in 1..maxPages %}
+                                <li {{ thisPage == i ? 'class="active"' }}>
+                                    <a href="{{ path('usersbyEmailASC', {page: i}) }}">{{ i }}</a>
+                                </li>
+                            {% endfor %}
 
-                    {# `»` arrow #}
-                    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                        <a href="{{ path('usersbyEmailASC', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                    </li>
-                {% elseif app.request.attributes.get('_route') == 'usersbyEmailDESC' %}
-                    <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                        <a href="{{ path('usersbyEmailDESC', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                    </li>
+                            {# `»` arrow #}
+                            <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                                <a href="{{ path('usersbyEmailASC', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                            </li>
+                        {% elseif app.request.attributes.get('_route') == 'usersbyEmailDESC' %}
+                            <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                                <a href="{{ path('usersbyEmailDESC', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                            </li>
 
-                    {# Render each page number #}
-                    {% for i in 1..maxPages %}
-                        <li {{ thisPage == i ? 'class="active"' }}>
-                            <a href="{{ path('usersbyEmailDESC', {page: i}) }}">{{ i }}</a>
-                        </li>
-                    {% endfor %}
+                            {# Render each page number #}
+                            {% for i in 1..maxPages %}
+                                <li {{ thisPage == i ? 'class="active"' }}>
+                                    <a href="{{ path('usersbyEmailDESC', {page: i}) }}">{{ i }}</a>
+                                </li>
+                            {% endfor %}
 
-                    {# `»` arrow #}
-                    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                        <a href="{{ path('usersbyEmailDESC', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                    </li>
-                {% else %}
-                    <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                        <a href="{{ path('users', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                    </li>
+                            {# `»` arrow #}
+                            <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                                <a href="{{ path('usersbyEmailDESC', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                            </li>
+                        {% else %}
+                            <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                                <a href="{{ path('users', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                            </li>
 
-                    {# Render each page number #}
-                    {% for i in 1..maxPages %}
-                        <li {{ thisPage == i ? 'class="active"' }}>
-                            <a href="{{ path('users', {page: i}) }}">{{ i }}</a>
-                        </li>
-                    {% endfor %}
+                            {# Render each page number #}
+                            {% for i in 1..maxPages %}
+                                <li {{ thisPage == i ? 'class="active"' }}>
+                                    <a href="{{ path('users', {page: i}) }}">{{ i }}</a>
+                                </li>
+                            {% endfor %}
 
-                    {# `»` arrow #}
-                    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                        <a href="{{ path('users', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                    </li>
+                            {# `»` arrow #}
+                            <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                                <a href="{{ path('users', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                            </li>
+                        {% endif %}
+
+
+                    </ol>
                 {% endif %}
-
-
-            </ol>
-            {% endif %}
+            </div>
         </div>
+
 
 
         <!-- /#page-content-wrapper -->

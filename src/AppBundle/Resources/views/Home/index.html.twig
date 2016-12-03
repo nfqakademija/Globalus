@@ -39,7 +39,9 @@
     <div class="container">
 
         <div class="row search">
-
+                {% if error is defined %}
+                <p style="color:red">{{ error }}</p>
+                {% endif %}
                 <div style="margin: 40px 20px;">
                     {{ form_start(form) }}
 

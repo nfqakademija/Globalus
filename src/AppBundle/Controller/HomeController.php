@@ -24,14 +24,21 @@ class HomeController extends Controller
         $data=null;
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data=$form->getData();
-
-
-            return $this->redirectToRoute('searchByName', array('name' => $data));
-        }
         $recentTests = $this->get('app.tests')->getRecentTests();
         $popularTest = $this->get('app.tests')->getMostPopularTests();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data=$form->getData();
+            if (preg_match('/[\W]+/',$data)) {
+                return $this->render('AppBundle:Home:index.html.twig', [
+                    'form' => $form->createView(),
+                    'testsPop' => $popularTest,
+                    'tests' => $recentTests,
+                    'error' => 'Negalima ieškoti su simboliais'
+                ]);
+            }
+            return $this->redirectToRoute('searchByName', array('name' => $data));
+        }
+
         return $this->render('AppBundle:Home:index.html.twig', [
             'form' => $form->createView(),
             'testsPop' => $popularTest,
