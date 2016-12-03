@@ -32,3 +32,7 @@ h2 {
 .bottom-buffer {
     margin-bottom:20px;
 }
+
+.top-buffer {
+    margin-top:20px;
+}
