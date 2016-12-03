@@ -12,7 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TestController extends Controller
 {
@@ -40,9 +42,17 @@ class TestController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
+            $cookies = $request->cookies;
+            if ($cookies->has('deadline'))
+            {
+                $cookies->remove('deadline');
+            }
+            setcookie("deadline", $test->getTimeLimit(), time()+31536000,'/');
+            //$cookies->set('deadline', $test->getTimeLimit());
             /** @var QuestionRepository $question */
             $questionsId = $manager->getRepository('AppBundle:Question')->getRandomQuestions($test);
             $session->set('questionsId', $questionsId);
+            $session->set('timeLimit', $test->getTimeLimit());
 
             return $this->redirectToRoute('test-solve', array('tid' => $id, 'qid' => 1,'hash' => $hash));
         }
@@ -54,16 +64,38 @@ class TestController extends Controller
     }
 
     /**
+     * @Route("/test/stop/{tid}", name="test-stop")
+     */
+    public function forceStopTest($tid, Request $request){
+
+        $session = $request->getSession();
+        $cookies = $request->cookies;
+        $hash = $session->get('hash');
+        if ($cookies->has('deadline'))
+        {
+            $cookies->remove('deadline');
+        }
+        return $this->redirectToRoute('test-result', array('tid' => $tid, 'hash' => $hash));
+    }
+
+    /**
      * @Route("/test/solve/{tid}/{qid}/{hash}", name="test-solve")
      */
     public function solveTest($tid, $qid, $hash, Request $request){
         /*
             TASKS:
-            Skaiciuoti laika
+            -pakeisti logika(sugeneravus klausimu masyva solution patalpint i DB ir irasus tik editint)
         */
 
         $session = $request->getSession();
         $questionsId = $session->get('questionsId');
+
+        $cookies = $request->cookies;
+        if ($cookies->has('deadline'))
+        {
+            $deadline = $cookies->get('deadline');
+            $cookies->remove('deadline');
+        }
 
         if($hash!=$session->get('hash')){
             return $this->redirectToRoute('test-start', array('id' => $tid));
@@ -143,6 +175,11 @@ class TestController extends Controller
 
             if($form->get('end')->isClicked()){
                 $session->remove('hash');
+                $cookies = $request->cookies;
+                if ($cookies->has('deadline'))
+                {
+                    $cookies->remove('deadline');
+                }
                 return $this->redirectToRoute('test-result', array('tid' => $tid, 'hash' => $hash));
             }
         }
@@ -150,7 +187,8 @@ class TestController extends Controller
         return $this->render('AppBundle:Test:solve.html.twig', array(
             'form' => $form->createView(),
             'testName' => $question->getTest()->getName(),
-            'questionLimit' => $question->getTest()->getQuestionsLimit()
+            'questionLimit' => $question->getTest()->getQuestionsLimit(),
+            'deadline' => $deadline
         ));
     }
 
@@ -158,11 +196,15 @@ class TestController extends Controller
     /**
      * @Route("/test/result/{tid}/{hash}", name="test-result")
      */
-    public function showResult($tid, $hash){
+    public function showResult($tid, $hash, Request $request){
+        $session = $request->getSession();
+        $sessionHash = $session->get('hash');
+        if($sessionHash!=null){
+            $session->remove('hash');
+        }
+
         /** @var Solution $solution */
         $solutions = $this->getDoctrine()->getRepository('AppBundle:Solution')->findBy(array('test' => $tid, 'hash' => $hash));
-
-        //var_dump($solution);
 
         if($solutions==null){
             $message = 'Toks testo sprendimas neegzistuoja';
@@ -179,8 +221,6 @@ class TestController extends Controller
                 $test = $this->getDoctrine()->getRepository('AppBundle:Test')->find($tid);
                 $maxPoints = $test->getQuestionsLimit();
                 $points = 0;
-
-
 
                 foreach ($solutions as $solution){
                     $points += $this->countPoints($solution);
@@ -202,11 +242,8 @@ class TestController extends Controller
      * @Route("/test/answers/{tid}/{qid}/{hash}", name="test-answers")
      */
     public function showAnswers($tid, $qid, $hash, Request $request){
-        /*
-            TASKS:
-            Parodyti teisingus atsakymus
-         */
         $questions = $this->getDoctrine()->getRepository('AppBundle:Question')->findBy(array('test' => $tid));
+
         /** @var Solution $solution */
         $solution = $this->getDoctrine()->getRepository('AppBundle:Solution')->findOneBy(array('test' => $tid, 'question' => $questions[$qid-1], 'user' => $this->getUser(), 'hash' => $hash));
 
