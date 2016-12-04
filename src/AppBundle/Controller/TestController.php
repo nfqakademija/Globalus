@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Test;
+use AppBundle\Entity\User;
 use AppBundle\Form\AnswerType;
 use AppBundle\Form\QuestionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Faker\Provider\DateTime;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class TestController extends Controller
 {
@@ -32,6 +34,10 @@ class TestController extends Controller
             ->add('description', TextType::class, [
                 'label' => 'Aprasymas'
             ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Slaptažodis',
+                'required' => false
+            ])
             ->add('save', SubmitType::class, array('label' => 'Sukurti'))
             ->getForm();
 
@@ -44,6 +50,7 @@ class TestController extends Controller
             $test->setCreatedAt($now);
             $test->setUser($this->getUser());
             $test->setTimesStarted(0);
+
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($test);
