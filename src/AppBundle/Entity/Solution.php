@@ -72,7 +72,6 @@ class Solution
     public function addAnswer($answer)
     {
         $this->answers->add($answer);
-
     }
 
     /**
@@ -154,8 +153,4 @@ class Solution
     {
         $this->hash = $hash;
     }
-
-
-
-
 }

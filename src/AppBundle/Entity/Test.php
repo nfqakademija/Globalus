@@ -71,8 +71,6 @@ class Test
         $this->timesStarted = $timesStarted;
     }
 
-
-
     /**
      * @return mixed
      */
@@ -222,7 +220,8 @@ class Test
         return $this;
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         return $this->user;
     }
 

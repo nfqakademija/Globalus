@@ -38,9 +38,20 @@
                                 Laiko limitas : {{ test.timeLimit|date("H:i:s") }}
                             </div>
                         </div>
-
                         <div class="row">
-                            {{ form_widget(form) }}
+                            <div class="col-xs-8 col-xs-offset-2">
+                                {% if error != null %}
+                                    <div class="alert alert-danger">
+                                        {{ error }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 col-xs-offset-3">
+
+                                {{ form_widget(form) }}
+                            </div>
                             <!-- <button type="button" class="btn btn-success btn-lg center-block">Pradėti testą</button> -->
                         </div>
                     </div>

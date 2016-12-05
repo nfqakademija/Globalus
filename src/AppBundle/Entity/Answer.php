@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lukas
- * Date: 16.11.13
- * Time: 22.30
- */
 
 namespace AppBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -103,5 +98,4 @@ class Answer
         $this->correct = $correct;
         return $this;
     }
-
 }
