@@ -10,6 +10,8 @@
     <div style="margin: 30px 20px;">
         <a href="{{ path('user.tests') }}">Testai</a>
         <span>|</span>
+        <a href="{{ path('user.test', {'id': test.id}) }}">Klausimai</a>
+        <span>|</span>
         <a href="{{ path('user.question.add.answer', {'id': question.id}) }}">Pridėti Atsakymą</a>
         <span>|</span>
         <a href="{{ path('edit_test_question', {'id': question.id}) }}">Redaguoti klausimą</a>

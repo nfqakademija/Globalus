@@ -86,7 +86,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('userAction', array('id' => $user->getId()));
         }
         return $this->render('AppBundle:Admin:userAction.html.twig', [
             'user' => $user,
@@ -104,7 +104,7 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('users');
     }
     /**
      * @Route("/user/changePassword/{id}", name="userChangePassword")
@@ -148,7 +148,7 @@ class AdminController extends Controller
             $userManager = $this->container->get('fos_user.user_manager');
 
             $userManager->updateUser($user, true);
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('userAction', array('id' => $user->getId()));
         }
         return $this->render('AppBundle:Admin:changePassword.html.twig', [
             'user' => $user,
@@ -240,7 +240,8 @@ class AdminController extends Controller
         }
         $em->remove($test);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('tests');
+        //return $this->render('AppBundle:Admin:index.html.twig', []);
     }
     /**
      * @Route("/tests/publish/{id}", name="testsPublish")
@@ -254,7 +255,7 @@ class AdminController extends Controller
         $test->setPublished(1);
         $em->persist($test);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
     }
     /**
      * @Route("/tests/depublish/{id}", name="testsDepublish")
@@ -268,7 +269,7 @@ class AdminController extends Controller
         $test->setPublished(0);
         $em->persist($test);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
     }
     /**
      * @Route("/tests/test/question/{id}/{page}", name="questionInfo")
@@ -303,7 +304,7 @@ class AdminController extends Controller
             $em->remove($answer);
         }
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('testsAction', array('id' => $question->getTest()->getId()));
     }
     /**
      * @Route("/tests/test/question/answer/delete/{id}", name="answerDelete")
@@ -316,7 +317,10 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($answer);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('tests');
+        /*
+        return $this->redirectToRoute('questionInfo', array('id' => $answer->getQuestion()->getId()));
+        */
     }
     /**
      * @Route("/tests/edit/{id}", name="edit_admin_test")
@@ -351,8 +355,7 @@ class AdminController extends Controller
 
             $em->persist($test);
             $em->flush();
-
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
@@ -387,7 +390,10 @@ class AdminController extends Controller
 
             $em->persist($question);
             $em->flush();
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('tests');
+            /*
+            return $this->redirectToRoute('questionInfo', array('id' => $id));
+            */
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
@@ -428,8 +434,10 @@ class AdminController extends Controller
 
             $em->persist($answer);
             $em->flush();
-
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('tests');
+            /*
+            return $this->redirectToRoute('questionInfo', array('id' => $answer->getQuestion()->getId()));
+            */
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [

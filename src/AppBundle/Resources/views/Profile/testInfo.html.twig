@@ -8,7 +8,7 @@
 {% block content %}
     <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
     <div style="margin: 30px 20px;">
-        <a href="{{ path('tests') }}">Testai</a>
+        <a href="{{ path('user.tests') }}">Testai</a>
         <span>|</span>
         <a href="{{ path('user.test.add.question', {'id': test.id}) }}">Pridėti klausimą</a>
         <span>|</span>

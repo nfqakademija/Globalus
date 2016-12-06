@@ -35,7 +35,7 @@ class TestController extends Controller
                 'label' => 'Aprasymas'
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Slaptažodis',
+                'label' => 'Slaptažodis(neprivaloma)',
                 'required' => false
             ])
             ->add('save', SubmitType::class, array('label' => 'Sukurti'))
