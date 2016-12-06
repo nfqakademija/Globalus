@@ -21,6 +21,9 @@
                 <td style="border: none">
                     Testo aprašymas
                 </td>
+                <td style="border: none">
+                    Laiko limitas(s)
+                </td>
             </tr>
             <tr>
                 <td style="border: none">
@@ -29,9 +32,12 @@
                 <td style="border: none">
                     {{ test.description }}
                 </td>
+                <td style="border: none">
+                    {{ test.timeLimit }}
+                </td>
             </tr>
         </table>
-
+            {% if questions.count != 0 %}
             {% for question in questions %}
                 <ul style="list-style: outside;padding: 20px 20px;border-bottom: 1px solid greenyellow">
                     <li class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="float: left;display: block;">
@@ -47,6 +53,9 @@
                 </ul>
 
             {% endfor %}
+            {% else %}
+            <h4>Nėra klausimų</h4>
+            {% endif %}
 
     </div>
     {% if questions.count > 0 %}

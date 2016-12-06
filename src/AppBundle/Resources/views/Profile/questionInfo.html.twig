@@ -20,7 +20,7 @@
         <p>Klausimo pavadinimas: {{ question.text }}</p>
         <br>
         <h5>Atsakymai</h5>
-
+            {% if answers.count != 0 %}
             {% for answer in answers %}
                 <ul style="list-style: outside;padding: 45px 40px;border-bottom: 1px solid greenyellow">
                     <li class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float: left;display: block;">
@@ -48,6 +48,9 @@
 
 
             {% endfor %}
+        {% else %}
+        <h4>Nėra atsakymų</h4>
+        {% endif %}
 
     </div>
     {% if answers.count > 0 %}

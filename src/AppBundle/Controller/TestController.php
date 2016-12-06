@@ -6,11 +6,13 @@ use AppBundle\Entity\Test;
 use AppBundle\Entity\User;
 use AppBundle\Form\AnswerType;
 use AppBundle\Form\QuestionType;
+use AppBundle\Form\TestType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,20 +28,7 @@ class TestController extends Controller
     public function createTest(Request $request)
     {
         $test = new Test();
-
-        $form = $this->createFormBuilder($test)
-            ->add('name', TextType::class, [
-                'label' => 'Pavadinimas'
-            ])
-            ->add('description', TextType::class, [
-                'label' => 'Aprasymas'
-            ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Slaptažodis(neprivaloma)',
-                'required' => false
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Sukurti'))
-            ->getForm();
+        $form = $this->createForm(TestType::class, $test);
 
         $form->handleRequest($request);
 
@@ -50,13 +39,12 @@ class TestController extends Controller
             $test->setCreatedAt($now);
             $test->setUser($this->getUser());
             $test->setTimesStarted(0);
-
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:index.html.twig', []);
+            return $this->redirectToRoute('user.tests');
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
