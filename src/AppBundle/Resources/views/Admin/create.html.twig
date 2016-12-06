@@ -1,0 +1,41 @@
+
+{% extends "@App/Admin/base.html.twig" %}
+
+{% block title %}Redagavimas{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block stylesheets %}
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
+    <style>
+        td{
+            padding-bottom: 5px;
+            padding-right: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
+    <link rel="stylesheet" href={{ asset('bundles/app/style/admin/tests.css') }} />
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+{% endblock %}
+{% block body %}
+<div id="wrapper">
+
+    {% include "AppBundle:Admin:header.html.twig" %}
+
+{% block content %}
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+
+{% endblock %}
+    <!-- /#page-content-wrapper -->
+
+</div>
+
+{% endblock %}

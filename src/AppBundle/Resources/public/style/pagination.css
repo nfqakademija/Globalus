@@ -1,0 +1,30 @@
+ol.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ol.pagination li {display: inline;}
+
+ol.pagination li a {
+    color: black;
+    float: left;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+ol.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+ol.pagination li a:hover:not(.active) {background-color: #ddd;}
+.pagination > .active > a{
+    background-color: greenyellow;
+    border-color: greenyellow;
+    color:black;
+}
+.pagination > .active > a, .pagination > .active > a:hover{
+    border-color: greenyellow;
+}

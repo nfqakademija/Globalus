@@ -10,14 +10,52 @@ use AppBundle\Form\TestStartType;
 use AppBundle\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
 class TestController extends Controller
 {
+    /**
+     * @Route("/create/tests" , name="createTest")
+     */
+    public function createTest(Request $request)
+    {
+        $test = new Test();
+
+        $form = $this->createFormBuilder($test)
+            ->add('name', TextType::class, [
+                'label' => 'Pavadinimas'
+            ])
+            ->add('description', TextType::class, [
+                'label' => 'Aprasymas'
+            ])
+            ->add('save', SubmitType::class, array('label' => 'Sukurti'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $test = $form->getData();
+            $now=new \DateTime();
+            $now->format('Y-m-d H:i:s');
+            $test->setCreatedAt($now);
+            $test->setUser($this->getUser());
+            $test->setTimesStarted(0);
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($test);
+            $em->flush();
+
+            return $this->render('AppBundle:Profile:index.html.twig', []);
+        }
+
+        return $this->render('AppBundle:Profile:createTest.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     /**
      * @Route("/test/start/{tid}" , name="test-start")
      */

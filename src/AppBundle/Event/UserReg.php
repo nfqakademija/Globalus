@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Event;
+
 use AppBundle\Entity\User;
 
 class UserReg
@@ -60,5 +61,4 @@ class UserReg
         $this->comfirmation_token = $comfirmation_token;
         return $this;
     }
-
 }

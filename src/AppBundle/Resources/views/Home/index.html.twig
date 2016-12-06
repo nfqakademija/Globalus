@@ -8,8 +8,14 @@
     <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
     <style>
 
-        .title {
+        .titleH {
             font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;
+            color: rgba(0,0,0,0.7);
+            text-shadow: 3px 3px 3px #fff;
+            color:#21c221;
+        }
+        .titleL{
+            font: 400 50px/1.2 'Merienda One', Helvetica, sans-serif;
             color: rgba(0,0,0,0.7);
             text-shadow: 3px 3px 3px #fff;
             color:#21c221;
@@ -29,12 +35,11 @@
         <img id="banner" src="{{ asset('bundles/app/style/testing.jpg') }}"
              alt="BannerImg" height="" width="" style="margin:auto">
     </header>
-    <div class="title" style="padding :10px">Testuokis</div>
+    <div class="title titleH" style="padding :10px">Testuokis</div>
     <div class="container">
 
         <div class="row search">
 
-            <form action="" method="post">
                 <div style="margin: 40px 20px;">
                     {{ form_start(form) }}
 
@@ -47,7 +52,6 @@
                 </div>
 
 
-            </form>
         </div>
 
 
@@ -106,5 +110,19 @@
             </div>
         </div>
     </div>
+<script>
+    // title font size changing script
+    jQuery(document).ready(function() {
+        $(window).resize(function () {
+            var viewportWidth = $(window).width();
+            if (viewportWidth < 600) {
+                $(".title").removeClass("titleH").addClass("titleL");
+            }else{
+                $('.title').removeClass('titleL').addClass('titleH');
+            }
+        });
 
+
+    });
+</script>
 {% endblock %}

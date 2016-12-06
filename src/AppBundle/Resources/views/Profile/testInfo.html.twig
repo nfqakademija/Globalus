@@ -1,0 +1,72 @@
+
+{% extends "@App/Profile/heading.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
+
+{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
+    <div style="margin: 30px 20px;">
+        <a href="{{ path('tests') }}">Testai</a>
+        <span>|</span>
+        <a href="{{ path('user.test.add.question', {'id': test.id}) }}">Pridėti klausimą</a>
+        <span>|</span>
+        <a href="{{ path('edit_user_test', {'id': test.id}) }}">Keisti testą</a>
+        <table class="table">
+            <tr>
+                <td style="border: none">
+                    Testo pavadinimas
+                </td>
+                <td style="border: none">
+                    Testo aprašymas
+                </td>
+            </tr>
+            <tr>
+                <td style="border: none">
+                    {{ test.name }}
+                </td>
+                <td style="border: none">
+                    {{ test.description }}
+                </td>
+            </tr>
+        </table>
+
+            {% for question in questions %}
+                <ul style="list-style: outside;padding: 20px 20px;border-bottom: 1px solid greenyellow">
+                    <li class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="float: left;display: block;">
+                        <a href="{{ path('user.test.question' , {'id': question.id}) }}">
+                            {{ question.text }}
+                        </a>
+                    </li>
+                    <li class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="float: left;display: block;">
+                        <a href="{{ path('user.question.delete', {'id': question.id}) }}">
+                            Trinti
+                        </a>
+                    </li>
+                </ul>
+
+            {% endfor %}
+
+    </div>
+    {% if questions.count > 0 %}
+    <ol class="pagination" style="padding-top: 20px">
+        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+            <a href="{{ path('user.test', {id: app.request.attributes.get('_route_params')['id'],page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+        </li>
+
+        {# Render each page number #}
+        {% for i in 1..maxPages %}
+            <li {{ thisPage == i ? 'class="active"' }}>
+                <a href="{{ path('user.test', {id: app.request.attributes.get('_route_params')['id'],page: i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {# `»` arrow #}
+        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+            <a href="{{ path('user.test', {id: app.request.attributes.get('_route_params')['id'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+        </li>
+    </ol>
+    {% endif %}
+
+{% endblock %}

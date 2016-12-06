@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class HomeController extends Controller
 {
@@ -23,7 +24,7 @@ class HomeController extends Controller
             $data=$form->getData();
 
 
-            return $this->redirectToRoute('searchByName',array('name' => $data));
+            return $this->redirectToRoute('searchByName', array('name' => $data));
         }
         $recentTests = $this->get('app.tests')->getRecentTests();
         $popularTest = $this->get('app.tests')->getMostPopularTests();
@@ -32,30 +33,40 @@ class HomeController extends Controller
             'testsPop' => $popularTest,
             'tests' => $recentTests
         ]);
-
     }
 
     /**
-     * @Route("/search", name="search")
+     * @Route("/search/{page}", name="search")
      */
-    public function searchAction()
+    public function searchAction($page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-        $tests = $em->getRepository('AppBundle:Test')->findAll();
+
+        $limit = 10;
+        $tests = $this->get('app.tests')->getAllTest($page, $limit ,true);
+
+        $maxPages = ceil($tests->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Home:search.html.twig', [
-            'tests' => $tests
+
+            'tests' => $tests,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
 
     /**
-     * @Route("/search/{name}", name="searchByName")
+     * @Route("/search/name/{name}/{page}", name="searchByName")
      */
-    public function searchByNameAction($name)
+    public function searchByNameAction($name, $page = 1)
     {
-
-        $tests=$this->get('app.tests')->getTests($name);
+        $limit = 10;
+        $tests=$this->get('app.tests')->getTests($name, $page, $limit);
+        $maxPages = ceil($tests->count() / $limit);
+        $thisPage = $page;
         return $this->render('AppBundle:Home:search.html.twig', [
-            'tests' => $tests
+            'tests' => $tests,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
         ]);
     }
     /**
@@ -65,5 +76,4 @@ class HomeController extends Controller
     {
         return $this->render('AppBundle:Home:about.html.twig', [  ]);
     }
-
 }

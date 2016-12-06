@@ -30,7 +30,7 @@
     <script type="text/javascript" >
 
 
-        var pagename= location.pathname.split('/').pop();
+        /*var pagename= location.pathname.split('/').pop();
         var pageNameSecondLast = location.pathname.split('/')[location.pathname.split('/').length-2];
         document.onreadystatechange = function () {
             if (document.readyState == "complete") {
@@ -52,6 +52,30 @@
                     $('.navigSpan').removeClass('active');
                     $('.navigSpan').eq(1).addClass('active');
                 }
+
+            }
+        };*/
+
+        var pageNameSplitArr = location.pathname.split('/');
+        document.onreadystatechange = function () {
+
+            if (document.readyState == "complete") {
+                for (var i=0; i<=location.pathname.split('/').length;i++){
+                    if (pageNameSplitArr[i] == "user" || pageNameSplitArr[i] == "userByEmailDESC" || pageNameSplitArr[i] == "userByEmailASC") {
+                        $('.navig').removeClass('active');
+                        $('.navig').eq(0).addClass('active');
+                        $('.navigSpan').removeClass('active');
+                        $('.navigSpan').eq(0).addClass('active');
+                    }
+                    else if (pageNameSplitArr[i] == "tests") {
+                        $('.navig').removeClass('active');
+                        $('.navig').eq(1).addClass('active');
+                        $('.navigSpan').removeClass('active');
+                        $('.navigSpan').eq(1).addClass('active');
+                    }
+
+                }
+
 
             }
         };
