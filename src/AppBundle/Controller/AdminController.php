@@ -272,7 +272,7 @@ class AdminController extends Controller
         return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
     }
     /**
-     * @Route("/tests/test/question/{id}/{page}", name="questionInfo")
+     * @Route("/tests/question/{id}/{page}", name="questionInfo")
      */
     public function showTestQestionInfo($id, $page = 1)
     {
@@ -282,6 +282,7 @@ class AdminController extends Controller
         $answers = $testsService->getQuestionAnswers($id, $page, $limit);
         $maxPages = ceil($answers->count() / $limit);
         $thisPage = $page;
+
         return $this->render('AppBundle:Admin:questionAction.html.twig', [
             'question' => $question,
             'answers' => $answers,
@@ -317,10 +318,10 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($answer);
         $em->flush();
-        return $this->redirectToRoute('tests');
-        /*
+        //return $this->redirectToRoute('tests');
+
         return $this->redirectToRoute('questionInfo', array('id' => $answer->getQuestion()->getId()));
-        */
+
     }
     /**
      * @Route("/tests/edit/{id}", name="edit_admin_test")
@@ -390,10 +391,10 @@ class AdminController extends Controller
 
             $em->persist($question);
             $em->flush();
-            return $this->redirectToRoute('tests');
-            /*
+            //return $this->redirectToRoute('tests');
+            //die();
             return $this->redirectToRoute('questionInfo', array('id' => $id));
-            */
+
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
@@ -434,10 +435,10 @@ class AdminController extends Controller
 
             $em->persist($answer);
             $em->flush();
-            return $this->redirectToRoute('tests');
-            /*
+            //return $this->redirectToRoute('tests');
+
             return $this->redirectToRoute('questionInfo', array('id' => $answer->getQuestion()->getId()));
-            */
+
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [

@@ -246,7 +246,7 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $answer=$testService->getAnswerById($id);
         $formAnswer = new Answer();
-        $form = $this->createForm(AnswerType::class,$answer);
+        $form = $this->createForm(AnswerType::class, $answer);
         $form->add('save', SubmitType::class, array('label' => 'Sukurti'));
         $form->get('text')->setData($answer->getText());
         $form->get('correct')->setData($answer->getCorrect());
@@ -311,7 +311,7 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $question = $testService->getQuestionById($id);
         $answer = new Answer();
-        $form = $this->createForm(AnswerType::class,$answer);
+        $form = $this->createForm(AnswerType::class, $answer);
         $form->add('save', SubmitType::class, array('label' => 'Sukurti'));
 
         $form->handleRequest($request);
