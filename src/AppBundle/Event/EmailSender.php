@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Event;
+
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,17 +36,13 @@ class EmailSender extends Sender
      * @param $confirmation_token
      * @param $action
      */
-    public function send($user,$confirmation_token, $action)
+    public function send($user, $confirmation_token, $action)
     {
-        $userReg = new UserReg($user,$confirmation_token);
-        if($action=='create'){
-            $this->eventDispatcher->dispatch(Events::CREATE_EVENT,new SendEvent($userReg) );
+        $userReg = new UserReg($user, $confirmation_token);
+        if ($action=='create') {
+            $this->eventDispatcher->dispatch(Events::CREATE_EVENT, new SendEvent($userReg));
+        } elseif ($action =='reset') {
+            $this->eventDispatcher->dispatch(Events::RESET_EMAIL_EVENT, new SendEvent($userReg));
         }
-        else if($action =='reset'){
-            $this->eventDispatcher->dispatch(Events::RESET_EMAIL_EVENT,new SendEvent($userReg) );
-        }
-
-
     }
-
 }

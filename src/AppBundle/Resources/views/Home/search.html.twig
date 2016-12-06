@@ -17,7 +17,23 @@
         text-shadow: 3px 3px 3px #fff;
         color:#21c221;
     }
+    .rectangle-list a::before{
+        content: counter(lis) counter(li) ;
+        counter-increment: li ;
 
+    }
+    .container{
+        counter-reset: lis {{ thisPage-1 }};
+    }
+    .title{
+        counter-reset: lid 0;
+    }
+
+    .rectangle-list a.last::before{
+        counter-reset:   liq {{ thisPage }};
+        content: counter(liq) counter(lid) ;
+
+    }
 </style>
 {% endblock %}
 
@@ -28,66 +44,197 @@
 
         <div >
         {% include "AppBundle:Home:breadcrumb.html.twig" %}
-            {% if tests is empty %}
-                <h4>Nėra testų</h4>
-            {% else %}
-                <ol class="rectangle-list">
-                    {% for test in tests %}
-                        <li>
+            <div class="col-lg-6" >
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search-field" placeholder="ieškoti testo pavadinimo iš visų testų">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Ieškoti!</button>
+                    </span>
+                </div>
+            </div>
+            <div style="margin-top: 50px">
+                <div id="list">
 
-                            <a class="w3-tooltip" href="{{ path('search') }}/{{ test.id }}">
-                                {{ test.name }}
-                                <span style="position:absolute;left: -40px;bottom: 30px;background: black;" class="w3-text w3-tag">Aprašymas: {{ test.description }}</span>
-                            </a>
+                </div>
+                <div >
+                    <ol id="listingTable" class="rectangle-list">
 
-                        </li>
-                    {% endfor %}
 
-                </ol>
-            {% endif %}
+                    </ol>
+                </div>
+                <div id="jsPaging">
+
+                </div>
+
+            {% include "AppBundle:Home:list.html.twig" %}
+            </div>
         </div>
 
+
+
     </div>
-    {% if maxPages > 1 %}
-        <ul class="pagination pagination-sm">
-            {% if app.request.attributes.get('_route') == 'searchByName' %}
-                {# `«` arrow  #}
+<script>
+    //$(function(){
+        //console.log('desperate for');
+        var objJson=[];
+        var objJsonId =[];
+        var objJsonDescription =[];
+        var firstLoad=true;
+        var current_page=1;
+        var records_per_page=10;
+        var searchField = $('#search-field');
+        var prevButton = $('#btn_prev');
+        var nextButton = $('#btn_next');
+        var pageSection = $('#pg');
+        var userList = $('#listingTable');
+        var userListDiv = $('#user-list-div');
+        var userPagination = $('.pagination');
+        var list=$('#list');
+        searchField.keyup(function(evt){
+            //console.log($(this).val());
 
-                <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                </li>
-                {% for i in 1..maxPages %}
-                    <li {{ thisPage == i ? 'class="active"' }}>
-                        <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: i}) }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
+            $.ajax({
+                url: '{{ path('search') }}',
+                method: "POST",
+                data: "id=" + $(this).val() ,
+                dataType: 'html',
+                success: function(result, request) {
 
-                {# `»` arrow #}
-                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                    <a href="{{ path('searchByName', {name: app.request.attributes.get('_route_params')['name'],page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                </li>
-
-            {% else %}
-                {# `«` arrow  #}
-                <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                    <a href="{{ path('search', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                </li>
-
-                {# Render each page number #}
-                {% for i in 1..maxPages %}
-                    <li {{ thisPage == i ? 'class="active"' }}>
-                        <a href="{{ path('search', {page: i}) }}">{{ i }}</a>
-                    </li>
-                {% endfor %}
-
-                {# `»` arrow #}
-                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                    <a href="{{ path('search', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                </li>
-            {% endif %}
+                    var parsedData =JSON.parse(result);
+                    //console.log(parsedData);
+                    if(parsedData.status ==='success'){
+                        //console.log('hete');
+                        userListDiv.empty();
+                        userPagination.empty();
+                        //userListDiv.html(parsedData.data);
+                        list.empty();
+                        list.html(parsedData.data);
 
 
-        </ul>
-    {% endif %}
+                        userList.empty();
+                        objJson=[];
+                        objJsonId =[];
+                        objJsonDescription =[];
+                        //console.log('nope');
+                        var numberOfItems=$('.w3-tooltip span').length;
+                        var current_page = 1;
+                        var records_per_page = 10;
+                        var i;
 
+                        for (i = 0; i < numberOfItems; i++) {
+                            var text=$('.w3-tooltip span')[i].previousSibling.nodeValue;
+                            objJson[i]=text.toString();
+                        }
+                        //console.log(objJson[0].toString());
+
+                        for (i = 0; i < numberOfItems; i++) {
+                            var hr = document.getElementsByClassName('w3-tooltip')[i].href;
+                            var text = hr.substr(hr.lastIndexOf('/')+1);
+                            objJsonId[i]=text.toString();
+                        }
+
+                        for (i = 0; i < numberOfItems; i++) {
+                            var text = $('.w3-tooltip span')[i].innerHTML;
+                            objJsonDescription[i]=text.toString();
+                        }
+
+                        //padarom empty , nes yra paginatintas listas
+                        userPagination.empty();
+                        list.empty();
+                        document.getElementById('jsPaging').innerHTML='<a href="javascript:prevPage()" id="btn_prev">Ankstesnis psl.</a>'+
+                                '<a href="javascript:nextPage()" id="btn_next">Kitas psl.</a>'+
+                                ' <span id="pg">Puslapis: <span id="page"></span></span>';
+                        changePage(1);
+                        //console.log('pagkei');
+                        current_page=1;
+
+
+
+                    }else{
+                        //handle no result case
+                    }
+                }
+            });
+
+        });
+
+        function prevPage()
+        {
+            if (current_page > 1) {
+                current_page--;
+                changePage(current_page);
+            }
+        }
+
+        function nextPage()
+        {
+            //console.log('someyhing');
+            if (current_page < numPages()) {
+                current_page++;
+                changePage(current_page);
+            }
+        }
+
+        function changePage(page)
+        {
+            var btn_next = document.getElementById("btn_next");
+            var btn_prev = document.getElementById("btn_prev");
+            var listing_table = document.getElementById("listingTable");
+            var page_span = document.getElementById("page");
+
+            // Validate page
+            if (page < 1) page = 1;
+            if (page > numPages()) page = numPages();
+
+            listing_table.innerHTML = "";
+            /*console.log(records_per_page);
+            console.log('som');*/
+            for (var i = (page-1) * records_per_page; i < (page * records_per_page); i++) {
+                if(objJson[i]!=null) {
+                    listing_table.innerHTML += '<li id = "user-table"><a class="w3-tooltip" href="{{ path('search') }}/' + objJsonId[i] + '">' +
+                            objJson[i] + '<span style="position:absolute;left: -40px;bottom: 30px;background: black;"' +
+                            ' class="w3-text w3-tag"> ' + objJsonDescription[i] + '</span>' +
+                            "</a></li>";
+                }
+            }
+            //console.log(listing_table.innerHTML);
+            page_span.innerHTML = page;
+
+            if (page == 1) {
+                btn_prev.style.visibility = "hidden";
+            } else {
+                btn_prev.style.visibility = "visible";
+            }
+
+            if (page == numPages()) {
+                btn_next.style.visibility = "hidden";
+            } else {
+                btn_next.style.visibility = "visible";
+            }
+        }
+
+        function numPages()
+        {
+            return Math.ceil(objJson.length / records_per_page);
+        }
+
+        window.onload = function() {
+            $('.rectangle-list a:eq(9)').toggleClass('last');
+            changePage(1);
+        };
+
+
+    //});
+
+
+    /*function nextPage()
+    {
+        if (current_page < numPages()) {
+            current_page++;
+            changePage(current_page);
+        }
+    }*/
+
+
+</script>
 {% endblock %}

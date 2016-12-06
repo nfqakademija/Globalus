@@ -69,6 +69,21 @@ class TestService
 
         return $paginator;
     }
+    public function getTestsWithoutPaginating($name)
+    {
+        $repository = $this->em->getRepository('AppBundle:Test');
+        $query = $repository->createQueryBuilder('p')
+            ->where('p.name LIKE :name')
+            ->orWhere('p.description LIKE :name')
+            ->andWhere('p.published = 1')
+            ->setParameter('name', '%'.$name.'%')
+            ->getQuery();
+        /*$paginator = $this->paginate($query, $currentPage, $limit);
+        return $paginator;*/
+
+
+        return $query->getResult();
+    }
     public function getRecentTests($count = 5)
     {
 
