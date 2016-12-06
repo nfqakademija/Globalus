@@ -18,6 +18,25 @@
     <link rel="stylesheet" href={{ asset('bundles/app/style/admin/simple-sidebar.css') }} />
     <link rel="stylesheet" href={{ asset('bundles/app/style/admin/tests.css') }} />
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <style>
+        .rectangle-list a::before{
+            content: counter(lis) counter(li) ;
+            counter-increment: li ;
+
+        }
+        .container{
+            counter-reset: lis {{ thisPage-1 }};
+        }
+        .title{
+            counter-reset: lid 0;
+        }
+
+        .rectangle-list a.last::before{
+            counter-reset:   liq {{ thisPage }};
+            content: counter(liq) counter(lid) ;
+
+        }
+    </style>
 {% endblock %}
 {% block body %}
     <div id="wrapper">
@@ -120,5 +139,7 @@
         <!-- /#page-content-wrapper -->
 
     </div>
-
+    <script>
+        $('.rectangle-list a:eq(9)').toggleClass('last');
+    </script>
 {% endblock %}
