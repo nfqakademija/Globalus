@@ -1,0 +1,50 @@
+.box {
+
+    float: left;
+    width: 45%;
+    margin: 1em;
+    /*background-color: red;*/
+}
+
+h5 {
+    font-family: "museo-sans",sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #D49637;
+    letter-spacing: .07em;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+p {
+    margin: 0 0 20px 0;
+    line-height: 26px;
+}
+
+dd {
+    display: block;
+}
+
+.social-links a {
+    text-indent: -119988px;
+    overflow: hidden;
+    text-align: left;
+    background-image: url(http://combadi.com/static/img/icons.png?1381413743);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: middle;
+    zoom: 1;
+    width: 32px;
+    height: 48px;
+    margin-right: 5px;
+}
+
+.social-links a.fb {
+    background-position: -592px -72px;
+}
+
+.social-links a.tt {
+    background-position: -592px -8px;
+}

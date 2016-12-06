@@ -24,13 +24,9 @@ class ContactController extends Controller
     /**
      * @Route("/contact", name="contact")
      */
-
     public function newAction(Request $request)
     {
-        // create a task and give it some dummy data for this example
         $contact = new Contact();
-//        $contact->setTask('Write a blog post');
-//        $contact->setDueDate(new \DateTime('tomorrow'));
 
         $form = $this->createFormBuilder($contact)
             ->add('name', TextType::class, array('label' => 'Vardas'))
@@ -39,13 +35,11 @@ class ContactController extends Controller
             ->add('save', SubmitType::class, array('label' => 'Siųsti komentarą'))
             ->getForm();
 
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $contact = $form->getData();
             $em = $this->getDoctrine()->getManager();
-
 
             $em->persist($contact);
             $em->flush();
@@ -56,5 +50,6 @@ class ContactController extends Controller
         return $this->render('AppBundle:Contact:contact.html.twig', array(
             'form' => $form->createView(),
         ));
+
     }
 }
