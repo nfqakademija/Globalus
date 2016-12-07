@@ -27,7 +27,7 @@ class HomeController extends Controller
         $recentTests = $this->get('app.tests')->getRecentTests();
         $popularTest = $this->get('app.tests')->getMostPopularTests();
         if ($form->isSubmitted() && $form->isValid()) {
-            $data=$form->getData();
+            $data = $form->getData();
             if (preg_match('/[\W]+/', $data)) {
                 return $this->render('AppBundle:Home:index.html.twig', [
                     'form' => $form->createView(),

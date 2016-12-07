@@ -3,24 +3,36 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/profile/style.css') }} />
 {% endblock %}
 
 {% block content %}
     <div style="margin: 30px 20px;">
         <a href="{{ path('user.tests') }}">Testai</a>
         <span>|</span>
+        <a href="{{ path('user.test', {'id': test.id}) }}">Klausimai</a>
+        <span>|</span>
         <a href="{{ path('user.question.add.answer', {'id': question.id}) }}">Pridėti Atsakymą</a>
         <span>|</span>
         <a href="{{ path('edit_test_question', {'id': question.id}) }}">Redaguoti klausimą</a>
         <br><br>
 
-        <p>Klausimo pavadinimas: {{ question.text }}</p>
+        <table class="table">
+
+            <tbody>
+            <tr>
+                <th>Klausimo pavadinimas</th>
+            </tr>
+            <tr>
+                <td>{{ question.text }}</td>
+            </tr>
+            </tbody>
+        </table>
         <br>
         <h5>Atsakymai</h5>
-
+            {% if answers.count != 0 %}
             {% for answer in answers %}
-                <ul style="list-style: outside;padding: 45px 40px;border-bottom: 1px solid greenyellow">
+                <ul class="testList" style="padding: 45px 40px;">
                     <li class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float: left;display: block;">
                         {{ answer.text }}
                     </li>
@@ -46,6 +58,9 @@
 
 
             {% endfor %}
+        {% else %}
+        <h4>Nėra atsakymų</h4>
+        {% endif %}
 
     </div>
     {% if answers.count > 0 %}

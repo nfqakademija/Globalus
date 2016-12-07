@@ -5,24 +5,8 @@
 {% block stylesheets %}
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
-    <style>
 
-
-
-        h2 {
-            color: forestgreen;
-
-        }
-
-        .icon-bar {
-            color: black;
-            background-color: black;
-        }
-
-        .active {
-            background-color: greenyellow;
-        }
-    </style>
+    <link rel="stylesheet" href={{ asset('bundles/app/style/profile/heading.css') }} />
     <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
@@ -42,23 +26,29 @@
 
 
 
-            <div class="" id="myNavbar">
+            <div id="myNavbar">
 
 
                 <a href="{{ path('profile') }}">
-                    <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
                         <i class="fa fa-universal-access w3-margin-right"></i>
                         Informacija
                     </button>
                 </a>
                 <a href="{{ path('user.tests') }}">
-                    <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
                         <i class="fa fa-book w3-margin-right"></i>
-                        Testai
+                        Testų kūrimas
+                    </button>
+                </a>
+                <a href="{{ path('profile-test-results') }}">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
+                        <i class="fa fa-book w3-margin-right"></i>
+                        Testų rezultatai
                     </button>
                 </a>
                 <a href="{{ path('changePassword') }}">
-                    <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
                         <i class="fa fa-user w3-margin-right"></i>
                         Slaptažodžio keitimas
                     </button>
@@ -74,36 +64,6 @@
     </header>
     {% block content %}{% endblock %}
 
-    <script type="text/javascript">
-
-        //var pagename = location.pathname.split('/').pop();
-        var pageNameSplitArr = location.pathname.split('/');
-        document.onreadystatechange = function () {
-
-            if (document.readyState == "complete") {
-                for (var i=0; i<=location.pathname.split('/').length;i++){
-                    if (pageNameSplitArr[i] == "") {
-
-                        $('.nvBtn').removeClass('active');
-                        $('.nvBtn').first().addClass('active');
-                    }
-                    else if (pageNameSplitArr[i] == "changePassword") {
-                        $('.nvBtn').removeClass('active');
-                        $('.nvBtn').eq(2).addClass('active');
-                    }
-                    else if (pageNameSplitArr[i] == "tests" || pageNameSplitArr[i] == "questions") {
-                        $('.nvBtn').removeClass('active');
-                        $('.nvBtn').eq(1).addClass('active');
-                    }
-
-                }
-
-
-            }
-        };
-
-
-    </script>
-
+    <script src='{{ asset('bundles/app/style/profile/breadcrumbActive.js') }}'></script>
 
 {% endblock %}
