@@ -1,0 +1,36 @@
+{% extends "@App/Profile/heading.html.twig" %}
+
+{% block content %}
+
+    {% if message|length > 0 %}
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3 text-center">
+                <h3>Testų istorija tuščia</h3>
+            </div>
+        </div>
+    {% else %}
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Pavadinimas</th>
+                <th>Klausimų kiekis</th>
+                <th style="width: 20px">Rezultatas</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in 0..tests|length-1 %}
+            <tr>
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ tests[i].name }}</td>
+                <td>{{ tests[i].questionsLimit }}</td>
+                <td>{{ results[i] }}</td>
+                <td style="width: 20px"><a href="{{ path('test-answers', {'tid' : tests[i].id, 'qid' : 1, 'hash' : hashes[i]}) }}" class="btn btn-success">Peržiūrėti rezultatus</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}

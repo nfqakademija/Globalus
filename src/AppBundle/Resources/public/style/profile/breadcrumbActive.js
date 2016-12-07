@@ -19,6 +19,14 @@ document.onreadystatechange = function () {
                 $('.nvBtn').removeClass('active');
                 $('.nvBtn').eq(1).addClass('active');
             }
+            else if (pageNameSplitArr[i] == "tests" || pageNameSplitArr[i] == "questions") {
+                $('.nvBtn').removeClass('active');
+                $('.nvBtn').eq(1).addClass('active');
+            }
+            else if (pageNameSplitArr[i] == "test-history") {
+                $('.nvBtn').removeClass('active');
+                $('.nvBtn').eq(2).addClass('active');
+            }
 
         }
 

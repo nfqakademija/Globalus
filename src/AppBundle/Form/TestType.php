@@ -35,6 +35,9 @@ class TestType extends AbstractType
             ->add('timeLimit', NumberType::class, [
                 'label' => 'Laiko limitas(sekundėmis)'
             ])
+            ->add('questionsLimit', NumberType::class, [
+                'label' => 'Sprendimuose pateiktų klausimų kiekis'
+            ])
             ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
             ->getForm();
     }
