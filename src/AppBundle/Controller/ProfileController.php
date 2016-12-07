@@ -105,10 +105,6 @@ class ProfileController extends Controller
         $test = $testService->getTestById($id);
         $questions = $test->getQuestions();
         $em = $this->getDoctrine()->getManager();
-        $solutions = $em->getRepository('AppBundle:Solution')->findBy(array('test' => $id));
-        foreach ($solutions as $solution) {
-            $em->remove($solution);
-        }
         foreach ($questions as $question) {
             $answers = $question->getAnswers();
             foreach ($answers as $answer) {
@@ -118,7 +114,7 @@ class ProfileController extends Controller
         }
         $em->remove($test);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig', []);
+        return $this->redirectToRoute('user.tests');
     }
 
     /**

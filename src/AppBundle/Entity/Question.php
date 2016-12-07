@@ -30,6 +30,10 @@ class Question
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
      */
     private $answers;
+    /**
+     * @ORM\OneToMany(targetEntity="Solution", mappedBy="question", cascade={"remove"})
+     */
+    private $solutions;
 
     /**
      * Question constructor.
@@ -37,6 +41,7 @@ class Question
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->solutions = new ArrayCollection();
     }
 
     /**
@@ -55,6 +60,22 @@ class Question
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSolutions()
+    {
+        return $this->solutions;
+    }
+
+    /**
+     * @param mixed $solutions
+     */
+    public function setSolutions($solutions)
+    {
+        $this->solutions = $solutions;
     }
 
     /**
