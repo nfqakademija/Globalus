@@ -3,7 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/profile/style.css') }} />
 {% endblock %}
 {% block content %}
     <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
@@ -39,7 +39,7 @@
         </table>
             {% if questions.count != 0 %}
             {% for question in questions %}
-                <ul style="list-style: outside;padding: 20px 20px;border-bottom: 1px solid greenyellow">
+                <ul class="testList">
                     <li class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="float: left;display: block;">
                         <a href="{{ path('user.test.question' , {'id': question.id}) }}">
                             {{ question.text }}

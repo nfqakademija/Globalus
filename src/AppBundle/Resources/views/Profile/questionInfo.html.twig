@@ -3,7 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/profile/style.css') }} />
 {% endblock %}
 
 {% block content %}
@@ -22,7 +22,7 @@
         <h5>Atsakymai</h5>
             {% if answers.count != 0 %}
             {% for answer in answers %}
-                <ul style="list-style: outside;padding: 45px 40px;border-bottom: 1px solid greenyellow">
+                <ul class="testList" style="padding: 45px 40px;">
                     <li class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float: left;display: block;">
                         {{ answer.text }}
                     </li>

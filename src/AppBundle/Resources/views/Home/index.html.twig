@@ -6,27 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     {{ parent() }}
     <link href='http://fonts.googleapis.com/css?family=Merienda+One' rel='stylesheet' type='text/css'>
-    <style>
-
-        .titleH {
-            font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;
-            color: rgba(0,0,0,0.7);
-            text-shadow: 3px 3px 3px #fff;
-            color:#21c221;
-        }
-        .titleL{
-            font: 400 50px/1.2 'Merienda One', Helvetica, sans-serif;
-            color: rgba(0,0,0,0.7);
-            text-shadow: 3px 3px 3px #fff;
-            color:#21c221;
-        }
-        .main-header {
-            text-align: center;
-        }
-
-
-
-    </style>
+    <link rel="stylesheet" href={{ asset('bundles/app/style/home/indexStyle.css') }} />
     <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
 {% endblock %}
 
@@ -92,13 +72,13 @@
                 <div class="popNew">
                     <ol class="popNewList">
                         {% for test in tests %}
-                            {% if loop.index is divisible by(2)  %}
-                            <li style="padding-left: 50px;">
+                            {% if loop.index is divisible by(2) %}
+                                <li style="padding-left: 50px;">
 
-                                {% else %}
-                                    <li >
+                            {% else %}
+                                <li>
 
-                        {% endif %}
+                            {% endif %}
                             <span class="popNewSpan">{{ loop.index }}.</span>
                             <p class="popNewP">
                                 <span>{{ test.name }}</span><br>
@@ -112,25 +92,5 @@
             </div>
         </div>
     </div>
-<script>
-    // title font size changing script
-    jQuery(document).ready(function() {
-        var viewportWidth = $(window).width();
-        if (viewportWidth < 600) {
-            $(".title").removeClass("titleH").addClass("titleL");
-        }else{
-            $('.title').removeClass('titleL').addClass('titleH');
-        }
-        $(window).resize(function () {
-            var viewportWidth = $(window).width();
-            if (viewportWidth < 600) {
-                $(".title").removeClass("titleH").addClass("titleL");
-            }else{
-                $('.title').removeClass('titleL').addClass('titleH');
-            }
-        });
-
-
-    });
-</script>
+<script src="{{ asset('bundles/app/style/home/onIndexResize.js') }}"></script>
 {% endblock %}

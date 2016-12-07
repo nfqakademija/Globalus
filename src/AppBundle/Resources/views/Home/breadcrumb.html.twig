@@ -16,15 +16,19 @@
     <script src="http://thecodeplayer.com/uploads/js/prefixfree-1.0.7.js" type="text/javascript" type="text/javascript"></script>
     <script type="text/javascript" >
 
-        var pagename= location.pathname.split('/').pop();
-        var pageNameSecondLast = location.pathname.split('/')[location.pathname.split('/').length-2];
+        var pageNameSplitArr = location.pathname.split('/');
+
+
         document.onreadystatechange = function () {
             if (document.readyState == "complete") {
 
-                if (pagename=="search"||pageNameSecondLast=="search"){
-                    $('li.BreC').removeClass('current');
-                    $('li.BreC').eq(1).addClass('current');
+                for (var i=0; i<=location.pathname.split('/').length;i++){
+                    if (pageNameSplitArr[i]=="search"){
+                        $('li.BreC').removeClass('current');
+                        $('li.BreC').eq(1).addClass('current');
+                    }
                 }
+
 
             }
         };
