@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lukas
- * Date: 16.11.13
- * Time: 22.30
- */
 
 namespace AppBundle\Entity;
 
@@ -63,12 +57,10 @@ class Answer
 
     /**
      * @param mixed $question
-     * @return Answer
      */
     public function setQuestion($question)
     {
         $this->question = $question;
-        return $this;
     }
 
     /**

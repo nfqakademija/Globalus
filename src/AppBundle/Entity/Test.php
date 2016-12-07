@@ -42,7 +42,10 @@ class Test
      * @ORM\OneToMany(targetEntity="Question", mappedBy="test")
      */
     private $questions;
-
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $questionsLimit;
     /**
      * @ORM\Column(type="datetime")
      */
@@ -87,8 +90,6 @@ class Test
     {
         $this->timesStarted = $timesStarted;
     }
-
-
 
     /**
      * @return mixed
@@ -231,13 +232,13 @@ class Test
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $author
+     * @return Test
      */
     public function setUser($user)
     {
         $this->user = $user;
     }
-
 
     /**
      * @return mixed

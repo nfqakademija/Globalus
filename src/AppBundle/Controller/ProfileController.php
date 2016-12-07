@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
+use AppBundle\Entity\Solution;
 use AppBundle\Service\ExampleService;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -370,5 +371,99 @@ class ProfileController extends Controller
             'maxPages' => $maxPages,
             'thisPage' => $thisPage
         ]);
+    }
+
+    /**
+     * @Route("/test-history", name="profile-test-results")
+     */
+    public function showTestHistory()
+    {
+        /** @var Solution $solution */
+        $solutions = $this->getDoctrine()->getRepository('AppBundle:Solution')
+            ->findBy(array('user' => $this->getUser()));
+
+        $tests = array();
+        $temp = array();
+
+        if ($solutions!=null) {
+            $hash = $solutions[0]->getHash();
+            for ($i = 0; $i < count($solutions)-1; $i++) {
+                if ($solutions[$i]->getHash() == $hash) {
+                    $temp[] = $solutions[$i];
+                    if ($solutions[$i+1]->getHash()!=$hash) {
+                        $tests[] = $temp;
+                        $hash = $solutions[$i+1]->getHash();
+                        unset($temp);
+                        $temp = array();
+                    }
+                    if ($i+1==count($solutions)-1) {
+                        $temp[] = $solutions[$i+1];
+                        $tests[] = $temp;
+                    }
+                }
+            }
+        }
+
+        if ($solutions==null) {
+            $message = 'Testų istorija tuščia';
+            return $this->render('AppBundle:Profile:testHistory.html.twig', array(
+                'message' => $message
+            ));
+        } else {
+            $results = array();
+            $testObjects = array();
+            $hashes = array();
+            foreach ($tests as $test) {
+                $maxPoints = $test[0]->getTest()->getQuestionsLimit();
+                $points = 0;
+                foreach ($test as $solution) {
+                    $points += $this->countPoints($solution);
+                }
+                $hashes[] = $test[0]->getHash();
+                $results[] = round(($points*100/$maxPoints), 2);
+                $testObjects[] = $this->getDoctrine()->getRepository('AppBundle:Test')->find($test[0]->getTest());
+            }
+
+            return $this->render('AppBundle:Profile:testHistory.html.twig', array(
+                'results' => $results,
+                'tests' => $testObjects,
+                'hashes' => $hashes,
+                'message' => ''
+            ));
+        }
+    }
+
+    public function countPoints(Solution $solution)
+    {
+        $points=0;
+        $question = $this->getDoctrine()->getRepository('AppBundle:Question')->find($solution->getQuestion());
+        $qAnswers = $question->getAnswers();
+        $qCorrectAnswers = 0;
+        foreach ($qAnswers as $answer) {
+            if ($answer->getCorrect()==true) {
+                $qCorrectAnswers++;
+            }
+        }
+
+        $answers = $solution->getAnswers();
+        if (($answers!=null)&&(count($answers)>0)) {
+            $correctAnswers = 0;
+            $incorrectAnswers = 0;
+            foreach ($answers as $answer) {
+                if ($answer->getCorrect()==true) {
+                    $correctAnswers++;
+                } else {
+                    $incorrectAnswers++;
+                }
+            }
+            if ($incorrectAnswers==0) {
+                if ($qCorrectAnswers>1) {
+                    $points = $points + round(($correctAnswers/$qCorrectAnswers), 2);
+                } else {
+                    $points++;
+                }
+            }
+        }
+        return $points;
     }
 }

@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{{ testName }} rezultatas - {{ parent() }}{% endblock %}
+
+
+{% block stylesheets %}
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/app/style/test.css') }}"/>
+
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ testName }} rezultatas</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 text-center">
+                                <h2 style="color: black">{{ testName }} baigtas</h2>
+                                <h1>
+                                    Surinkta
+                                    {% if result >= 49.5 %}
+                                        <span style="color: green">{{ result }}%</span>
+                                    {% else %}
+                                        <span style="color: red">{{ result }}%</span>
+                                    {% endif %}
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="row text-center" style="margin-top: 30px">
+                            <a href="{{ path('test-answers', {'tid': app.request.get('tid'), 'qid': 1, 'hash': app.request.get('hash')}) }}" class="btn btn-default">Peržiūrėti atsakymus</a>
+                            <a href="{{ path('search') }}" class="btn btn-default">Grįžti į testų sąrašą</a>
+                            <a href="{{ path('profile-test-results') }}" class="btn btn-default">Peržiūrėti sprendimų istoriją</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

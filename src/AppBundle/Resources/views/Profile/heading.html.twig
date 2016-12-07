@@ -46,19 +46,25 @@
 
 
                 <a href="{{ path('profile') }}">
-                    <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
                         <i class="fa fa-universal-access w3-margin-right"></i>
                         Informacija
                     </button>
                 </a>
                 <a href="{{ path('user.tests') }}">
-                    <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
                         <i class="fa fa-book w3-margin-right"></i>
-                        Testai
+                        Testų kūrimas
+                    </button>
+                </a>
+                <a href="{{ path('profile-test-results') }}">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
+                        <i class="fa fa-book w3-margin-right"></i>
+                        Testų rezultatai
                     </button>
                 </a>
                 <a href="{{ path('changePassword') }}">
-                    <button class="nvBtn btn col-md-4 col-sm-12 col-xs-12">
+                    <button class="nvBtn btn col-md-3 col-sm-12 col-xs-12">
                         <i class="fa fa-user w3-margin-right"></i>
                         Slaptažodžio keitimas
                     </button>
@@ -89,11 +95,15 @@
                     }
                     else if (pageNameSplitArr[i] == "changePassword") {
                         $('.nvBtn').removeClass('active');
-                        $('.nvBtn').eq(2).addClass('active');
+                        $('.nvBtn').eq(3).addClass('active');
                     }
                     else if (pageNameSplitArr[i] == "tests" || pageNameSplitArr[i] == "questions") {
                         $('.nvBtn').removeClass('active');
                         $('.nvBtn').eq(1).addClass('active');
+                    }
+                    else if (pageNameSplitArr[i] == "test-history") {
+                        $('.nvBtn').removeClass('active');
+                        $('.nvBtn').eq(2).addClass('active');
                     }
 
                 }
