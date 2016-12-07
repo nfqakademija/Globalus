@@ -418,4 +418,32 @@ class ProfileController extends Controller
         }
         return $points;
     }
+    /**
+     * @Route("/tests/publish/{id}", name="userTestsPublish")
+     */
+    public function testPublish($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $test = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $test->setPublished(1);
+        $em->persist($test);
+        $em->flush();
+        return $this->redirectToRoute('user.test', array('id' => $test->getId()));
+    }
+    /**
+     * @Route("/tests/depublish/{id}", name="userTestsDepublish")
+     */
+    public function testDepublish($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $test = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $test->setPublished(0);
+        $em->persist($test);
+        $em->flush();
+        return $this->redirectToRoute('user.test', array('id' => $test->getId()));
+    }
 }
