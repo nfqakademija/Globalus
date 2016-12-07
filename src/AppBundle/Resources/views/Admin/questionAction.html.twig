@@ -142,7 +142,12 @@
         <!-- /#page-content-wrapper -->
 
     </div>
+{% block javascripts %}
+    {{ parent() }}
     <script>
-        $('.rectangle-list a:eq(9)').toggleClass('last');
+        window.onload = function() {
+            $('.rectangle-list a:eq(9)').toggleClass('last');
+        };
     </script>
+{% endblock %}
 {% endblock %}

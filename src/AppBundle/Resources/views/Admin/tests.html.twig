@@ -85,8 +85,14 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
-    <script>
-        $('.rectangle-list a:eq(9)').toggleClass('last');
-    </script>
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
+        <script>
+            window.onload = function() {
+                $('.rectangle-list a:eq(9)').toggleClass('last');
+            };
+        </script>
+    {% endblock %}
+
 {% endblock %}
