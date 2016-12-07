@@ -134,10 +134,6 @@ class ProfileController extends Controller
         foreach ($answers as $answer) {
             $em->remove($answer);
         }
-        $solutions = $em->getRepository('AppBundle:Solution')->findBy(array('test' => $id));
-        foreach ($solutions as $solution) {
-            $em->remove($solution);
-        }
         $em->remove($question);
         $em->flush();
         return $this->redirectToRoute('user.test', array('id' => $question->getTest()->getId()));
