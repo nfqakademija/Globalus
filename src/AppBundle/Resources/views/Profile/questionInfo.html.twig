@@ -17,7 +17,17 @@
         <a href="{{ path('edit_test_question', {'id': question.id}) }}">Redaguoti klausimą</a>
         <br><br>
 
-        <p>Klausimo pavadinimas: {{ question.text }}</p>
+        <table class="table">
+
+            <tbody>
+            <tr>
+                <th>Klausimo pavadinimas</th>
+            </tr>
+            <tr>
+                <td>{{ question.text }}</td>
+            </tr>
+            </tbody>
+        </table>
         <br>
         <h5>Atsakymai</h5>
             {% if answers.count != 0 %}

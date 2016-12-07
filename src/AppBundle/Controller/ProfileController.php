@@ -18,6 +18,7 @@ use AppBundle\Service\ExampleService;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
@@ -275,35 +276,7 @@ class ProfileController extends Controller
                 'form' => $form->createView(),
             ]);
     }
-    /**
-     * @Route("/questions/{id}/add/answer", name="user.question.add.answer")
-     */
-    public function addAnswerInQuestion($id, Request $request)
-    {
-        $testService = $this->get('app.tests');
-        $question = $testService->getQuestionById($id);
-        $answer = new Answer();
-        $form = $this->createForm(AnswerType::class, $answer);
-        $form->add('save', SubmitType::class, array('label' => 'Sukurti'));
 
-        $form->handleRequest($request);
-        $em = $this->getDoctrine()->getManager();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $answer = $form->getData();
-            $question->addAnswer($answer);
-            $answer->setQuestion($question);
-            $em->persist($question);
-            $em->persist($answer);
-            $em->flush();
-
-            return $this->redirectToRoute('user.test.question', array('id' => $id));
-        }
-
-        return $this->render('AppBundle:Profile:createTest.html.twig', [
-
-                'form' => $form->createView(),
-            ]);
-    }
     /**
      * @Route("/tests/question/{id}/{page}", name="user.test.question")
      */
@@ -417,5 +390,70 @@ class ProfileController extends Controller
             }
         }
         return $points;
+    }
+    /**
+     * @Route("/tests/publish/{id}", name="userTestsPublish")
+     */
+    public function testPublish($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $test = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $test->setPublished(1);
+        $em->persist($test);
+        $em->flush();
+        return $this->redirectToRoute('user.test', array('id' => $test->getId()));
+    }
+    /**
+     * @Route("/tests/depublish/{id}", name="userTestsDepublish")
+     */
+    public function testDepublish($id)
+    {
+        $testsService = $this->get('app.tests');
+
+        $test = $testsService->getTestById($id);
+        $em = $this->getDoctrine()->getManager();
+        $test->setPublished(0);
+        $em->persist($test);
+        $em->flush();
+        return $this->redirectToRoute('user.test', array('id' => $test->getId()));
+    }
+    /**
+     * @Route("/questions/{id}/add/answer", name="user.question.add.answer")
+     */
+    public function createAction($id, Request $request)
+    {
+        $question = new Question();
+        $form = $this->createFormBuilder($question)
+
+            ->add('answers', CollectionType::class, [
+                'entry_type' => AnswerType::class,
+                'label' => false,
+                'prototype_name' => '__q_name__',
+                'by_reference' => false,
+                'allow_add' => true,
+            ])
+            ->add('save', SubmitType::class, array('label' => 'Sukurti'))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $question = $form->getData();
+            $testsService = $this->get('app.tests');
+
+            $mainQuestion = $testsService->getQuestionById($id);
+            $em = $this->getDoctrine()->getManager();
+            foreach ($question->getAnswers() as $answer) {
+                $answer->setQuestion($mainQuestion);
+                $mainQuestion->addAnswer($answer);
+                $em->persist($answer);
+            }
+            $em->persist($mainQuestion);
+            $em->flush();
+            return $this->redirectToRoute('user.test.question', array('id' => $id));
+        }
+        return $this->render('AppBundle:Profile:createAnswers.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
