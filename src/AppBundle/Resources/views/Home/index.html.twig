@@ -56,8 +56,9 @@
                             {% endif %}
                             <span class="popNewSpan">{{ loop.index }}.</span>
                             <p class="popNewP">
+                                <a href="{{ path('test-start',{tid: test.id }) }}" style="color:green">
                                 <span>{{ test.name }}</span><br>
-                                <span>{{ test.description }}</span>
+                                <span>{{ test.description }}</span></a>
                             </p>
                             </li>
                         {% endfor %}
@@ -81,8 +82,9 @@
                             {% endif %}
                             <span class="popNewSpan">{{ loop.index }}.</span>
                             <p class="popNewP">
-                                <span>{{ test.name }}</span><br>
-                                <span>{{ test.description }}</span>
+                                <a href="{{ path('test-start',{tid: test.id }) }}" style="color:green">
+                                    <span>{{ test.name }}</span><br>
+                                    <span>{{ test.description }}</span></a>
                             </p>
                             </li>
                         {% endfor %}

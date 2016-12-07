@@ -24,7 +24,7 @@
                     {% for test in tests %}
                         <li id="user-table">
 
-                            <a class="w3-tooltip" href="{{ path('search') }}/{{ test.id }}">{{ test.name }}
+                            <a class="w3-tooltip" href="{{ path('test-start',{tid: test.id }) }}">{{ test.name }}
                                 <span class="w3-text w3-tag description">Aprašymas: {{ test.description }}</span>
                             </a>
 
