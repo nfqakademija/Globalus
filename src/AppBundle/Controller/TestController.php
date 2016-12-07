@@ -160,7 +160,8 @@ class TestController extends Controller
 
         $criteria = array('test' => $tid, 'hash' => $hash, 'user' => $this->getUser());
         /** @var Solution $solution */
-        $solution = $manager->getRepository('AppBundle:Solution')->findBy($criteria)[$qid-1];
+        $solutions = $manager->getRepository('AppBundle:Solution')->findBy($criteria);
+        $solution = $solutions[$qid-1];
 
         if ($hash!=$session->get('hash')) {
             return $this->redirectToRoute('test-start', array('id' => $tid));
@@ -222,10 +223,14 @@ class TestController extends Controller
             $manager->flush();
 
             if ($form->get('save')->isClicked()) {
-                $this->get('session')->getFlashBag()->add(
-                    'notice',
-                    'Atsakymas išsaugotas'
-                );
+                if ($qid!=count($solutions)) {
+                    return $this->redirectToRoute('test-solve', array('tid' => $tid, 'qid' => $qid+1, 'hash' => $hash));
+                } else {
+                    $this->get('session')->getFlashBag()->add(
+                        'notice',
+                        'Atsakymas išsaugotas'
+                    );
+                }
             }
 
             if ($form->get('end')->isClicked()) {
