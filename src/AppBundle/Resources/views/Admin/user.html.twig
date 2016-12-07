@@ -151,6 +151,8 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
+    {% block javascripts %}
+        {{ parent() }}
     <script src="{{ asset('bundles/app/style/admin/jquery.js') }}"></script>
     <script>
         function myFunction() {
@@ -161,10 +163,8 @@
             tr = document.getElementsByClassName("users");
             for (i = 0; i < tr.length; i++) {
                 var text=$('li.users a span.userEmail:eq('+i+')').text();
-                //alert(text);
-                console.log(tr.length + " " +i);
                 td = tr[i].getElementsByTagName("a");
-                if (true) {
+                if(true) {
                     if (text.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
                     } else {
@@ -173,6 +173,9 @@
                 }
             }
         }
-        $('.rectangle-list a:eq(9)').toggleClass('last');
+        window.onload = function() {
+            $('.rectangle-list a:eq(9)').toggleClass('last');
+        };
     </script>
+    {% endblock %}
 {% endblock %}
