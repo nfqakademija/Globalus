@@ -8,8 +8,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\AnswerType;
 use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\ChangeRolesType;
+use AppBundle\Form\QuestionType;
+use AppBundle\Form\TestType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -86,7 +89,7 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('userAction', array('id' => $user->getId()));
         }
         return $this->render('AppBundle:Admin:userAction.html.twig', [
             'user' => $user,
@@ -104,7 +107,7 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($user);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('users');
     }
     /**
      * @Route("/user/changePassword/{id}", name="userChangePassword")
@@ -148,7 +151,7 @@ class AdminController extends Controller
             $userManager = $this->container->get('fos_user.user_manager');
 
             $userManager->updateUser($user, true);
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('userAction', array('id' => $user->getId()));
         }
         return $this->render('AppBundle:Admin:changePassword.html.twig', [
             'user' => $user,
@@ -165,6 +168,7 @@ class AdminController extends Controller
         $users = $userService->getAllUsersASC($page, $limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
+
         return $this->render('AppBundle:Admin:user.html.twig', [
             'users' => $users,
             'maxPages' => $maxPages,
@@ -240,7 +244,7 @@ class AdminController extends Controller
         }
         $em->remove($test);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('tests');
     }
     /**
      * @Route("/tests/publish/{id}", name="testsPublish")
@@ -254,7 +258,7 @@ class AdminController extends Controller
         $test->setPublished(1);
         $em->persist($test);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
     }
     /**
      * @Route("/tests/depublish/{id}", name="testsDepublish")
@@ -268,10 +272,10 @@ class AdminController extends Controller
         $test->setPublished(0);
         $em->persist($test);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
     }
     /**
-     * @Route("/tests/test/question/{id}/{page}", name="questionInfo")
+     * @Route("/tests/question/{id}/{page}", name="questionInfo")
      */
     public function showTestQestionInfo($id, $page = 1)
     {
@@ -281,6 +285,7 @@ class AdminController extends Controller
         $answers = $testsService->getQuestionAnswers($id, $page, $limit);
         $maxPages = ceil($answers->count() / $limit);
         $thisPage = $page;
+
         return $this->render('AppBundle:Admin:questionAction.html.twig', [
             'question' => $question,
             'answers' => $answers,
@@ -303,7 +308,7 @@ class AdminController extends Controller
             $em->remove($answer);
         }
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+        return $this->redirectToRoute('testsAction', array('id' => $question->getTest()->getId()));
     }
     /**
      * @Route("/tests/test/question/answer/delete/{id}", name="answerDelete")
@@ -316,7 +321,8 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($answer);
         $em->flush();
-        return $this->render('AppBundle:Admin:index.html.twig', []);
+
+        return $this->redirectToRoute('questionInfo', array('id' => $answer->getQuestion()->getId()));
     }
     /**
      * @Route("/tests/edit/{id}", name="edit_admin_test")
@@ -326,33 +332,18 @@ class AdminController extends Controller
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
 
-        $formTest = new Test();
-
-        $form = $this->createFormBuilder($formTest)
-            ->add('name', TextType::class, [
-                'label' => 'Pavadinimas',
-                'data' => $test->getName()
-            ])
-            ->add('description', TextType::class, [
-                'label' => 'Aprasymas',
-                'data' => $test->getDescription()
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
-            ->getForm();
+        $form = $this->createForm(TestType::class, $test);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formTest = $form->getData();
+            $test = $form->getData();
 
-            $test->setName($formTest->getName());
-            $test->setDescription($formTest->getDescription());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($test);
             $em->flush();
-
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('testsAction', array('id' => $test->getId()));
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
@@ -367,29 +358,19 @@ class AdminController extends Controller
         $testService = $this->get('app.tests');
         $question=$testService->getQuestionById($id);
 
-        $formQuestion = new Question();
-
-        $form = $this->createFormBuilder($formQuestion)
-            ->add('text', TextType::class, [
-                'label' => 'Klausimas',
-                'data' => $question->getText()
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
-            ->getForm();
+        $form = $this->createForm(QuestionType::class, $question);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formQuestion = $form->getData();
+            $question = $form->getData();
 
-            $question->setText($formQuestion->getText());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($question);
             $em->flush();
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('questionInfo', array('id' => $id));
         }
-
         return $this->render('AppBundle:Admin:create.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -401,37 +382,22 @@ class AdminController extends Controller
     {
         $testService = $this->get('app.tests');
         $answer=$testService->getAnswerById($id);
-        $formAnswer = new Answer();
 
-        $form = $this->createFormBuilder($formAnswer)
-            ->add('text', TextType::class, [
-                'label' => 'Atsakymas',
-                'data' => $answer->getText()
-            ])
-            ->add('correct', CheckboxType::class, [
-                'label' => 'Teisingas',
-                'data' => $answer->getCorrect(),
-                'required' => false
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
-            ->getForm();
-
+        $form = $this->createForm(AnswerType::class, $answer);
+        $form->add('save', SubmitType::class, array('label' => 'Sukurti'));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formAnswer = $form->getData();
+            $answer = $form->getData();
 
-            $answer->setText($formAnswer->getText());
-            $answer->setCorrect($formAnswer->getCorrect());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($answer);
             $em->flush();
 
-            return $this->render('AppBundle:Admin:index.html.twig', []);
+            return $this->redirectToRoute('questionInfo', array('id' => $answer->getQuestion()->getId()));
         }
-
         return $this->render('AppBundle:Admin:create.html.twig', [
             'form' => $form->createView(),
         ]);

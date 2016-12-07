@@ -1,0 +1,13 @@
+h2 {
+    color: forestgreen;
+
+}
+
+.icon-bar {
+    color: black;
+    background-color: black;
+}
+
+.active {
+    background-color: greenyellow;
+}

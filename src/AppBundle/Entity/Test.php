@@ -112,6 +112,7 @@ class Test
     {
         $this->questions = new ArrayCollection();
         $this->published = false;
+        $this->questionsLimit = 10;
     }
 
     /**

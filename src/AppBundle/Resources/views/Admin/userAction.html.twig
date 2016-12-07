@@ -1,6 +1,6 @@
 {% extends "@App/Admin/base.html.twig" %}
 
-{% block title %}Vartotojai - {{ parent() }}{% endblock %}
+{% block title %}Vartotojas{% endblock %}
 
 {% block stylesheets %}
 
@@ -13,6 +13,9 @@
     td{
         padding-bottom: 5px;
         padding-right: 10px;
+    }
+    .table > tbody > tr > td{
+        padding: 10px;
     }
     </style>
 
@@ -27,11 +30,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <table class="table">
+                        <table class="table table-bordered" style="font-family: Arial, Helvetica, sans-serif">
                             <thead>
                             Pasirinktas Vartotojas
                             </thead>
-                            <tr>
+                            <tr style="background: #d2d2d2;">
                                 <td>id</td><td>el paštas</td><td>rolės</td>
                             </tr>
 
