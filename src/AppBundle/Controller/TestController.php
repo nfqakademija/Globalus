@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class TestController extends Controller
 {
@@ -30,6 +31,10 @@ class TestController extends Controller
             ])
             ->add('description', TextType::class, [
                 'label' => 'Aprasymas'
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Slaptažodis',
+                'required' => false
             ])
             ->add('save', SubmitType::class, array('label' => 'Sukurti'))
             ->getForm();

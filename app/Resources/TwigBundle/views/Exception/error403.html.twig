@@ -4,7 +4,7 @@
     {{ parent() }}
     <style>
         body {
-            background-image: url({{ asset('bundles/app/style/sad_box.jpg') }});
+            background-image: url({{ asset('bundles/app/style/sad_box1.jpg') }});
             background-repeat: no-repeat;
 
             background-size: cover;
@@ -17,10 +17,10 @@
 {% endblock %}
 {% block body %}
     <div style="margin-bottom:250px">
-    <h1>Nerastas puslapis</h1>
+    <h1>Prieiga uždrausta/draudžiama</h1>
     <p>
-        Puslapis su tokiu url nerastas. Patikrinkite puslapyje dėl galimų klaidų
-        arba <a href="{{ path('homepage') }}">grįškite į pagrindinį puslapį</a>.
+
+        <a href="{{ path('homepage') }}">Grįškite į pagrindinį puslapį</a>.
     </p>
     </div>
 {% endblock %}

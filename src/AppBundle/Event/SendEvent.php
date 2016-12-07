@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Event;
+
 use Symfony\Component\EventDispatcher\Event;
 
 class SendEvent extends Event

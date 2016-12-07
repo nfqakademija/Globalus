@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Controller;
+
 use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\ChangeRolesType;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -38,7 +39,7 @@ class AdminController extends Controller
     {
         $userService = $this->get('app.user');
         $limit = 10;
-        $users = $userService->getAllUsers($page,$limit);
+        $users = $userService->getAllUsers($page, $limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Admin:user.html.twig', [
@@ -60,13 +61,12 @@ class AdminController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $roles = $request->get('change_roles');
             $numberOfSelectedRoles=0;
-            foreach($roles  as $role) {
-                if(substr($role, 0, 4)=="ROLE"){
+            foreach ($roles as $role) {
+                if (substr($role, 0, 4) == "ROLE") {
                     $numberOfSelectedRoles++;
                 }
-
             }
-            if($numberOfSelectedRoles==0){
+            if ($numberOfSelectedRoles == 0) {
                 return $this->render('AppBundle:Admin:userAction.html.twig', [
                     'user' => $user,
                     'form' => $form->createView(),
@@ -78,17 +78,10 @@ class AdminController extends Controller
             $user->removeRole('ROLE_SUPER_ADMIN');
 
 
-            foreach($roles  as $role) {
-                //Do something with the ID
-
-                if(substr($role, 0, 4)=="ROLE"){
-
-
-                        $user->addRole($role);
-
-
+            foreach ($roles as $role) {
+                if (substr($role, 0, 4) == "ROLE") {
+                    $user->addRole($role);
                 }
-
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -124,40 +117,31 @@ class AdminController extends Controller
         $form = $this->createForm(ChangePasswordType::class, $userType);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $password = $userType->getPassword();
             if (strlen($password) < '8' || strlen($password) > '32') {
-                return $this->render('AppBundle:Admin:changePassword.html.twig',
-                    [
+                return $this->render('AppBundle:Admin:changePassword.html.twig', [
                         'user' => $user,
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi būti didesnis tarp 8 ir 32 simbolių'
-                    ]
-                );
+                    ]);
             } elseif (!preg_match("#[0-9]+#", $password)) {
-                return $this->render('AppBundle:Admin:changePassword.html.twig',
-                    [
+                return $this->render('AppBundle:Admin:changePassword.html.twig', [
                         'user' => $user,
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi turėti bent vieną numerį'
-                    ]
-                );
+                    ]);
             } elseif (!preg_match("#[A-Z]+#", $password)) {
-                return $this->render('AppBundle:Admin:changePassword.html.twig',
-                    [
+                return $this->render('AppBundle:Admin:changePassword.html.twig', [
                         'user' => $user,
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi turėti bent vieną didžiąją raidę'
-                    ]
-                );
+                    ]);
             } elseif (!preg_match("#[a-z]+#", $password)) {
-                return $this->render('AppBundle:Admin:changePassword.html.twig',
-                    [
+                return $this->render('AppBundle:Admin:changePassword.html.twig', [
                         'user' => $user,
                         'form' => $form->createView(),
                         'error' => 'Slaptažodis turi turėti bent vieną mažąją raidę'
-                    ]
-                );
+                    ]);
             }
 
             $user->setPlainPassword($userType->getPassword());
@@ -178,7 +162,7 @@ class AdminController extends Controller
     {
         $userService = $this->get('app.user');
         $limit = 10;
-        $users = $userService->getAllUsersASC($page,$limit);
+        $users = $userService->getAllUsersASC($page, $limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Admin:user.html.twig', [
@@ -194,7 +178,7 @@ class AdminController extends Controller
     {
         $userService = $this->get('app.user');
         $limit = 10;
-        $users = $userService->getAllUsersDESC($page,$limit);
+        $users = $userService->getAllUsersDESC($page, $limit);
         $maxPages = ceil($users->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Admin:user.html.twig', [
@@ -206,10 +190,11 @@ class AdminController extends Controller
     /**
      * @Route("/tests/{page}", name="tests")
      */
-    public function testsAction($page = 1){
+    public function testsAction($page = 1)
+    {
         $testService = $this->get('app.tests');
         $limit = 10;
-        $tests = $testService->getAllTest($page,$limit);
+        $tests = $testService->getAllTest($page, $limit);
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Admin:tests.html.twig', [
@@ -217,20 +202,16 @@ class AdminController extends Controller
             'maxPages' => $maxPages,
             'thisPage' => $thisPage
         ]);
-   // print_r($tests);
-        /*return $this->render('AppBundle:Admin:tests.html.twig', [
-            'tests' => $tests
-        ]);*/
     }
     /**
      * @Route("/tests/test/{id}/{page}", name="testsAction")
      */
-    public function testActionList($id,$page =1)
+    public function testActionList($id, $page = 1)
     {
         $testsService = $this->get('app.tests');
         $test = $testsService->getTestById($id);
         $limit = 10;
-        $questions = $testsService->getTestQuestions($id,$page,$limit);
+        $questions = $testsService->getTestQuestions($id, $page, $limit);
         $maxPages = ceil($questions->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Admin:testAction.html.twig', [
@@ -250,9 +231,9 @@ class AdminController extends Controller
         $test = $testsService->getTestById($id);
         $questions = $test->getQuestions();
         $em = $this->getDoctrine()->getManager();
-        foreach ($questions as $question){
+        foreach ($questions as $question) {
             $answers=$question->getAnswers();
-            foreach ($answers as $answer){
+            foreach ($answers as $answer) {
                 $em->remove($answer);
             }
             $em->remove($question);
@@ -292,13 +273,12 @@ class AdminController extends Controller
     /**
      * @Route("/tests/test/question/{id}/{page}", name="questionInfo")
      */
-    public function showTestQestionInfo($id,$page =1)
+    public function showTestQestionInfo($id, $page = 1)
     {
         $testsService = $this->get('app.tests');
-        //$test = $testsService->getTestById($id);
         $question = $testsService->getQuestionById($id);
         $limit = 10;
-        $answers = $testsService->getQuestionAnswers($id,$page,$limit);
+        $answers = $testsService->getQuestionAnswers($id, $page, $limit);
         $maxPages = ceil($answers->count() / $limit);
         $thisPage = $page;
         return $this->render('AppBundle:Admin:questionAction.html.twig', [
@@ -319,7 +299,7 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $answers=$question->getAnswers();
         $em->remove($question);
-        foreach ($answers as $answer){
+        foreach ($answers as $answer) {
             $em->remove($answer);
         }
         $em->flush();
@@ -341,7 +321,7 @@ class AdminController extends Controller
     /**
      * @Route("/tests/edit/{id}", name="edit_admin_test")
      */
-    public function editUserTest($id,Request $request)
+    public function editUserTest($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
@@ -372,18 +352,17 @@ class AdminController extends Controller
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Admin:index.html.twig',[]);
+            return $this->render('AppBundle:Admin:index.html.twig', []);
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
     /**
      * @Route("/tests/questions/edit/{id}", name="edit_admin_question")
      */
-    public function editTestQuestion($id,Request $request)
+    public function editTestQuestion($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $question=$testService->getQuestionById($id);
@@ -408,19 +387,17 @@ class AdminController extends Controller
 
             $em->persist($question);
             $em->flush();
-
-            return $this->render('AppBundle:Admin:index.html.twig',[]);
+            return $this->render('AppBundle:Admin:index.html.twig', []);
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
     /**
      * @Route("/tests/answer/edit/{id}", name="edit_admin_answer")
      */
-    public function editQuestionAnswer($id,Request $request)
+    public function editQuestionAnswer($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $answer=$testService->getAnswerById($id);
@@ -431,10 +408,10 @@ class AdminController extends Controller
                 'label' => 'Atsakymas',
                 'data' => $answer->getText()
             ])
-            ->add('correct',CheckboxType::class,[
+            ->add('correct', CheckboxType::class, [
                 'label' => 'Teisingas',
                 'data' => $answer->getCorrect(),
-                'required'=>false
+                'required' => false
             ])
             ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
             ->getForm();
@@ -452,12 +429,11 @@ class AdminController extends Controller
             $em->persist($answer);
             $em->flush();
 
-            return $this->render('AppBundle:Admin:index.html.twig',[]);
+            return $this->render('AppBundle:Admin:index.html.twig', []);
         }
 
         return $this->render('AppBundle:Admin:create.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 }

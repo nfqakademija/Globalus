@@ -23,7 +23,7 @@ class QuestionRepository extends EntityRepository
         $res = array_slice($res, 0, $test->getQuestionsLimit());
 
         $result = array();
-        foreach ($res as $r){
+        foreach ($res as $r) {
             $result[]=$r['id'];
         }
 

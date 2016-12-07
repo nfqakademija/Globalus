@@ -8,7 +8,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Solution;
@@ -65,12 +64,9 @@ class ProfileController extends Controller
             return $this->redirectToRoute('app.successPassChange', ['id' => $user->getId()]);
         }
 
-        return $this->render('AppBundle:Profile:create.html.twig',
-            [
+        return $this->render('AppBundle:Profile:create.html.twig', [
                 'form' => $form->createView()
-            ]
-        );
-
+            ]);
     }
     /**
      * @Route("/successPassChange/{id}", name="app.successPassChange")
@@ -78,11 +74,9 @@ class ProfileController extends Controller
     public function showSuccessPassChange($id)
     {
         $userService = $this->get('app.user');
-        return $this->render('AppBundle:Profile:successPassChange.html.twig',
-            [
+        return $this->render('AppBundle:Profile:successPassChange.html.twig', [
                 'user' => $userService->getUserById($id),
-            ]
-        );
+            ]);
     }
     /**
      * @Route("/tests/{page}", name="user.tests")
@@ -92,16 +86,14 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $limit = 10;
 
-        $tests=$testService->getUserTests($this->getUser()->getId(),$page,$limit);
+        $tests=$testService->getUserTests($this->getUser()->getId(), $page, $limit);
         $maxPages = ceil($tests->count() / $limit);
         $thisPage = $page;
-        return $this->render('AppBundle:Profile:tests.html.twig',
-            [
+        return $this->render('AppBundle:Profile:tests.html.twig', [
                 'tests' => $tests,
                 'maxPages' => $maxPages,
                 'thisPage' => $thisPage
-            ]
-        );
+            ]);
     }
 
     /**
@@ -122,10 +114,7 @@ class ProfileController extends Controller
         }
         $em->remove($test);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig',
-            [
-            ]
-        );
+        return $this->render('AppBundle:Profile:index.html.twig', []);
     }
 
     /**
@@ -142,10 +131,7 @@ class ProfileController extends Controller
         }
         $em->remove($question);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig',
-            [
-            ]
-        );
+        return $this->render('AppBundle:Profile:index.html.twig', []);
     }
 
     /**
@@ -158,35 +144,30 @@ class ProfileController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($answer);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig',
-            [
-            ]
-        );
+        return $this->render('AppBundle:Profile:index.html.twig', []);
     }
     /**
      * @Route("/tests/test/{id}/{page}", name="user.test")
      */
-    public function showUserTest($id,$page = 1)
+    public function showUserTest($id, $page = 1)
     {
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
         $limit = 10;
-        $questions=$testService->getTestQuestions($id,$page,$limit);
+        $questions=$testService->getTestQuestions($id, $page, $limit);
         $maxPages = ceil($questions->count() / $limit);
         $thisPage = $page;
-        return $this->render('AppBundle:Profile:testInfo.html.twig',
-            [
+        return $this->render('AppBundle:Profile:testInfo.html.twig', [
                 'test' => $test,
                 'questions' =>$questions,
                 'maxPages' => $maxPages,
                 'thisPage' => $thisPage
-            ]
-        );
+            ]);
     }
     /**
      * @Route("/tests/edit/{id}", name="edit_user_test")
      */
-    public function editUserTest($id,Request $request)
+    public function editUserTest($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
@@ -216,19 +197,17 @@ class ProfileController extends Controller
 
             $em->persist($test);
             $em->flush();
-
-            return $this->render('AppBundle:Profile:index.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig', []);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
     /**
      * @Route("/questions/edit/{id}", name="edit_test_question")
      */
-    public function editTestQuestion($id,Request $request)
+    public function editTestQuestion($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $question=$testService->getQuestionById($id);
@@ -254,18 +233,16 @@ class ProfileController extends Controller
             $em->persist($question);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:index.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig', []);
         }
-
         return $this->render('AppBundle:Profile:createTest.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
     /**
      * @Route("/answers/edit/{id}", name="edit_question_answer")
      */
-    public function editQuestionAnswer($id,Request $request)
+    public function editQuestionAnswer($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $answer=$testService->getAnswerById($id);
@@ -276,10 +253,10 @@ class ProfileController extends Controller
                 'label' => 'Atsakymas',
                 'data' => $answer->getText()
             ])
-            ->add('correct',CheckboxType::class,[
+            ->add('correct', CheckboxType::class, [
                 'label' => 'Teisingas',
                 'data' => $answer->getCorrect(),
-                'required'=>false
+                'required' => false
             ])
             ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
             ->getForm();
@@ -297,18 +274,17 @@ class ProfileController extends Controller
             $em->persist($answer);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:index.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig', []);
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
     /**
      * @Route("/tests/{id}/add/question", name="user.test.add.question")
      */
-    public function addQuestionInTest($id,Request $request)
+    public function addQuestionInTest($id, Request $request)
     {
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
@@ -331,32 +307,30 @@ class ProfileController extends Controller
             $em->persist($test);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:index.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig', []);
         }
 
-        return $this->render('AppBundle:Profile:createTest.html.twig',
-            [
+        return $this->render('AppBundle:Profile:createTest.html.twig', [
                 'test' => $test,
                 'form' => $form->createView(),
-            ]
-        );
+            ]);
     }
     /**
      * @Route("/questions/{id}/add/answer", name="user.question.add.answer")
      */
-    public function addAnswerInQuestion($id,Request $request)
+    public function addAnswerInQuestion($id, Request $request)
     {
         $testService = $this->get('app.tests');
-        $question=$testService->getQuestionById($id);
+        $question = $testService->getQuestionById($id);
         $answer = new Answer();
 
         $form = $this->createFormBuilder($answer)
             ->add('text', TextType::class, [
                 'label' => 'Atsakymas'
             ])
-            ->add('correct',CheckboxType::class,[
+            ->add('correct', CheckboxType::class, [
                 'label' => 'Teisingas',
-                'required'=>false
+                'required' => false
             ])
             ->add('save', SubmitType::class, array('label' => 'Sukurti'))
             ->getForm();
@@ -371,36 +345,32 @@ class ProfileController extends Controller
             $em->persist($answer);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:index.html.twig',[]);
+            return $this->render('AppBundle:Profile:index.html.twig', []);
         }
 
-        return $this->render('AppBundle:Profile:createTest.html.twig',
-            [
+        return $this->render('AppBundle:Profile:createTest.html.twig', [
 
                 'form' => $form->createView(),
-            ]
-        );
+            ]);
     }
     /**
      * @Route("/tests/question/{id}/{page}", name="user.test.question")
      */
-    public function showTestQuestion($id,$page = 1)
+    public function showTestQuestion($id, $page = 1)
     {
         $testService = $this->get('app.tests');
-        $questions=$testService->getQuestionById($id);
+        $questions = $testService->getQuestionById($id);
         $limit = 2;
-        $answers=$testService->getQuestionAnswers($id,$page,$limit);
+        $answers = $testService->getQuestionAnswers($id, $page, $limit);
         $maxPages = ceil($answers->count() / $limit);
         $thisPage = $page;
 
-        return $this->render('AppBundle:Profile:questionInfo.html.twig',
-            [
-                'question' => $questions,
-                'answers' => $answers,
-                'maxPages' => $maxPages,
-                'thisPage' => $thisPage
-            ]
-        );
+        return $this->render('AppBundle:Profile:questionInfo.html.twig', [
+            'question' => $questions,
+            'answers' => $answers,
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage
+        ]);
     }
 
     /**
