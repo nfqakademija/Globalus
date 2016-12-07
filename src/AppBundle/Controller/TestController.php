@@ -87,6 +87,11 @@ class TestController extends Controller
         $form = $this->createForm(TestStartType::class, array('pass' => $pass));
         $form->handleRequest($request);
 
+        if ($test->getQuestionsLimit() > count($test->getQuestions())) {
+            $test->setQuestionsLimit(count($test->getQuestions()));
+        }
+
+
         if ($form->isSubmitted()&&$form->isValid()) {
             if ($pass==true) {
                 $password = $form->getData()['password'];
