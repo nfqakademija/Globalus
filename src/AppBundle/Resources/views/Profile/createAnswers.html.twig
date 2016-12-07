@@ -1,0 +1,50 @@
+
+{% extends "@App/Profile/heading.html.twig" %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block title %}
+    Testo kūrimas
+{% endblock %}
+{% block body %}
+{{ parent() }}
+    <div style="margin: 20px 20px;">
+        {{ form_start(form) }}
+
+        <h3>Atsakymai</h3>
+        <ul class="answers" data-prototype="{{ form_widget(form.answers.vars.prototype)|e('html_attr') }}">
+            {% for answers in form.answers %}
+                <li>{{ form_row(answers.answers) }}</li>
+
+
+
+
+            {% endfor %}
+        </ul>
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        var $collectionHolder;
+        // setup an "add a tag" link
+        var $addQLink = $('<a href="#" class="add_answer_link">Pridėti atsakymą</a>');
+        var $newQLinkLi = $('<li></li>').append($addQLink);
+        jQuery(document).ready(function() {
+            $collectionHolder = $('ul.answers');
+            $collectionHolder.append($newQLinkLi);
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+            $addQLink.on('click', function(e) {
+                e.preventDefault();
+                addTagForm($collectionHolder, $newQLinkLi);
+            });
+        });
+        function addTagForm($collectionHolder, $newLinkLi) {
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype.replace(/__q_name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+        }
+
+    </script>
+{% endblock %}
