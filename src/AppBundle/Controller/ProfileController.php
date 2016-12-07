@@ -10,11 +10,16 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
+use AppBundle\Form\AnswerType;
+use AppBundle\Form\QuestionType;
+use AppBundle\Form\TestType;
 use AppBundle\Entity\Solution;
 use AppBundle\Service\ExampleService;
 use FOS\UserBundle\Form\Type\ChangePasswordFormType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use AppBundle\Entity\User;
@@ -60,7 +65,7 @@ class ProfileController extends Controller
             $userManager->updateUser($user, true);
 
 
-            ///TODO validation
+
             return $this->redirectToRoute('app.successPassChange', ['id' => $user->getId()]);
         }
 
@@ -114,7 +119,7 @@ class ProfileController extends Controller
         }
         $em->remove($test);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig', []);
+        return $this->redirectToRoute('user.tests');
     }
 
     /**
@@ -131,7 +136,7 @@ class ProfileController extends Controller
         }
         $em->remove($question);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig', []);
+        return $this->redirectToRoute('user.test', array('id' => $question->getTest()->getId()));
     }
 
     /**
@@ -144,7 +149,7 @@ class ProfileController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($answer);
         $em->flush();
-        return $this->render('AppBundle:Profile:index.html.twig', []);
+        return $this->redirectToRoute('user.test.question', array('id' => $answer->getQuestion()->getId()));
     }
     /**
      * @Route("/tests/test/{id}/{page}", name="user.test")
@@ -172,32 +177,19 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
 
-        $formTest = new Test();
+        $form = $this->createForm(TestType::class, $test);
 
-        $form = $this->createFormBuilder($formTest)
-            ->add('name', TextType::class, [
-                'label' => 'Pavadinimas',
-                'data' => $test->getName()
-            ])
-            ->add('description', TextType::class, [
-                'label' => 'Aprasymas',
-                'data' => $test->getDescription()
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
-            ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formTest = $form->getData();
+            $test = $form->getData();
 
-            $test->setName($formTest->getName());
-            $test->setDescription($formTest->getDescription());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($test);
             $em->flush();
-            return $this->render('AppBundle:Profile:index.html.twig', []);
+            return $this->redirectToRoute('user.test', array('id' => $test->getId()));
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
@@ -212,28 +204,18 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $question=$testService->getQuestionById($id);
 
-        $formQuestion = new Question();
-
-        $form = $this->createFormBuilder($formQuestion)
-            ->add('text', TextType::class, [
-                'label' => 'Klausimas',
-                'data' => $question->getText()
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
-            ->getForm();
+        $form = $this->createForm(QuestionType::class, $question);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formQuestion = $form->getData();
+            $question = $form->getData();
 
-            $question->setText($formQuestion->getText());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($question);
             $em->flush();
-
-            return $this->render('AppBundle:Profile:index.html.twig', []);
+            return $this->redirectToRoute('user.test.question', array('id' => $question->getId()));
         }
         return $this->render('AppBundle:Profile:createTest.html.twig', [
             'form' => $form->createView(),
@@ -246,35 +228,20 @@ class ProfileController extends Controller
     {
         $testService = $this->get('app.tests');
         $answer=$testService->getAnswerById($id);
-        $formAnswer = new Answer();
 
-        $form = $this->createFormBuilder($formAnswer)
-            ->add('text', TextType::class, [
-                'label' => 'Atsakymas',
-                'data' => $answer->getText()
-            ])
-            ->add('correct', CheckboxType::class, [
-                'label' => 'Teisingas',
-                'data' => $answer->getCorrect(),
-                'required' => false
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Įrašyti'))
-            ->getForm();
-
+        $form = $this->createForm(AnswerType::class, $answer);
+        $form->add('save', SubmitType::class, array('label' => 'Sukurti'));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formAnswer = $form->getData();
+            $answer = $form->getData();
 
-            $answer->setText($formAnswer->getText());
-            $answer->setCorrect($formAnswer->getCorrect());
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($answer);
             $em->flush();
-
-            return $this->render('AppBundle:Profile:index.html.twig', []);
+            return $this->redirectToRoute('user.test.question', array('id' => $answer->getQuestion()->getId()));
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
@@ -289,13 +256,7 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $test=$testService->getTestById($id);
         $question = new Question();
-
-        $form = $this->createFormBuilder($question)
-            ->add('text', TextType::class, [
-                'label' => 'Klausimas'
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Sukurti'))
-            ->getForm();
+        $form = $this->createForm(QuestionType::class, $question);
 
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -306,8 +267,7 @@ class ProfileController extends Controller
             $em->persist($question);
             $em->persist($test);
             $em->flush();
-
-            return $this->render('AppBundle:Profile:index.html.twig', []);
+            return $this->redirectToRoute('user.test', array('id' => $test->getId()));
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
@@ -323,17 +283,8 @@ class ProfileController extends Controller
         $testService = $this->get('app.tests');
         $question = $testService->getQuestionById($id);
         $answer = new Answer();
-
-        $form = $this->createFormBuilder($answer)
-            ->add('text', TextType::class, [
-                'label' => 'Atsakymas'
-            ])
-            ->add('correct', CheckboxType::class, [
-                'label' => 'Teisingas',
-                'required' => false
-            ])
-            ->add('save', SubmitType::class, array('label' => 'Sukurti'))
-            ->getForm();
+        $form = $this->createForm(AnswerType::class, $answer);
+        $form->add('save', SubmitType::class, array('label' => 'Sukurti'));
 
         $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
@@ -345,7 +296,7 @@ class ProfileController extends Controller
             $em->persist($answer);
             $em->flush();
 
-            return $this->render('AppBundle:Profile:index.html.twig', []);
+            return $this->redirectToRoute('user.test.question', array('id' => $id));
         }
 
         return $this->render('AppBundle:Profile:createTest.html.twig', [
@@ -359,17 +310,18 @@ class ProfileController extends Controller
     public function showTestQuestion($id, $page = 1)
     {
         $testService = $this->get('app.tests');
-        $questions = $testService->getQuestionById($id);
-        $limit = 2;
+        $question = $testService->getQuestionById($id);
+        $limit = 5;
         $answers = $testService->getQuestionAnswers($id, $page, $limit);
         $maxPages = ceil($answers->count() / $limit);
         $thisPage = $page;
 
         return $this->render('AppBundle:Profile:questionInfo.html.twig', [
-            'question' => $questions,
+            'question' => $question,
             'answers' => $answers,
             'maxPages' => $maxPages,
-            'thisPage' => $thisPage
+            'thisPage' => $thisPage,
+            'test' => $question->getTest()
         ]);
     }
 

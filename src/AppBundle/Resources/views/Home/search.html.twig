@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Homepage - {{ parent() }}{% endblock %}
+{% block title %}Testų paieška{% endblock %}
 
 {% block stylesheets %}
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
@@ -74,8 +74,7 @@
 
     </div>
 <script>
-    //$(function(){
-        //console.log('desperate for');
+
         var objJson=[];
         var objJsonId =[];
         var objJsonDescription =[];
@@ -91,7 +90,7 @@
         var userPagination = $('.pagination');
         var list=$('#list');
         searchField.keyup(function(evt){
-            //console.log($(this).val());
+
 
             $.ajax({
                 url: '{{ path('search') }}',
@@ -101,12 +100,12 @@
                 success: function(result, request) {
 
                     var parsedData =JSON.parse(result);
-                    //console.log(parsedData);
+
                     if(parsedData.status ==='success'){
                         //console.log('hete');
                         userListDiv.empty();
                         userPagination.empty();
-                        //userListDiv.html(parsedData.data);
+
                         list.empty();
                         list.html(parsedData.data);
 
@@ -115,7 +114,7 @@
                         objJson=[];
                         objJsonId =[];
                         objJsonDescription =[];
-                        //console.log('nope');
+
                         var numberOfItems=$('.w3-tooltip span').length;
                         var current_page = 1;
                         var records_per_page = 10;
@@ -125,7 +124,7 @@
                             var text=$('.w3-tooltip span')[i].previousSibling.nodeValue;
                             objJson[i]=text.toString();
                         }
-                        //console.log(objJson[0].toString());
+
 
                         for (i = 0; i < numberOfItems; i++) {
                             var hr = document.getElementsByClassName('w3-tooltip')[i].href;
@@ -145,7 +144,7 @@
                                 '<a href="javascript:nextPage()" id="btn_next">Kitas psl.</a>'+
                                 ' <span id="pg">Puslapis: <span id="page"></span></span>';
                         changePage(1);
-                        //console.log('pagkei');
+
                         current_page=1;
 
 
@@ -187,8 +186,8 @@
             if (page > numPages()) page = numPages();
 
             listing_table.innerHTML = "";
-            /*console.log(records_per_page);
-            console.log('som');*/
+
+
             for (var i = (page-1) * records_per_page; i < (page * records_per_page); i++) {
                 if(objJson[i]!=null) {
                     listing_table.innerHTML += '<li id = "user-table"><a class="w3-tooltip" href="{{ path('search') }}/' + objJsonId[i] + '">' +
@@ -197,7 +196,7 @@
                             "</a></li>";
                 }
             }
-            //console.log(listing_table.innerHTML);
+
             page_span.innerHTML = page;
 
             if (page == 1) {
@@ -222,19 +221,6 @@
             $('.rectangle-list a:eq(9)').toggleClass('last');
             changePage(1);
         };
-
-
-    //});
-
-
-    /*function nextPage()
-    {
-        if (current_page < numPages()) {
-            current_page++;
-            changePage(current_page);
-        }
-    }*/
-
 
 </script>
 {% endblock %}

@@ -1,0 +1,15 @@
+.titleH {
+    font: 400 100px/1.2 'Merienda One', Helvetica, sans-serif;
+    color: rgba(0,0,0,0.7);
+    text-shadow: 3px 3px 3px #fff;
+    color:#21c221;
+}
+.titleL{
+    font: 400 50px/1.2 'Merienda One', Helvetica, sans-serif;
+    color: rgba(0,0,0,0.7);
+    text-shadow: 3px 3px 3px #fff;
+    color:#21c221;
+}
+.main-header {
+    text-align: center;
+}

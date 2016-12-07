@@ -3,12 +3,12 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
-
+    <link rel="stylesheet" href={{ asset('bundles/app/style/profile/style.css') }} />
 {% endblock %}
 {% block content %}
     <link rel="stylesheet" href={{ asset('bundles/app/style/style.css') }} />
     <div style="margin: 30px 20px;">
-        <a href="{{ path('tests') }}">Testai</a>
+        <a href="{{ path('user.tests') }}">Testai</a>
         <span>|</span>
         <a href="{{ path('user.test.add.question', {'id': test.id}) }}">Pridėti klausimą</a>
         <span>|</span>
@@ -21,6 +21,9 @@
                 <td style="border: none">
                     Testo aprašymas
                 </td>
+                <td style="border: none">
+                    Laiko limitas(s)
+                </td>
             </tr>
             <tr>
                 <td style="border: none">
@@ -29,11 +32,14 @@
                 <td style="border: none">
                     {{ test.description }}
                 </td>
+                <td style="border: none">
+                    {{ test.timeLimit }}
+                </td>
             </tr>
         </table>
-
+            {% if questions.count != 0 %}
             {% for question in questions %}
-                <ul style="list-style: outside;padding: 20px 20px;border-bottom: 1px solid greenyellow">
+                <ul class="testList">
                     <li class="col-lg-10 col-md-10 col-sm-12 col-xs-12" style="float: left;display: block;">
                         <a href="{{ path('user.test.question' , {'id': question.id}) }}">
                             {{ question.text }}
@@ -47,6 +53,9 @@
                 </ul>
 
             {% endfor %}
+            {% else %}
+            <h4>Nėra klausimų</h4>
+            {% endif %}
 
     </div>
     {% if questions.count > 0 %}
