@@ -45,11 +45,11 @@ class ContactController extends Controller
             $em->flush();
 
             return $this->render('AppBundle:Contact:success.html.twig',[]);
+
         }
 
         return $this->render('AppBundle:Contact:contact.html.twig', array(
             'form' => $form->createView(),
         ));
-
     }
 }
