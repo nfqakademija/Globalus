@@ -44,7 +44,7 @@ class ContactController extends Controller
             $em->persist($contact);
             $em->flush();
 
-            return $this->render('AppBundle:Contact:success.html.twig',[]);
+            return $this->render('AppBundle:Contact:success.html.twig',[ ]);
 
         }
 
