@@ -1,5 +1,8 @@
 {% extends "@App/Profile/heading.html.twig" %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/pagination.css') }} />
+{% endblock %}
 {% block content %}
 
     {% if message|length > 0 %}
@@ -31,6 +34,25 @@
             {% endfor %}
             </tbody>
         </table>
+        {% if tests|length > 0 %}
+            <ol class="pagination" style="padding-top: 20px">
+                <li {{ thisPage == 1 ? 'class="disabled"' }}>
+                    <a href="{{ path('profile-test-results', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+
+                {# Render each page number #}
+                {% for i in 1..maxPages %}
+                    <li {{ thisPage == i ? 'class="active"' }}>
+                        <a href="{{ path('profile-test-results', {page: i}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {# `»` arrow #}
+                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+                    <a href="{{ path('profile-test-results', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                </li>
+            </ol>
+        {% endif %}
     {% endif %}
 
 {% endblock %}
