@@ -114,5 +114,4 @@ class Contact
         $this->name = $name;
         return $this;
     }
-
 }
