@@ -299,14 +299,14 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/test-history", name="profile-test-results")
+     * @Route("/test-history/{page}", name="profile-test-results")
      */
-    public function showTestHistory()
+    public function showTestHistory($page = 1)
     {
         /** @var Solution $solution */
         $solutions = $this->getDoctrine()->getRepository('AppBundle:Solution')
             ->findBy(array('user' => $this->getUser()));
-
+        $testService = $this->get('app.tests');
         $tests = array();
         $temp = array();
 
@@ -348,12 +348,29 @@ class ProfileController extends Controller
                 $results[] = round(($points*100/$maxPoints), 2);
                 $testObjects[] = $this->getDoctrine()->getRepository('AppBundle:Test')->find($test[0]->getTest());
             }
+            $limit = 5;
+            $i=0;
 
+            $number=$page*$limit;
+            $number2=($page-1)*$limit;
+            foreach ($testObjects as $testObject) {
+                $i++;
+                if ($i > $number2 && $i <= ($number)) {
+                    $hashesPaginating[] = $hashes[$i - 1];
+                    $resultsPaginating[] = $results[$i - 1];
+                    $testObjectsPaginating[] = $testObject;
+                }
+            }
+
+            $maxPages = ceil(count($testObjects) / $limit);
+            $thisPage = $page;
             return $this->render('AppBundle:Profile:testHistory.html.twig', array(
-                'results' => $results,
-                'tests' => $testObjects,
-                'hashes' => $hashes,
-                'message' => ''
+                'results' => $resultsPaginating,
+                'tests' => $testObjectsPaginating,
+                'hashes' => $hashesPaginating,
+                'message' => '',
+                'thisPage' => $thisPage,
+                'maxPages' => $maxPages
             ));
         }
     }
