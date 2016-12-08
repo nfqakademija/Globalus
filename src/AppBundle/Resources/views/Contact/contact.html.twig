@@ -1,0 +1,34 @@
+
+{% extends "@App/layout.html.twig" %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+    {{ parent() }}
+    <link rel="stylesheet" href={{ asset('bundles/app/style/contact_style.css') }} />
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="box">
+        <p><h2>Kontaktai</h2></p><br>
+
+        <h5>El. Paštas </h5>
+        <p>info@globalus.projektai.nfqakademija.lt</p>
+        <h5>Telefono numeris</h5>
+        <p>+370 555 43334</p>
+        <dd class="social-links">
+            <a class="fb" href="http://www.facebook.com/" title="Find us on Facebook">Facebook</a>
+            <a class="tt" href="http://twitter.com/" title="Find us on Twitter">Twitter</a>
+        </dd>
+    </div>
+
+    <div class="box">
+        <p><h2>Palikite atsiliepimą</h2></p><br>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
